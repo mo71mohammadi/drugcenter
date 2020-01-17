@@ -22,7 +22,7 @@ exports.interactionChecker = async (req, res) => {
                     item["interactions"].forEach(interaction => {
                         if (objId.includes(interaction.id)) {
                             const currentObj = {
-                                ERXs: item.drugId + ', ' + obj.drugId,
+                                // ERXs: item.drugId + ', ' + obj.drugId,
                                 id: interaction.id,
                                 subject: interaction.subject,
                                 object: interaction.object,
