@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <h1>Hellow World</h1>
+ <form action="api/products/import" method="post" enctype="multipart/form-data">
+     <input type="file" id="products" name="products">
+     <input type="submit" value="upload">
+ </form>
+ <form action="api/generics/import" method="post" enctype="multipart/form-data">
+     <input type="file" id="generics" name="generics">
+     <select name="group" id="group">
+         <option value="drug">دارو</option>
+         <option value="ada">تجهیزات</option>
+     </select>
+     <input type="submit" value="upload">
+ </form>
+ <form action="api/insurance/import" method="post" enctype="multipart/form-data">
+     <input type="file" id="insurance" name="insurance">
+     <select id="insuranceType" name="insuranceType">
+         <option value="1">تامین اجتماعی </option>
+         <option value="2">سلامت </option>
+         <option value="3">نیروهای مسلح </option>
+     </select>
+     <input type="submit" value="upload">
+ </form>
+</body>
+</html>
