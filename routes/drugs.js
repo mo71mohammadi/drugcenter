@@ -30,7 +30,9 @@ exports.getAll = async (req, res) => {
             if (filter[item]) search[item] = filter[item]
         }
         Drug.find(search).skip(size * page).limit(size).sort({_id: -1}).then(async products => {
-            res.status(200).json({data: products})
+            const count = await Drug.countDocuments(search);
+
+            res.status(200).json({count, products})
         }).catch(err => {
             res.status(401).json(err.message)
         });

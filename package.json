@@ -15,18 +15,18 @@
     "express-fileupload": "^1.1.6",
     "follow-redirects": "^1.9.0",
     "mongo-xlsx": "^1.0.12",
-    "mongoose": "^5.6.9",
+    "mongoose": "^5.8.9",
     "mongoose-csv": "^1.1.0",
     "mongoose-unique-validator": "^2.0.3",
     "needle": "^2.4.0",
     "nodejs-info": "^1.2.0",
     "python-shell": "^1.0.8",
     "request": "^2.88.0",
-    "xlsx": "^0.15.1"
+    "xlsx": "^0.15.4"
   },
   "devDependencies": {
-    "axios": "^0.19.0",
-    "dotenv": "^8.0.0",
-    "nodemon": "^1.19.1"
+    "axios": "^0.19.1",
+    "dotenv": "^8.2.0",
+    "nodemon": "^1.19.4"
   }
 }
