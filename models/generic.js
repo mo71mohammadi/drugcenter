@@ -6,18 +6,18 @@ const genericSchema = new mongoose.Schema({
     drug: {
         // category: {type: String},
         genericCode: {type: String, unique:true, required: false},
-        molecule: [
-            {
-                name: {type: String, required: false},
-                salt: {type: String, required: false},
-                casNum: {type: String, required: false},
-                description: {type: String, required: false},
-                structure: {type: String, required: false},
-                weight: {type: String, required: false},
-                chemicalFormula: {type: String, required: false},
-                dose: {type: String, required: false},
-            }
-        ],
+        // molecule: [
+        //     {
+        //         name: {type: String, required: false},
+        //         salt: {type: String, required: false},
+        //         casNum: {type: String, required: false},
+        //         description: {type: String, required: false},
+        //         structure: {type: String, required: false},
+        //         weight: {type: String, required: false},
+        //         chemicalFormula: {type: String, required: false},
+        //         dose: {type: String, required: false},
+        //     }
+        // ],
         // enNewGeneric: {type: String, required: false},
         // faNewGeneric: {type: String, required: false},
         // enBehGeneric: {type: String, required: false},
