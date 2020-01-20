@@ -32,7 +32,7 @@ exports.getAll = async (req, res) => {
         Drug.find(search).skip(size * page).limit(size).sort({_id: -1}).then(async products => {
             const count = await Drug.countDocuments(search);
 
-            res.status(200).json({count, products})
+            res.status(200).json({count, data:products})
         }).catch(err => {
             res.status(401).json(err.message)
         });
