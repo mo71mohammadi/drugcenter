@@ -19,7 +19,11 @@ router.post('/upToDate/', upToDate.addUpToDate);
 router.post('/drugs/getAll', Drug.getAll);
 router.get('/drugs/getInfo', Drug.getInfo);
 router.post('/drugs/update', Drug.update);
+router.post('/drugs/import', Drug.import);
 router.get('/drugs/interaction', Drug.interaction);
-router.post('/drugs/interaction', Drug.interactionUpdate);
+router.post('/drugs/interaction', Drug.updateInteraction);
+router.get('/drugs/getPrice', Drug.getPrice);
+router.get('/drugs/price', Drug.price);
+router.post('/drugs/updatePrice', Drug.updatePrice);
 
 module.exports = router;

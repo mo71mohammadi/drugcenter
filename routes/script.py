@@ -2,6 +2,7 @@ import re
 import xlrd
 import requests
 import json
+import pandas as pd
 
 s = requests.Session()
 start = s.get('https://statisticsreports.ttac.ir/Product/ExportToExcelForGetProducts?pageNumber=1&pageSize=85000')
@@ -32,19 +33,21 @@ fetch = s.post(url="https://statisticsreports.ttac.ir/dashboard/", data=data)
 workbook = xlrd.open_workbook(file_contents=fetch.content)
 worksheet = workbook.sheet_by_index(0)
 product_list = []
-for row in range(1, worksheet.nrows):
+dataFrame = pd.read_excel(workbook, dtype={'کد GTIN': object, 'کد IRC': object, 'تعداد در بسته': object, 'قیمت فروش به مصرف کننده': object, 'قیمت فروش به داروخانه': object, 'قیمت فروش به توزیع کننده': object})
+dataFrame.fillna('', inplace=True)
+
+for row in dataFrame.index:
     obj = {}
-    value = worksheet.row_values(row)
-    obj['IRC'] = value[0]
-    obj['GTIN'] = value[1]
-    obj['PackageCount'] = value[4]
-    obj['Price1'] = value[15]
-    obj['Price2'] = value[16]
-    obj['Price3'] = value[17]
+    obj['IRC'] = dataFrame["کد IRC"][row]
+    obj['GTIN'] = dataFrame["کد GTIN"][row]
+    obj['PackageCount'] = dataFrame['تعداد در بسته'][row]
+    obj['cPrice'] = dataFrame["قیمت فروش به مصرف کننده"][row]
+    obj['dPrice'] = dataFrame["قیمت فروش به داروخانه"][row]
+    obj['sPrice'] = dataFrame["قیمت فروش به توزیع کننده"][row]
     product_list.append(obj)
 
 j = json.dumps(product_list)
 with open('data.json', 'w') as f:
     f.write(j)
 
-print('Finish')
+print("finish")
