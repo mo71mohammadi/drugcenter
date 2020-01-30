@@ -4,9 +4,9 @@ const uniqueValidator = require('mongoose-unique-validator');
 const drugSchema = new mongoose.Schema({
     eRx: {type: String, required: true},
     packageCode: {type: String, required: true},
-    packageCount: {type: Number, required: true},
-    packageType: {type: String, required: true},
-    genericCode: {type: Number, required: false},
+    packageCount: {type: Number},
+    packageType: {type: String},
+    genericCode: {type: Number, required: true},
     enBrandName: {type: String},
     faBrandName: {type: String},
     atcCode: {type: String, required: false,},
@@ -58,6 +58,11 @@ const drugSchema = new mongoose.Schema({
     medScapeId: {type: String, required: false},
     upToDateId: {type: String, required: false},
 });
+
+drugSchema.index({
+    eRx: 1,
+    packageCode: 1
+}, {unique: true});
 
 drugSchema.plugin(uniqueValidator);
 module.exports = mongoose.model('drug', drugSchema);

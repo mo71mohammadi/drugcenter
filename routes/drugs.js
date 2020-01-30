@@ -4,18 +4,11 @@ const MedScape = require("../models/medScape");
 const query = require('url');
 const xlsx = require('xlsx');
 const fs = require('fs');
+const path = require('path');
+const mongoXlsx = require('mongo-xlsx');
 let {PythonShell} = require('python-shell');
 
 
-exports.add = async (req, res) => {
-    const params = query.parse(req.url, true).query;
-    const {
-        eRx, packageCode, genericCode, enBrandName, faBrandName, atcCode, ddd, atc, gtn, irc, sPrice, cPrice, dPrice,
-        nativeIRC, licenseOwner, brandOwner, countryBrandOwner, countryProducer, producer, trader, conversationalName,
-        enName, faName, strength, measure, volume, dose, enForm, faForm, enRoute, faRoute, medScapeId, upToDateId
-    } = req.body;
-
-};
 exports.getAll = async (req, res) => {
     try {
         let page;
@@ -43,122 +36,159 @@ exports.getAll = async (req, res) => {
         res.status(500).json(err.message)
     }
 };
+exports.create = async (req, res) => {
+    // const params = query.parse(req.url, true).query;
+    // const {
+    //     eRx, packageCode, genericCode, enBrandName, faBrandName, atcCode, ddd, atc, gtn, irc, sPrice, cPrice, dPrice,
+    //     nativeIRC, licenseOwner, brandOwner, countryBrandOwner, countryProducer, producer, trader, conversationalName,
+    //     enName, faName, strength, measure, volume, dose, enForm, faForm, enRoute, faRoute, medScapeId, upToDateId
+    // } = req.body;
+    try {
+        Drug.create(req.body).then(result => {
+            res.status(200).json(result)
+        }).catch(err => {
+            res.status(500).json(err.message)
+        })
+    } catch (err) {
+        res.status(500).json(err.message)
+    }
+};
+exports.delete = async (req, res) => {
+    try {
+        Drug.findByIdAndDelete(req.body._id).then(result => {
+            if (result) res.status(200).json("Deleted Successfully");
+            else res.status(401).json("_id Not Found!")
+        })
+    } catch (err) {
+        res.status(500).json(err.message)
+    }
+};
 exports.update = async (req, res) => {
     try {
-        const filter = req.body;
-        let search = {};
-        for (let item in req.body) {
-            if (filter[item]) search[item] = filter[item]
-        }
-        if ("upToDateId" in search) {
-            Drug.updateMany({
-                enName: search.enName,
-                enRoute: search.enRoute
-            }, {$set: {upToDateId: search.upToDateId}}).then(results => {
-                console.log(results)
-            })
-            // UpToDate.updateOne({eRx: {$in: search.eRx}}, {$pull: {eRx: search.eRx, gtn: {$each: search.gtn}, irc:{$each: search.irc}}});
-            // UpToDate.updateOne({globalId: search.upToDateId}, {$addToSet: {eRx: search.eRx ,gtn: {$each: search.gtn}, irc:{$each: search.irc}}})
-        }
-        if ("medScapeId" in search) {
-            MedScape.updateOne({eRx: {$in: search.eRx}}, {
-                $pull: {
-                    eRx: search.eRx,
-                    gtn: {$each: search.gtn},
-                    irc: {$each: search.irc}
-                }
-            });
-            MedScape.updateOne({globalId: search.upToDateId}, {
-                $addToSet: {
-                    eRx: search.eRx,
-                    gtn: {$each: search.gtn},
-                    irc: {$each: search.irc}
-                }
-            })
-        }
-        Drug.updateOne()
+        // const filter = req.body;
+        // let search = {};
+        // Object.keys(req.body).forEach(item => {
+        //     console.log(req.body[item])
+        // });
+        // for (let item in req.body) {
+        //     if (req.body[item]) search[item] = req.body[item]
+        // }
+        delete req.body.upToDateId;
+        delete req.body.medScapeId;
+        const _id = req.body._id;
+        delete req.body._id;
+        Drug.updateOne({_id: _id}, req.body).then(() => {
+            res.status(200).json("drug Update Successfully!");
+        }).catch(err => {
+            res.status(401).json(err.message)
+        })
     } catch (err) {
-
+        res.status(500).json(err.message)
+    }
+};
+exports.html = async (req, res) => {
+    try {
+        res.sendFile(path.resolve('index.html'))
+    } catch (err) {
+        res.status(500).json(err.message)
     }
 };
 exports.import = async (req, res) => {
     try {
+        req.connection.setTimeout(1000 * 60 * 10);
         if (req.files) {
-            console.log('sa')
             const wb = xlsx.read(req.files.products.data, {cellDates: true});
-            const ws = wb.Sheets['Sheet1'];
+            const ws = wb.Sheets['Sheet2'];
             const jsonData = xlsx.utils.sheet_to_json(ws);
             console.log(jsonData.length);
-            // let success = 0;
-            // let successList = [];
-            // let repeat = 0;
-            // let repeatList = [];
-            // let update = 0;
-            // let updateList = [];
-            // for (let item in jsonData) {
-            //     let generic;
-            //     if (jsonData[item].generic) {
-            //         generic = jsonData[item].generic;
-            //         delete jsonData[item].generic
-            //     }
-            //     let gtn;
-            //     if (jsonData[item].gtn) {
-            //         gtn = {gtn: jsonData[item].gtn};
-            //         delete jsonData[item].gtn
-            //     } else gtn = {};
-            //     let irc;
-            //     if (jsonData[item].irc) {
-            //         irc = {
-            //             number: jsonData[item].irc,
-            //             // ValidityDate: jsonData[item].ValidityDate
-            //         };
-            //         delete jsonData[item].irc
-            //     } else irc = {};
-            //     await Product.findOne({
-            //         "data.packageCode": jsonData[item].packageCode,
-            //         "data.eRx": jsonData[item].eRx
-            //     }).then(async product => {
-            //
-            //         await Generic.findOne({'drug.genericCode': generic}).then(async result => {
-            //             // console.log(result._id);
-            //             if (!product) {
-            //                 await Product.create({
-            //                     data: jsonData[item],
-            //                     'data.generic': result,
-            //                     'data.gtn': gtn,
-            //                     'data.irc': irc
-            //                 }).then(newProduct => {
-            //                     success++;
-            //                     successList.push(jsonData[item].eRx);
-            //                 });
-            //             } else {
-            //                 let duplicate = jsonData.filter(function (value) {
-            //                     return value.eRx === jsonData[item].eRx && value.packageCode === jsonData[item].packageCode
-            //                 });
-            //                 if (duplicate.length > 1) {
-            //                     repeat++;
-            //                     repeatList.push(jsonData[item].eRx)
-            //                 } else {
-            //                     update++;
-            //                     updateList.push(jsonData[item].eRx)
-            //                 }
-            //             }
-            //
-            //         })
-            //     });
-            // }
-            // res.json({
-            //     success: {0: `${success} item import successfully`, 1: successList},
-            //     update: {0: `${update} item update successfully`, 1: updateList},
-            //     repeat: {0: `${repeat} item duplicate`, 1: repeatList},
-            // })
-        } else res.json({message: 'File Not Found!'})
+            const packObj = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E", 6: "F", 7: "G", 8: "H"};
+            const eRxList = [];
+            let success = 0;
+            let repeat = 0;
+            const successList = [];
+            const repeatList = [];
+            for (const obj of jsonData) {
+                eRxList.push(obj.eRx.slice(0, 9));
+                let count = 0;
+                eRxList.map(e => {
+                    if (e === obj.eRx.slice(0, 9)) count++
+                });
+                obj.eRx = obj.eRx.slice(0, 9);
+                obj.packageCode = packObj[count];
+                // obj.packageCount = obj.packageCount;
+                obj.packageType = obj.packageType.trim();
+                // obj.genericCode = obj.genericCode.trim();
+                obj.enBrandName = obj.enBrandName.trim();
+                obj.faBrandName = obj.faBrandName.trim();
+                obj.atcCode = obj.atcCode.trim();
+                // obj.ddd = obj.ddd.trim();
+                // obj.edl = obj.edl.trim();
+                obj.gtn = [obj.gtn.trim()];
+                obj.irc = [obj.irc.trim()];
+                obj.nativeIRC = obj.nativeIRC.toString().trim();
+                obj.licenseOwner = obj.licenseOwner.trim();
+                obj.brandOwner = obj.brandOwner.trim();
+                obj.countryBrandOwner = obj.countryBrandOwner.trim();
+                obj.countryProducer = obj.countryProducer.trim();
+                obj.producer = obj.producer.trim();
+                obj.conversationalName = obj.conversationalName.trim();
+                obj.enName = obj.enName.trim();
+                obj.faName = obj.faName.trim();
+                obj.strength = obj.strength.trim();
+                // obj.volume = obj.volume.trim();
+                obj.enForm = obj.enForm.trim();
+                obj.faForm = obj.faForm.trim();
+                obj.enRoute = obj.enRoute.trim();
+                obj.faRoute = obj.faRoute.trim();
+                obj.medScapeId = obj.medScapeId.toString().trim();
+                obj.upToDateId = obj.upToDateId.toString().trim();
+                await Drug.create(obj).then(result => {
+                    success++;
+                    repeatList.push(obj.eRx + obj.packageCode)
+                }).catch(err => {
+                    repeat++;
+                    repeatList.push(obj.eRx + obj.packageCode);
+                    // fs.appendFile('test.txt', obj.eRx + obj.packageCode + '\n', result => {
+                    // })
+                })
+            }
+            res.status(200).json({
+                success: {0: `${success} item import successfully`, successList},
+                repeat: {0: `${repeat} item duplicate`, repeatList},
+
+            })
+        } else res.status(401).json({message: 'File Not Found!'})
     } catch (err) {
         res.status(500).json({message: err.message})
     }
-
 };
 exports.export = async (req, res) => {
+    try {
+        Drug.find(req.body).then(drugs => {
+            let dataList = [];
+            for (let drug of drugs) {
+                drug = drug.toObject();
+                delete drug._id;
+                delete drug.__v;
+                dataList.push(drug)
+            }
+            let model = mongoXlsx.buildDynamicModel(dataList);
+            /* Generate Excel */
+            const options = {
+                fileName: "drugs.xlsx",
+                path: "temp"
+            };
+            mongoXlsx.mongoData2Xlsx(dataList, model, options, function (err, data) {
+                // res.json({'File saved at:': data.fullPath})
+                res.download('temp/' + data.fileName, data.fileName);
+            });
+        }).catch(err => {
+            res.json({message: err.massage})
+        });
+    } catch (err) {
+        res.json({message: err.massage})
+    }
+
 };
 exports.getInfo = async (req, res) => {
     try {
@@ -176,7 +206,6 @@ exports.getInfo = async (req, res) => {
         res.status(500).json(err.message)
     }
 };
-
 
 exports.interaction = async (req, res) => {
     try {
@@ -270,7 +299,6 @@ exports.price = async (req, res) => {
         else page = parseInt(params.page);
         if (params.size < 0 || !params.size) size = 1;
         else size = parseInt(params.size);
-
         let rawData = fs.readFileSync('data.json');
         let data = JSON.parse(rawData);
         res.status(200).json({count: data.length, data: data.slice(page * size, (page * size) + size)})
@@ -282,7 +310,7 @@ exports.price = async (req, res) => {
 exports.getPrice = async (req, res) => {
     try {
         let options = {
-            // pythonPath: '/home/mojtaba/PycharmProjects/metraj/venv/bin/python3',
+            pythonPath: '/home/mojtaba/PycharmProjects/metraj/venv/bin/python3',
             // scriptPath: '/home/mojtaba/WebstormProjects/api/routes/',
         };
         let test = new PythonShell('./routes/script.py', options);
@@ -297,6 +325,30 @@ exports.updatePrice = async (req, res) => {
     try {
         let rawData = fs.readFileSync('data.json');
         let data = JSON.parse(rawData);
+        data.forEach(obj => {
+            if (obj.cPrice || obj.cPrice || obj.dPrice) {
+                Drug.findOne({irc: {$in: obj.irc}}).then(result => {
+                    if (result) {
+                        if (result.sPrice !== obj.sPrice || result.cPrice !== obj.cPrice || result.dPrice !== obj.dPrice) {
+                            Drug.updateOne({irc: {$in: obj.irc}}, {
+                                sPrice: obj.sPrice,
+                                cPrice: obj.cPrice,
+                                dPrice: obj.dPrice
+                            }).then(result => {
+                                console.log(result)
+                            })
+                        }
+                    }
+                    // else {
+                    //     fs.appendFile('message.txt', obj.irc + '\n', function (err) {
+                    //         count1 ++;
+                    //         console.log('Not Found........', count1);
+                    //     });
+                    // }
+                })
+            }
+        });
+        res.status(200).json('f')
 
     } catch (err) {
         res.status(500).json(err.message)

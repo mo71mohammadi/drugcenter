@@ -38,7 +38,6 @@ exports.interactionChecker = async (req, res) => {
         return res.status(500).json({massage: err.message})
     }
 };
-
 exports.addUpToDate = async (req, res) => {
     try {
         const {id, name, globalId, eRx, interactions} = req.body;
@@ -52,7 +51,6 @@ exports.addUpToDate = async (req, res) => {
         res.status(400).json(err.message)
     }
 };
-
 exports.getMedScape = async (req, res, next) => {
     try {
         const params = query.parse(req.url, true).query;
@@ -67,7 +65,6 @@ exports.getMedScape = async (req, res, next) => {
         next(err)
     }
 };
-
 exports.updateMedScape = async (req, res) => {
     try {
         const params = query.parse(req.url, true).query;
@@ -83,7 +80,6 @@ exports.updateMedScape = async (req, res) => {
 
     }
 };
-
 exports.deleteMedScape = async (req, res, next) => {
     try {
         const medScapeId = req.params.id;
@@ -99,5 +95,26 @@ exports.deleteMedScape = async (req, res, next) => {
         })
     } catch (err) {
         next(err)
+    }
+};
+
+exports.name = async (req, res) => {
+    try {
+        UpToDate.aggregate([{
+            "$group": {
+                "_id": {
+                    name: "$name",
+                    globalId: "$globalId"
+                }
+            }
+        }]).then(results => {
+            const objs = [];
+            for (const result of results) {
+                objs.push(result._id)
+            }
+            res.status(200).json(objs)
+        })
+    }catch (err) {
+        res.status(500).json(err.message)
     }
 };

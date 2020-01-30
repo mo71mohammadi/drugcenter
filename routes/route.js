@@ -14,14 +14,21 @@ router.delete('/medScape/:id', medScape.deleteMedScape);
 // UpToDate
 router.get('/upToDate/multiInteraction', upToDate.interactionChecker);
 router.post('/upToDate/', upToDate.addUpToDate);
+router.get('/upToDate/name', upToDate.name);
 
 // Drug Product
 router.post('/drugs/getAll', Drug.getAll);
-router.get('/drugs/getInfo', Drug.getInfo);
+router.post('/drugs/create', Drug.create);
+router.post('/drugs/delete', Drug.delete);
 router.post('/drugs/update', Drug.update);
+router.get('/drugs/import', Drug.html);
 router.post('/drugs/import', Drug.import);
+router.post('/drugs/export', Drug.export);
+router.get('/drugs/getInfo', Drug.getInfo);
+
 router.get('/drugs/interaction', Drug.interaction);
 router.post('/drugs/interaction', Drug.updateInteraction);
+
 router.get('/drugs/getPrice', Drug.getPrice);
 router.get('/drugs/price', Drug.price);
 router.post('/drugs/updatePrice', Drug.updatePrice);

@@ -38,9 +38,9 @@ dataFrame.fillna('', inplace=True)
 
 for row in dataFrame.index:
     obj = {}
-    obj['IRC'] = dataFrame["کد IRC"][row]
-    obj['GTIN'] = dataFrame["کد GTIN"][row]
-    obj['PackageCount'] = dataFrame['تعداد در بسته'][row]
+    obj['irc'] = dataFrame["کد IRC"][row]
+    obj['gtn'] = dataFrame["کد GTIN"][row]
+    obj['packageCount'] = dataFrame['تعداد در بسته'][row]
     obj['cPrice'] = dataFrame["قیمت فروش به مصرف کننده"][row]
     obj['dPrice'] = dataFrame["قیمت فروش به داروخانه"][row]
     obj['sPrice'] = dataFrame["قیمت فروش به توزیع کننده"][row]
