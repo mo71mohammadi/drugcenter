@@ -2,54 +2,48 @@ const mongoose = require('mongoose');
 
 const recommendSchema = new mongoose.Schema({
     group: {type: String},
-    interaction: {
-        medScape: {
-            id: {type: String, required: false},
-            name: {type: String, required: false},
-        },
-        upToDate: {
-            id: {type: String, required: false},
-            name: {type: String, required: false},
-            golobal: {type: String, required: false},
-        },
-    },
+    // interaction: {
+    //     medScape: {
+    //         id: {type: String, required: false},
+    //         name: {type: String, required: false},
+    //     },
+    //     upToDate: {
+    //         id: {type: String, required: false},
+    //         name: {type: String, required: false},
+    //         golobal: {type: String, required: false},
+    //     },
+    // },
     atc: {
         levelOne: {
-            id: {},
-            name: {},
-            shortName: {},
+            enName: {type: String},
+            faName: {type: String},
+            shortName: {type: String},
         },
         levelTwo: {
-            id: {},
-            levelOneId: {},
-            name: {},
-            shortName: {},
+            enName: {type: String},
+            faName: {type: String},
+            shortName: {type: String},
         },
         levelThree: {
-            id: {},
-            levelTwoId: {},
-            name: {},
-            shortName: {},
+            enName: {type: String},
+            faName: {type: String},
+            shortName: {type: String},
         },
         levelFour: {
-            id: {},
-            levelThreeId: {},
-            name: {},
-            shortName: {},
+            enName: {type: String},
+            faName: {type: String},
+            shortName: {type: String},
         },
         levelFive: {
-            id: {},
-            levelFourId: {},
-            name: {},
-            shortName: {},
+            enName: {type: String},
+            faName: {type: String},
+            shortName: {type: String},
         },
-        ddd: {
-            id: {},
-            levelFiveId: {},
-            admRoute: {},
-            dose: {},
-            unit: {}
-        },
+        ddd: [{
+            admRoute: {type: String},
+            dose: {type: String},
+            unit: {type: String}
+        }],
     },
     special: {
         specialId: {type: Number},

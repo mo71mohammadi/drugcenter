@@ -8,15 +8,35 @@ const path = require('path');
 const mongoXlsx = require('mongo-xlsx');
 let {PythonShell} = require('python-shell');
 
+// const Pagination = item => {
+//     const params = query.parse(item, true).query;
+//     let page;
+//     let size;
+//     if (params.page < 0 || !params.page) page = 0;
+//     else page = parseInt(params.page);
+//     if (params.size < 1 || !params.size) size = 1;
+//     else size = parseInt(params.size);
+//     return {size, page}
+// };
+const Pagination = body => {
+    let page;
+    let size;
+    if (body.page < 1 || !body.page) page = 0;
+    else page = body.page - 1;
+    if (body.size < 1 || !body.size) size = 1;
+    else size = body.size;
+    return {size, page}
+};
 
 exports.getAll = async (req, res) => {
     try {
-        let page;
-        let size;
-        if (req.body.page < 0 || !req.body.page) page = 0;
-        else page = req.body.page;
-        if (req.body.size < 1 || !req.body.size) size = 1;
-        else size = req.body.size;
+        // let page;
+        // let size;
+        // if (req.body.page < 1 || !req.body.page) page = 0;
+        // else page = req.body.page - 1;
+        // if (req.body.size < 1 || !req.body.size) size = 1;
+        // else size = req.body.size;
+        const {size, page} = Pagination(req.body);
         const filter = req.body;
         delete filter.page;
         delete filter.size;
@@ -120,7 +140,10 @@ exports.import = async (req, res) => {
                 // obj.genericCode = obj.genericCode.trim();
                 obj.enBrandName = obj.enBrandName.trim();
                 obj.faBrandName = obj.faBrandName.trim();
-                obj.atcCode = obj.atcCode.trim();
+                obj.atc = [{
+                    code: obj.atc.trim()
+                }];
+                obj.category = obj.category.trim();
                 // obj.ddd = obj.ddd.trim();
                 // obj.edl = obj.edl.trim();
                 obj.gtn = [obj.gtn.trim()];
@@ -144,7 +167,7 @@ exports.import = async (req, res) => {
                 obj.upToDateId = obj.upToDateId.toString().trim();
                 await Drug.create(obj).then(result => {
                     success++;
-                    repeatList.push(obj.eRx + obj.packageCode)
+                    successList.push(obj.eRx + obj.packageCode)
                 }).catch(err => {
                     repeat++;
                     repeatList.push(obj.eRx + obj.packageCode);
@@ -209,14 +232,7 @@ exports.getInfo = async (req, res) => {
 
 exports.interaction = async (req, res) => {
     try {
-        const params = query.parse(req.url, true).query;
-        let page;
-        let size;
-        if (params.page < 0 || !params.page) page = 0;
-        else page = parseInt(params.page);
-        if (params.size < 1 || !params.size) size = 1;
-        else size = parseInt(params.size);
-
+        const {size, page} = Pagination(req.body);
         Drug.aggregate([{
             "$group": {
                 "_id": {
@@ -290,15 +306,46 @@ exports.updateInteraction = async (req, res) => {
     }
 };
 
+exports.atc = async (req, res) => {
+    try {
+        const {size, page} = Pagination(req.body);
+        Drug.aggregate([{$unwind: "$atc"},
+            {
+                "$group": {
+                    "_id": {
+                        enName: "$enName",
+                        enRoute: "$enRoute",
+                    }, atc: {$addToSet: {code: "$atc.code", ddd: "$atc.ddd"}}
+
+                }
+            }
+        ]).then(async results => {
+            const objs = [];
+            for (let result of results) {
+                objs.push(result)
+            }
+            res.status(200).json({count: objs.length, data: objs.slice(page * size, (page * size) + size)})
+        });
+    } catch (err) {
+        res.status(500).json(err.message)
+    }
+};
+exports.updateATC = async (req, res) => {
+    try {
+        if (!req.body.enName || !req.body.enRoute) return res.status(500).json("enName or enRoute Not Found!");
+        Drug.updateMany({
+            enName: req.body.enName,
+            enRoute: req.body.enRoute
+        }, {$addToSet: {atc: req.body.atc}})
+
+    } catch (err) {
+        res.status(500).json(err.message)
+    }
+};
+
 exports.price = async (req, res) => {
     try {
-        const params = query.parse(req.url, true).query;
-        let page;
-        let size;
-        if (params.page < 0 || !params.page) page = 0;
-        else page = parseInt(params.page);
-        if (params.size < 0 || !params.size) size = 1;
-        else size = parseInt(params.size);
+        const {size, page} = Pagination(req.body);
         let rawData = fs.readFileSync('data.json');
         let data = JSON.parse(rawData);
         res.status(200).json({count: data.length, data: data.slice(page * size, (page * size) + size)})
