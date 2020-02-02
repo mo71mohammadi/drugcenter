@@ -25,11 +25,13 @@ router.get('/drugs/import', Drug.html);
 router.post('/drugs/import', Drug.import);
 router.post('/drugs/export', Drug.export);
 router.get('/drugs/getInfo', Drug.getInfo);
+router.get('/drugs/distinct', Drug.distinct);
 
 router.post('/drugs/atc', Drug.atc);
+router.post('/drugs/updateATC', Drug.updateATC);
 
 router.post('/drugs/interaction', Drug.interaction);
-router.post('/drugs/interaction', Drug.updateInteraction);
+router.post('/drugs/updateInteraction', Drug.updateInteraction);
 
 router.post('/drugs/getPrice', Drug.getPrice);
 router.get('/drugs/price', Drug.price);

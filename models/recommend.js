@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const recommendSchema = new mongoose.Schema({
-    group: {type: String},
+    // group: {type: String},
     // interaction: {
     //     medScape: {
     //         id: {type: String, required: false},

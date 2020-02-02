@@ -238,16 +238,14 @@ exports.interaction = async (req, res) => {
                 "_id": {
                     enName: "$enName",
                     enRoute: "$enRoute",
-                    upToDateId: "$upToDateId",
-                    medScapeId: "$medScapeId"
-                }
+                }, interaction: {$addToSet: {upToDateId: "$upToDateId", medScapeId: "$medScapeId"}}
             }
-        }]).skip(size * page).limit(size).then(results => {
+        }]).then(results => {
             const objs = [];
-            for (let result in results) {
-                objs.push(results[result]._id)
+            for (const result of results) {
+                objs.push(result)
             }
-            res.status(200).json(objs)
+            res.status(200).json({count: objs.length, data: objs.slice(page * size, (page * size) + size)})
         });
     } catch (err) {
         res.status(500).json(err.message)
@@ -336,8 +334,9 @@ exports.updateATC = async (req, res) => {
         Drug.updateMany({
             enName: req.body.enName,
             enRoute: req.body.enRoute
-        }, {$addToSet: {atc: req.body.atc}})
-
+        }, {$addToSet: {atc: req.body.atc}}).then(result => {
+            res.json(result)
+        })
     } catch (err) {
         res.status(500).json(err.message)
     }
@@ -399,5 +398,34 @@ exports.updatePrice = async (req, res) => {
 
     } catch (err) {
         res.status(500).json(err.message)
+    }
+};
+
+exports.distinct = async (req, res) => {
+    try {
+        const {size, page} = Pagination(req.body);
+        const params = query.parse(req.url, true).query;
+        const _id = {};
+        for (const item of params.item.split(',')) {
+            _id[item] = "$" + item.trim()
+        }
+        Drug.aggregate([
+            {
+                "$group": {
+                    "_id": {
+                        ..._id,
+                    }
+                }
+            }
+        ]).then(async results => {
+            const objs = [];
+            for (let result of results) {
+                objs.push(result._id[params.item])
+            }
+            res.status(200).json({count: objs.length, data: objs.slice(page * size, (page * size) + size)})
+        });
+
+    } catch (e) {
+
     }
 };
