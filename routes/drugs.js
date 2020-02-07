@@ -409,7 +409,7 @@ exports.distinct = async (req, res) => {
         Drug.aggregate([{$group: group}]).then(async results => {
             const objs = [];
             for (let result of results) {
-                objs.push(result._id)
+                objs.push(result._id.items)
             }
             res.status(200).json({count: objs.length, data: objs})
         });
