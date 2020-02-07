@@ -207,8 +207,8 @@ exports.export = async (req, res) => {
                 path: "temp"
             };
             mongoXlsx.mongoData2Xlsx(dataList, model, options, function (err, data) {
-                res.json({'File saved at:': data.fullPath});
-                res.download(data, data.fileName);
+                // res.json({'File saved at:': data.fullPath})
+                res.download('temp/' + data.fileName, data.fileName);
             });
         }).catch(err => {
             res.json({message: err.massage})
