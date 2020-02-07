@@ -192,7 +192,9 @@ exports.import = async (req, res) => {
 };
 exports.export = async (req, res) => {
     try {
-        Drug.find(req.body).then(drugs => {
+        const filter = req.body;
+        delete filter.responseType;
+        Drug.find(filter).then(drugs => {
             let dataList = [];
             for (let drug of drugs) {
                 drug = drug.toObject();
