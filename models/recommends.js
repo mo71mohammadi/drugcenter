@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const recommendSchema = new mongoose.Schema({
     // group: {type: String},
@@ -14,27 +15,27 @@ const recommendSchema = new mongoose.Schema({
     //     },
     // },
     atc: {
-        levelOne: {
+        L1: {
             enName: {type: String},
             faName: {type: String},
             shortName: {type: String},
         },
-        levelTwo: {
+        L2: {
             enName: {type: String},
             faName: {type: String},
             shortName: {type: String},
         },
-        levelThree: {
+        L3: {
             enName: {type: String},
             faName: {type: String},
             shortName: {type: String},
         },
-        levelFour: {
+        L4: {
             enName: {type: String},
             faName: {type: String},
             shortName: {type: String},
         },
-        levelFive: {
+        L5: {
             enName: {type: String},
             faName: {type: String},
             shortName: {type: String},
@@ -45,10 +46,10 @@ const recommendSchema = new mongoose.Schema({
             unit: {type: String}
         }],
     },
-    special: {
-        specialId: {type: Number},
-        name: {type: String},
-    }
+    // special: {
+    //     specialId: {type: Number},
+    //     name: {type: String},
+    // }
 });
 
-module.exports = mongoose.model('recommends', recommendSchema);
+module.exports = mongoose.model('recommend', recommendSchema);

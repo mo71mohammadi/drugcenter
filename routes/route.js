@@ -3,6 +3,7 @@ const router = express.Router();
 const medScape = require('./medScapes');
 const upToDate = require('./upToDates');
 const Drug = require('./drugs');
+const Recommend = require('./recommend');
 
 // MedScape
 router.get('/medScape/multiInteraction', medScape.interactionChecker);
@@ -16,7 +17,12 @@ router.get('/upToDate/multiInteraction', upToDate.interactionChecker);
 router.post('/upToDate/', upToDate.addUpToDate);
 router.get('/upToDate/name', upToDate.name);
 
-// Drug Product
+// Recommend
+router.post('/atc/import', Recommend.importATC);
+router.get('/atc/get', Recommend.atc);
+
+
+// Drugs Product
 router.post('/drugs/getAll', Drug.getAll);
 router.post('/drugs/create', Drug.create);
 router.post('/drugs/delete', Drug.delete);

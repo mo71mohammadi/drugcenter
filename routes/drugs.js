@@ -404,28 +404,16 @@ exports.updatePrice = async (req, res) => {
 exports.distinct = async (req, res) => {
     try {
         const {size, page} = Pagination(req.body);
-        const params = query.parse(req.url, true).query;
-        const _id = {};
-        for (const item of params.item.split(',')) {
-            _id[item] = "$" + item.trim()
-        }
-        Drug.aggregate([
-            {
-                "$group": {
-                    "_id": {
-                        ..._id,
-                    }
-                }
-            }
-        ]).then(async results => {
+        const {item} = query.parse(req.url, true).query;
+        const group = {_id: {a: "$" + item.trim(), b: "$enForm", c: "$enRoute", d: "$volume", z: "$strength",}};
+        Drug.aggregate([{$group: group}]).then(async results => {
             const objs = [];
             for (let result of results) {
-                objs.push(result._id[params.item])
+                objs.push(result._id)
             }
-            res.status(200).json({count: objs.length, data: objs.slice(page * size, (page * size) + size)})
+            res.status(200).json({count: objs.length, data: objs})
         });
-
-    } catch (e) {
-
+    } catch (err) {
+        res.status(500).json(err.message)
     }
 };
