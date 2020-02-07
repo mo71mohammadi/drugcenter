@@ -46,12 +46,16 @@ exports.getAll = async (req, res) => {
         }
         Drug.find(search).skip(size * page).limit(size).sort({_id: -1}).then(async products => {
             const count = await Drug.countDocuments(search);
-
-            res.status(200).json({count, data: products})
+            const productList = [];
+            for (const product of products) {
+                delete product.upToDateId;
+                delete product.medScapeId;
+                productList.push(product)
+            }
+            res.status(200).json({count, data: productList})
         }).catch(err => {
             res.status(401).json(err.message)
         });
-
     } catch (err) {
         res.status(500).json(err.message)
     }
@@ -95,6 +99,7 @@ exports.update = async (req, res) => {
         // }
         delete req.body.upToDateId;
         delete req.body.medScapeId;
+        delete req.body.atcCode;
         const _id = req.body._id;
         delete req.body._id;
         Drug.updateOne({_id: _id}, req.body).then(() => {
@@ -117,7 +122,7 @@ exports.import = async (req, res) => {
     try {
         req.connection.setTimeout(1000 * 60 * 10);
         if (req.files) {
-            const wb = xlsx.read(req.files.products.data, {cellDates: true});
+            const wb = xlsx.read(req.files.drugs.data, {cellDates: true});
             const ws = wb.Sheets['Sheet2'];
             const jsonData = xlsx.utils.sheet_to_json(ws);
             console.log(jsonData.length);
@@ -202,8 +207,8 @@ exports.export = async (req, res) => {
                 path: "temp"
             };
             mongoXlsx.mongoData2Xlsx(dataList, model, options, function (err, data) {
-                // res.json({'File saved at:': data.fullPath})
-                res.download('temp/' + data.fileName, data.fileName);
+                res.json({'File saved at:': data.fullPath});
+                res.download(data, data.fileName);
             });
         }).catch(err => {
             res.json({message: err.massage})
