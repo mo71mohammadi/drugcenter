@@ -405,7 +405,7 @@ exports.distinct = async (req, res) => {
     try {
         const {size, page} = Pagination(req.body);
         const {item} = query.parse(req.url, true).query;
-        const group = {_id: {a: "$" + item.trim(), b: "$enForm", c: "$enRoute", d: "$volume", z: "$strength",}};
+        const group = {_id: {items: "$" + item.trim()}};
         Drug.aggregate([{$group: group}]).then(async results => {
             const objs = [];
             for (let result of results) {
