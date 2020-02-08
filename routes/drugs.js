@@ -202,16 +202,18 @@ exports.export = async (req, res) => {
                 delete drug.__v;
                 dataList.push(drug)
             }
-            let model = mongoXlsx.buildDynamicModel(dataList);
+            // let model = mongoXlsx.buildDynamicModel(dataList);
             /* Generate Excel */
-            const options = {
-                fileName: "drugs.xlsx",
-                path: "temp"
-            };
-            mongoXlsx.mongoData2Xlsx(dataList, model, options, function (err, data) {
-                // res.json({'File saved at:': data.fullPath})
-                res.download('temp/' + data.fileName, data.fileName);
-            });
+            // const options = {
+            //     fileName: "drugs.xlsx",
+            //     path: "temp"
+            // };
+            // mongoXlsx.mongoData2Xlsx(dataList, model, options, function (err, data) {
+            //     // res.json({'File saved at:': data.fullPath})
+            //     res.download('temp/' + data.fileName, data.fileName);
+            // });
+            res.json({data: dataList})
+
         }).catch(err => {
             res.json({message: err.massage})
         });
