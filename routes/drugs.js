@@ -212,7 +212,7 @@ exports.export = async (req, res) => {
                 // res.json({'File saved at:': data.fullPath})
                 res.download('temp/' + data.fileName, data.fileName);
             });
-            res.json({data: dataList})
+            // res.json({data: dataList})
 
         }).catch(err => {
             res.json({message: err.massage})
