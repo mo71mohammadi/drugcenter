@@ -39,8 +39,8 @@ router.post('/drugs/updateATC', Drug.updateATC);
 router.post('/drugs/interaction', Drug.interaction);
 router.post('/drugs/updateInteraction', Drug.updateInteraction);
 
+router.post('/drugs/price', Drug.price);
 router.post('/drugs/getPrice', Drug.getPrice);
-router.get('/drugs/price', Drug.price);
 router.post('/drugs/updatePrice', Drug.updatePrice);
 
 module.exports = router;

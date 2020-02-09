@@ -193,7 +193,9 @@ exports.import = async (req, res) => {
 exports.export = async (req, res) => {
     try {
         const filter = req.body;
-        delete filter.responseType;
+        delete filter.page;
+        delete filter.size;
+        // delete filter.responseType;
         Drug.find(filter).then(drugs => {
             let dataList = [];
             for (let drug of drugs) {
