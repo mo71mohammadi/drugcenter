@@ -228,10 +228,10 @@ exports.getInfo = async (req, res) => {
     try {
         const params = query.parse(req.url, true).query;
         let search;
-        if ("eRx" in params) search = {eRx: {$in: params.eRx.split(',')}};
-        else if ("generic" in params) search = {genericCode: {$in: params.generic}};
-        else if ("gtn" in params) search = {gtn: {$in: params.gtn.split(',')}};
-        else if ("irc" in params) search = {irc: {$in: params.irc}};
+        if (params['eRx']) search = {eRx: {$in: params.eRx.split(',')}};
+        else if (params['generic']) search = {genericCode: {$in: params.generic}};
+        else if (params['gtn']) search = {gtn: {$in: params.gtn.split(',')}};
+        else if (params['irc']) search = {irc: {$in: params.irc}};
         else return res.status(500).json({massage: "parameter not found"});
         Drug.findOne(search).then(result => {
             res.status(200).json(result)
@@ -249,12 +249,14 @@ exports.interaction = async (req, res) => {
                 "_id": {
                     enName: "$enName",
                     enRoute: "$enRoute",
-                }, interaction: {$addToSet: {upToDateId: "$upToDateId", medScapeId: "$medScapeId"}}
+                    upToDateId: "$upToDateId",
+                    medScapeId: "$medScapeId"
+                }
             }
         }]).then(results => {
             const objs = [];
             for (const result of results) {
-                objs.push(result)
+                objs.push(result._id)
             }
             res.status(200).json({count: objs.length, data: objs.slice(page * size, (page * size) + size)})
         });
@@ -331,7 +333,7 @@ exports.atc = async (req, res) => {
         ]).then(async results => {
             const objs = [];
             for (let result of results) {
-                objs.push(result)
+                objs.push({...result._id, atc: result.atc})
             }
             res.status(200).json({count: objs.length, data: objs.slice(page * size, (page * size) + size)})
         });
