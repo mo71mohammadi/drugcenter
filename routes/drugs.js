@@ -159,7 +159,7 @@ exports.import = async (req, res) => {
                 obj.countryBrandOwner = obj.countryBrandOwner.trim();
                 obj.countryProducer = obj.countryProducer.trim();
                 obj.producer = obj.producer.trim();
-                obj.conversationalName = obj.conversationalName.trim();
+                obj.conversationalName = [obj.conversationalName.trim()];
                 obj.enName = obj.enName.trim();
                 obj.faName = obj.faName.trim();
                 obj.strength = obj.strength.trim();
@@ -359,7 +359,6 @@ exports.price = async (req, res) => {
         let rawData = fs.readFileSync('data.json');
         let data = JSON.parse(rawData);
         res.status(200).json({count: data.length, data: data.slice(page * size, (page * size) + size)})
-
     } catch (err) {
         res.status(500).json(err.message)
     }

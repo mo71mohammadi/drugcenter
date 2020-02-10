@@ -5,6 +5,13 @@ const upToDate = require('./upToDates');
 const Drug = require('./drugs');
 const Recommend = require('./recommend');
 
+// Authentication
+router.get('/v1', async (req, res) => {
+    res.json({
+        "status": "success", "object": {"user": null}
+    })
+});
+
 // MedScape
 router.get('/medScape/multiInteraction', medScape.interactionChecker);
 router.post('/medScape/', medScape.addMedScape);

@@ -34,7 +34,7 @@ const drugSchema = new mongoose.Schema({
     countryBrandOwner: {type: String},
     countryProducer: {type: String},
     producer: {type: String},
-    conversationalName: {type: String},
+    conversationalName: [{type: String}],
     enName: {type: String},
     faName: {type: String},
     strength: {type: String},
