@@ -104,7 +104,7 @@ exports.name = async (req, res) => {
             "$group": {
                 "_id": {
                     name: "$name",
-                    globalId: "$globalId"
+                    id: "$globalId"
                 }
             }
         }]).then(results => {
