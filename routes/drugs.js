@@ -343,11 +343,19 @@ exports.atc = async (req, res) => {
 };
 exports.updateATC = async (req, res) => {
     try {
-        if (!req.body.enName || !req.body.enRoute) return res.status(500).json("enName or enRoute Not Found!");
+        let search = {};
+        let action = {};
+        if (!req.body.enName || !req.body.enRoute || !req.body.atc || !req.body.action) return res.status(500).json("enName or enRoute Not Found!");
+        if (req. body.action === 'delete') action = {$pull: {atc: req.body.atc}};
+        else if (req. body.action === 'add') {
+            search =  {'atc.code': {$ne: req.body.atc.code}};
+            action = {$push: {atc: req.body.atc}}
+        }
         Drug.updateMany({
             enName: req.body.enName,
-            enRoute: req.body.enRoute
-        }, {$addToSet: {atc: req.body.atc}}).then(result => {
+            enRoute: req.body.enRoute,
+            ...search
+        }, action).then(result => {
             res.json(result)
         })
     } catch (err) {

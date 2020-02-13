@@ -38,26 +38,45 @@ exports.importATC = async (req, res) => {
 exports.atc = async (req, res) => {
     try {
         const {level, shortName} = query.parse(req.url, true).query;
-        const group = {_id: "$atc." + level.trim()};
         const match = {};
-        if (level === 'L2') match['atc.L1.shortName'] = shortName;
-        if (level === 'L3') match['atc.L2.shortName'] = shortName;
-        if (level === 'L4') match['atc.L3.shortName'] = shortName;
-        if (level === 'L5') match['atc.L4.shortName'] = shortName;
-        if (level === 'ddd') match['atc.L5.shortName'] = shortName;
 
-        Recommend.aggregate([
-            {$match: match},
-            {$group: group},
-            {$sort: {"_id.shortName": 1}}
-        ]).then(async results => {
-            const objs = [];
-            for (let result of results) {
-                objs.push(result._id)
-            }
-            if (level === 'ddd') res.status(200).json({count: objs.length, data: objs[0]});
-            else res.status(200).json({count: objs.length, data: objs})
-        });
+        if (!level) {
+            if (shortName.length === 7) match["atc.L5.shortName"] = shortName;
+            else if (shortName.length === 5) match["atc.L4.shortName"] = shortName;
+            else if (shortName.length === 4) match["atc.L3.shortName"] = shortName;
+            else if (shortName.length === 3) match["atc.L2.shortName"] = shortName;
+            else if (shortName.length === 1) match["atc.L1.shortName"] = shortName;
+            else return res.status(200).json("parameter is not Correct!");
+            await Recommend.findOne(match).then(result => {
+                let response = result.atc.toObject();
+                if (shortName.length === 1) response = response.L1;
+                else if (shortName.length === 3) {delete response.L3; delete response.L4; delete response.L5; delete response.ddd;}
+                else if (shortName.length === 4) {delete response.L4; delete response.L5; delete response.ddd}
+                else if (shortName.length === 5) {delete response.L5; delete response.ddd}
+                else if (shortName.length === 7) {delete response.ddd}
+                return res.status(200).json(response)
+            })
+        } else {
+            const group = {_id: "$atc." + level.trim()};
+            if (level === 'L2') match['atc.L1.shortName'] = shortName;
+            if (level === 'L3') match['atc.L2.shortName'] = shortName;
+            if (level === 'L4') match['atc.L3.shortName'] = shortName;
+            if (level === 'L5') match['atc.L4.shortName'] = shortName;
+            if (level === 'ddd') match['atc.L5.shortName'] = shortName;
+
+            Recommend.aggregate([
+                {$match: match},
+                {$group: group},
+                {$sort: {"_id.shortName": 1}}
+            ]).then(async results => {
+                const objs = [];
+                for (let result of results) {
+                    objs.push(result._id)
+                }
+                if (level === 'ddd' && objs.length > 0) res.status(200).json({count: objs.length, data: objs[0]});
+                else res.status(200).json({count: objs.length, data: objs})
+            });
+        }
     } catch (err) {
         res.status(500).json({message: err.message})
     }

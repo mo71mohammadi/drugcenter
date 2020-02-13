@@ -5,11 +5,13 @@ const query = require('url');
 exports.interactionChecker = async (req, res) => {
     try {
         const params = query.parse(req.url, true).query;
-        let search;
-        if ("eRx" in params) search = {eRx: {$in: params.eRx.split(',')}};
-        else if ("generic" in params) search = {generic: {$in: params.generic.split(',')}};
-        else if ("gtn" in params) search = {gtn: {$in: params.gtn.split(',')}};
-        else return res.status(500).json({massage: "parameter not found"});
+        let search = {};
+        if (params['item'] === 'eRx' || "generic" || "gtn") search[params['item']] = {$in: params['values'].split(',')};
+        else return res.status(500).json({massage: "parameter not correct!"});
+        // if ("eRx" in params) search = {eRx: {$in: params.eRx.split(',')}};
+        // else if ("generic" in params) search = {generic: {$in: params.generic.split(',')}};
+        // else if ("gtn" in params) search = {gtn: {$in: params.gtn.split(',')}};
+        // else return res.status(500).json({massage: "parameter not found"});
         UpToDate.find(search).then(async drugs => {
             const interactions = [];
             const interactionList = [];
