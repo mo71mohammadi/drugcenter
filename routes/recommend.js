@@ -49,7 +49,7 @@ exports.atc = async (req, res) => {
             else return res.status(200).json("parameter is not Correct!");
             await Recommend.findOne(match).then(result => {
                 let response = result.atc.toObject();
-                if (shortName.length === 1) response = response.L1;
+                if (shortName.length === 1) response = {L1: response.L1};
                 else if (shortName.length === 3) {delete response.L3; delete response.L4; delete response.L5; delete response.ddd;}
                 else if (shortName.length === 4) {delete response.L4; delete response.L5; delete response.ddd}
                 else if (shortName.length === 5) {delete response.L5; delete response.ddd}

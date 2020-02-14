@@ -320,16 +320,16 @@ exports.updateInteraction = async (req, res) => {
 exports.atc = async (req, res) => {
     try {
         const {size, page} = Pagination(req.body);
-        Drug.aggregate([{$unwind: "$atc"},
+        Drug.aggregate([{$unwind: {path: "$atc", preserveNullAndEmptyArrays: true}},
             {
-                "$group": {
+                $group: {
                     "_id": {
                         enName: "$enName",
                         enRoute: "$enRoute",
                     }, atc: {$addToSet: {code: "$atc.code", ddd: "$atc.ddd"}}
 
                 }
-            }
+            }, {$sort: {"_id.enName": 1}}
         ]).then(async results => {
             const objs = [];
             for (let result of results) {
@@ -346,9 +346,9 @@ exports.updateATC = async (req, res) => {
         let search = {};
         let action = {};
         if (!req.body.enName || !req.body.enRoute || !req.body.atc || !req.body.action) return res.status(500).json("enName or enRoute Not Found!");
-        if (req. body.action === 'delete') action = {$pull: {atc: req.body.atc}};
-        else if (req. body.action === 'add') {
-            search =  {'atc.code': {$ne: req.body.atc.code}};
+        if (req.body.action === 'delete') action = {$pull: {atc: req.body.atc}};
+        else if (req.body.action === 'add') {
+            search = {'atc.code': {$ne: req.body.atc.code}};
             action = {$push: {atc: req.body.atc}}
         }
         Drug.updateMany({
