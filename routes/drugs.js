@@ -233,8 +233,42 @@ exports.getInfo = async (req, res) => {
         else if (params['gtn']) search = {gtn: {$in: params.gtn.split(',')}};
         else if (params['irc']) search = {irc: {$in: params.irc}};
         else return res.status(500).json({massage: "parameter not found"});
+
         Drug.findOne(search).then(result => {
-            res.status(200).json(result)
+            let response = {};
+            response["eRx"] = result.eRx;
+            response['genericCode'] = result.genericCode;
+            response['ATC Code'] = result.atc[0].code;
+            if (params.type === "1") {
+                response["enProductName"] = `${result.enName} ${result.enBrandName} ${result.strength} ${result.enRoute} ${result.enForm}`;
+                response["faProductName"] = `${result.faForm} ${result.faRoute} ${result.strength} ${result.faBrandName} ${result.faName}`
+            }
+            if (params.type === "2") {
+                response["enProductName"] = `${result.enBrandName} ${result.enName} ${result.strength} ${result.enRoute} ${result.enForm}`;
+                response["faProductName"] = `${result.faForm} ${result.faRoute} ${result.strength} ${result.faName} ${result.faBrandName}`
+
+            }
+            if (params.type === "3") {
+                response["enProductName"] = `${result.enName} ${result.strength} ${result.enRoute} ${result.enForm} [${result.enBrandName}]`;
+                response["faProductName"] = `${result.faName} ${result.strength} ${result.faForm} ${result.faRoute} ${result.faBrandName}`
+
+            }
+            if (params.type === "4") {
+                response["enProductName"] = `${result.enName} ${result.strength} ${result.enRoute} ${result.enForm} [${result.enBrandName}] ${result.brandOwner}`;
+                response["faProductName"] = `${result.faName} ${result.strength} ${result.faForm} ${result.faRoute} ${result.faBrandName} ${result.brandOwner}`
+            }
+            if (params.type === "5") {
+                response["enProductName"] = `${result.enBrandName} ${result.strength} ${result.enRoute} ${result.enForm}`
+                response["faProductName"] = `${result.faBrandName} ${result.strength} ${result.faForm} ${result.enRoute}`
+            }
+            response['gtn'] = result.gtn[0];
+            response['irc'] = result.irc[0];
+            response['producer'] = result.producer;
+            response['brandOwner'] = result.brandOwner;
+            // response['countryProducer'] = result.countryProducer;
+
+
+            res.status(200).json(response)
         })
     } catch (err) {
         res.status(500).json(err.message)
