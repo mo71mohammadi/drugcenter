@@ -320,7 +320,16 @@ exports.updateInteraction = async (req, res) => {
 exports.atc = async (req, res) => {
     try {
         const {size, page} = Pagination(req.body);
-        Drug.aggregate([{$unwind: {path: "$atc", preserveNullAndEmptyArrays: true}},
+        let match;
+        if (req.body.type === 'null') match = {$match: {"atc.code": {$exists: false}}};
+        else match = {$match: {"atc.code": {$exists: false}}};
+
+        Drug.aggregate([match, {
+            $unwind: {
+                path: "$atc",
+                preserveNullAndEmptyArrays: true
+            }
+        },
             {
                 $group: {
                     "_id": {
