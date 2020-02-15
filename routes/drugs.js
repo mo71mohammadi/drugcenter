@@ -259,7 +259,7 @@ exports.getInfo = async (req, res) => {
             }
             if (params.type === "5") {
                 response["enProductName"] = `${result.enBrandName} ${result.strength} ${result.enRoute} ${result.enForm}`
-                response["faProductName"] = `${result.faBrandName} ${result.strength} ${result.faForm} ${result.enRoute}`
+                response["faProductName"] = `${result.faBrandName} ${result.strength} ${result.faForm} ${result.faRoute}`
             }
             response['gtn'] = result.gtn[0];
             response['irc'] = result.irc[0];
