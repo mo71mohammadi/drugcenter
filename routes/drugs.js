@@ -238,6 +238,8 @@ exports.getInfo = async (req, res) => {
             let response = {};
             response["eRx"] = result.eRx;
             response['genericCode'] = result.genericCode;
+            response['enGenericName'] = `${result.enName} ${result.strength} ${result.enRoute} ${result.enForm}`;
+            response['faGenericName'] = `${result.faName} ${result.strength} ${result.faForm} ${result.faRoute}`;
             response['ATC Code'] = result.atc[0].code;
             if (params.type === "1") {
                 response["enProductName"] = `${result.enName} ${result.enBrandName} ${result.strength} ${result.enRoute} ${result.enForm}`;
@@ -258,7 +260,7 @@ exports.getInfo = async (req, res) => {
                 response["faProductName"] = `${result.faName} ${result.strength} ${result.faForm} ${result.faRoute} ${result.faBrandName} ${result.brandOwner}`
             }
             if (params.type === "5") {
-                response["enProductName"] = `${result.enBrandName} ${result.strength} ${result.enRoute} ${result.enForm}`
+                response["enProductName"] = `${result.enBrandName} ${result.strength} ${result.enRoute} ${result.enForm}`;
                 response["faProductName"] = `${result.faBrandName} ${result.strength} ${result.faForm} ${result.faRoute}`
             }
             response['gtn'] = result.gtn[0];
