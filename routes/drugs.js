@@ -322,7 +322,7 @@ exports.atc = async (req, res) => {
         const {size, page} = Pagination(req.body);
         let match;
         if (req.body.type === 'null') match = {$match: {"atc.code": {$exists: false}}};
-        else match = {$match: {"atc.code": {$exists: false}}};
+        else match = {$match: {}};
 
         Drug.aggregate([match, {
             $unwind: {
