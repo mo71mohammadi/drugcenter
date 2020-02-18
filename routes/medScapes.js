@@ -106,3 +106,25 @@ exports.deleteMedScape = async (req, res, next) => {
         next(err)
     }
 };
+
+exports.name = async (req, res) => {
+    try {
+        MedScape.aggregate([{
+            "$group": {
+                "_id": {
+                    name: "$name",
+                    id: "$drugId"
+                }
+            }
+        }]).then(results => {
+            const objs = [];
+            for (const result of results) {
+                objs.push(result._id)
+            }
+            res.status(200).json(objs)
+        })
+    }catch (err) {
+        res.status(500).json(err.message)
+    }
+};
+

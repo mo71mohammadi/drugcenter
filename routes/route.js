@@ -18,6 +18,8 @@ router.post('/medScape/', medScape.addMedScape);
 router.get('/medScape/', medScape.getMedScape);
 router.put('/medScape', medScape.updateMedScape);
 router.delete('/medScape/:id', medScape.deleteMedScape);
+router.get('/medScape/name', medScape.name);
+
 
 // UpToDate
 router.get('/upToDate/multiInteraction', upToDate.interactionChecker);
