@@ -68,11 +68,39 @@ exports.create = async (req, res) => {
     //     enName, faName, strength, measure, volume, dose, enForm, faForm, enRoute, faRoute, medScapeId, upToDateId
     // } = req.body;
     try {
+        const record = await Drug.findOne({enName: req.body.enName, enRoute: req.body.enRoute});
+        if (record) {
+            req.body.atc = record.atc;
+            req.body.medScapeId = record.medScapeId;
+            req.body.upToDateId = record.upToDateId
+        }
+
         Drug.create(req.body).then(result => {
+            if (result.upToDateId) {
+                UpToDate.updateOne({globalId: result.upToDateId}, {
+                    $push: {
+                        eRx: result.eRx + result.packageCode,
+                        gtn: {$each: result.gtn},
+                        irc: {$each: result.irc}
+                    }
+                })
+            }
+            if (result.medScapeId) {
+                MedScape.updateOne({drugId: result.medScapeId}, {
+                    $addToSet: {
+                        eRx: result.eRx + result.packageCode,
+                        gtn: {$each: result.gtn},
+                        irc: {$each: result.irc}
+                    }
+                })
+            }
+
+
             res.status(200).json(result)
         }).catch(err => {
             res.status(500).json(err.message)
         })
+
     } catch (err) {
         res.status(500).json(err.message)
     }
