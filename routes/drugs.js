@@ -101,14 +101,18 @@ exports.update = async (req, res) => {
         delete req.body.medScapeId;
         delete req.body.atcCode;
         const _id = req.body._id;
+        if (!_id) return res.status(401).json("Product _id not found!");
         delete req.body._id;
         Drug.updateOne({_id: _id}, req.body).then(() => {
             res.status(200).json("drug Update Successfully!");
         }).catch(err => {
-            res.status(401).json(err.message)
+            if (err.path === '_id') res.status(500).json("Product _id not found!");
+            else res.status(500).json(err.message)
+
         })
     } catch (err) {
         res.status(500).json(err.message)
+
     }
 };
 exports.html = async (req, res) => {
