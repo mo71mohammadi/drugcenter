@@ -14,18 +14,18 @@ async function validatePassword(plainPassword, hashedPassword) {
 exports.profile = async (req, res, next) => {
     if (req.body) {
         console.log(req.body);
-        const {username, contact, name, email, role} = req.body;
-        return res.json({user: req.user})
-    } else return res.json({user: req.user})
+        const { username, contact, name, email, role } = req.body;
+        return res.json({ user: req.user })
+    } else return res.json({ user: req.user })
 
 };
 
 exports.signUp = async (req, res, next) => {
     try {
-        const {username, email, password, role} = req.body;
+        const { username, email, password, role } = req.body;
         const hashedPassword = await hashPassword(password);
-        const newUser = new User({username, email, password: hashedPassword, role: role || "basic"});
-        newUser.accessToken = jwt.sign({userId: newUser._id}, process.env.JWT_SECRET, {
+        const newUser = new User({ username, email, password: hashedPassword, role: role || "basic" });
+        newUser.accessToken = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
             expiresIn: "1d"
         });
 
@@ -54,18 +54,18 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
     try {
-        const {username, email, password} = req.body;
-        let user = await User.findOne({email});
+        const { username, email, password } = req.body;
+        let user = await User.findOne({ email });
         // if (!user) user = await User.findOne({username});
-        if (!user) return res.status(401).json({message: 'Email does not exist'});
+        if (!user) return res.status(401).json({ message: 'Email does not exist' });
         const validPassword = await validatePassword(password, user.password);
-        if (!validPassword) return res.status(500).json({message: 'Password is not correct'});
-        const accessToken = jwt.sign({userId: user._id}, process.env.JWT_SECRET, {
+        if (!validPassword) return res.status(500).json({ message: 'Password is not correct' });
+        const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: "1d"
         });
-        await User.findByIdAndUpdate(user._id, {accessToken});
+        await User.findByIdAndUpdate(user._id, { accessToken });
         res.status(200).json({
-            data: {email: user.email, role: user.role},
+            data: { email: user.email, role: user.role },
             accessToken
         })
     } catch (error) {
@@ -74,18 +74,23 @@ exports.login = async (req, res, next) => {
 };
 
 exports.getUsers = async (req, res, next) => {
-    const users = await User.find({});
-    res.status(200).json({
-        data: users
-    });
+    try {
+        User.find({}).then(result => {
+            res.status(200).json({
+                data: users
+            });
+        });
+    } catch (err) {
+
+    }
 };
 
 exports.getUser = async (req, res, next) => {
     try {
         const userId = req.params.userId;
         User.findById(userId).then(user => {
-            if (!user) res.status(200).json({message: "User does not exist"});
-            else res.status(200).json({data: user});
+            if (!user) res.status(200).json({ message: "User does not exist" });
+            else res.status(200).json({ data: user });
         }).catch(err => {
             res.status(401).json({
                 message: "User does not exist"
@@ -104,7 +109,7 @@ exports.updateUser = async (req, res, next) => {
         update = {
             ...update,
             password: hashedPassword,
-            accessToken: jwt.sign({userId: userId}, process.env.JWT_SECRET, {expiresIn: "1d"})
+            accessToken: jwt.sign({ userId: userId }, process.env.JWT_SECRET, { expiresIn: "1d" })
         };
 
         await User.findByIdAndUpdate(userId, update).then(() => {
@@ -136,8 +141,8 @@ exports.deleteUser = async (req, res, next) => {
     try {
         const userId = req.params.userId;
         User.findByIdAndDelete(userId).then((response) => {
-            if (response) res.status(200).json({message: 'User has been deleted'});
-            else res.status(200).json({message: 'User Not Found!'});
+            if (response) res.status(200).json({ message: 'User has been deleted' });
+            else res.status(200).json({ message: 'User Not Found!' });
         });
     } catch (error) {
         next(error)

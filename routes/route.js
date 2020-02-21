@@ -12,7 +12,8 @@ router.post('/login', userController.login);
 router.get('/profile', userController.allowIfLoggedin, userController.profile);
 
 router.get('/user/:userId', userController.allowIfLoggedin, userController.getUser);
-router.get('/users', userController.allowIfLoggedin, userController.grantAccess('readAny', 'user'), userController.getUsers);
+// router.get('/users', userController.allowIfLoggedin, userController.grantAccess('readAny', 'user'), userController.getUsers);
+router.get('/users', userController.getUsers);
 router.put('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'user'), userController.updateUser);
 router.delete('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'user'), userController.deleteUser);
 
