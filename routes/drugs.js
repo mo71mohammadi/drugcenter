@@ -74,7 +74,6 @@ exports.create = async (req, res) => {
             req.body.medScapeId = record.medScapeId;
             req.body.upToDateId = record.upToDateId
         }
-
         Drug.create(req.body).then(result => {
             if (result.upToDateId) {
                 UpToDate.updateOne({globalId: result.upToDateId}, {
@@ -94,13 +93,10 @@ exports.create = async (req, res) => {
                     }
                 })
             }
-
-
             res.status(200).json(result)
         }).catch(err => {
             res.status(500).json(err.message)
         })
-
     } catch (err) {
         res.status(500).json(err.message)
     }

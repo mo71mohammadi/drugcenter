@@ -9,6 +9,8 @@ const productsRouter = require('./routes/products');
 const routes = require('./routes/route');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
+const jwt = require('jsonwebtoken');
+const User = require('./models/userModel');
 
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify:false, useUnifiedTopology: true});
 
@@ -29,6 +31,17 @@ app.use(allowCrossDomain);
 app.use(express.json());
 app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(async (req, res, next) => {
+    if (req.headers["authorization"]) {
+        const accessToken = req.headers["authorization"];
+        jwt.verify(accessToken, process.env.JWT_SECRET, async (err, decoded) => {
+            if (err && err.message) res.status(401).json({error: `${err.message}, please login to obtain a new one`});
+            else res.locals.loggedInUser = await User.findById(decoded.userId); next();
+        });
+    } else {
+        next();
+    }
+});
 
 app.use('/api', genericsRouter);
 app.use('/api', recommendsRouter);
