@@ -317,7 +317,7 @@ exports.interaction = async (req, res) => {
                     medScapeId: "$medScapeId"
                 }
             }
-        }, {$sort: {"_id.enName": 1}}]).then(results => {
+        }, {$sort: {"_id.enName": 1, "_id.enRoute": 1}}]).then(results => {
             const objs = [];
             for (const result of results) {
                 objs.push(result._id)
