@@ -49,7 +49,7 @@ router.get('/atc/get', recommend.atc);
 
 
 // Drugs Product
-router.post('/drugs/getAll', userController.allowIfLoggedin, drug.getAll);
+router.post('/drugs/getAll', drug.getAll);
 router.post('/drugs/create', drug.create);
 router.post('/drugs/delete', drug.delete);
 router.post('/drugs/update', drug.update);
@@ -59,7 +59,7 @@ router.post('/drugs/export', drug.export);
 router.get('/drugs/getInfo', drug.getInfo);
 router.get('/drugs/distinct', drug.distinct);
 
-router.post('/drugs/atc', drug.atc);
+router.post('/drugs/atc', userController.allowIfLoggedin, drug.atc);
 router.post('/drugs/updateATC', drug.updateATC);
 
 router.post('/drugs/interaction', drug.interaction);
