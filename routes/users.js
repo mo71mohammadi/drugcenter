@@ -55,9 +55,9 @@ exports.signUp = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ username });
         // if (!user) user = await User.findOne({username});
-        if (!user) return res.status(401).json({ message: 'Email does not exist' });
+        if (!user) return res.status(401).json({ message: 'Username does not exist' });
         const validPassword = await validatePassword(password, user.password);
         if (!validPassword) return res.status(500).json({ message: 'Password is not correct' });
         const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
