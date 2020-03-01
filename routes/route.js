@@ -6,6 +6,7 @@ const drug = require('./drugs');
 const recommend = require('./recommend');
 const userController = require('./users');
 const roleController = require('./roles');
+const insurance = require('./insurance');
 
 router.post('/signup', userController.signUp);
 router.post('/login', userController.login);
@@ -69,5 +70,9 @@ router.post('/drugs/updateInteraction', drug.updateInteraction);
 router.post('/drugs/price', drug.price);
 router.post('/drugs/getPrice', drug.getPrice);
 router.post('/drugs/updatePrice', drug.updatePrice);
+
+// Insurance
+router.get('/insurance', insurance.insurance)
+router.get('/insurance/special', recommend.special)
 
 module.exports = router;

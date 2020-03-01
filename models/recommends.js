@@ -2,18 +2,6 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const recommendSchema = new mongoose.Schema({
-    // group: {type: String},
-    // interaction: {
-    //     medScape: {
-    //         id: {type: String, required: false},
-    //         name: {type: String, required: false},
-    //     },
-    //     upToDate: {
-    //         id: {type: String, required: false},
-    //         name: {type: String, required: false},
-    //         golobal: {type: String, required: false},
-    //     },
-    // },
     atc: {
         L1: {
             enName: {type: String},
@@ -46,10 +34,10 @@ const recommendSchema = new mongoose.Schema({
             unit: {type: String}
         }],
     },
-    // special: {
-    //     specialId: {type: Number},
-    //     name: {type: String},
-    // }
+    special: {
+        specialId: {type: Number},
+        name: {type: String},
+    }
 });
 
 module.exports = mongoose.model('recommend', recommendSchema);

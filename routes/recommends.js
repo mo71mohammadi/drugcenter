@@ -235,29 +235,29 @@ router.post("/interact/medScape", async (req, res) => {
 });
 
 // Getting medScape Interaction
-router.get("/insurance/special", async (req, res) => {
-    try {
-        Recommend.find({
-            group: "special",
-            "special.specialId": {$ne: null}
-        }).sort({"special.specialId": 1}).then(async special => {
-            const newList = [];
-            for (let item in special) {
-                if ((special[item].special.name)) {
-                    console.log(special[item].special);
-                    newList.push(special[item].special.specialId)
-                }
-                // if ((special[item].special.name).search('فلوشيپ')!=-1){
-                //     console.log(special[item].special);
-                //     newList.push(special[item].special.specialId)
-                // }
-                // newList.push(special[item].special)
-            }
-            res.json(newList)
-        });
-    } catch (err) {
-        res.status(500).json({massage: err.message})
-    }
-});
+// router.get("/insurance/special", async (req, res) => {
+//     try {
+//         Recommend.find({
+//             group: "special",
+//             "special.specialId": {$ne: null}
+//         }).sort({"special.specialId": 1}).then(async special => {
+//             const newList = [];
+//             for (let item in special) {
+//                 if ((special[item].special.name)) {
+//                     console.log(special[item].special);
+//                     newList.push(special[item].special.specialId)
+//                 }
+//                 // if ((special[item].special.name).search('فلوشيپ')!=-1){
+//                 //     console.log(special[item].special);
+//                 //     newList.push(special[item].special.specialId)
+//                 // }
+//                 // newList.push(special[item].special)
+//             }
+//             res.json(newList)
+//         });
+//     } catch (err) {
+//         res.status(500).json({massage: err.message})
+//     }
+// });
 
 module.exports = router;
