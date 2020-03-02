@@ -11,8 +11,8 @@ const insuranceSchema = new mongoose.Schema({
     isWeb: { type: Boolean },
     isBarcode: { type: Boolean },
     maxPrice: {},
-    percentOrganize: {},
     special: [{ type: Number }],
+    percentOrganize: {},
 
     // تامین اجتماعی
     isPresence: { type: Boolean },
@@ -24,7 +24,11 @@ const insuranceSchema = new mongoose.Schema({
     // نیروهای مسلح
     isDrugstoreConfirm: { type: Boolean },
     recipient: { type: String },
-    isHospitalSazman: { type: Boolean }
+    isHospitalSazman: { type: Boolean },
+    serviceGroup: {
+        base: {},
+        complementary: {}
+    }
 
     // insurance: {
     //     inTa: {

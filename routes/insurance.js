@@ -43,8 +43,8 @@ exports.insurance = async (req, res) => {
                     isBarcode: result.isBarcode,
                     isDrugstoreConfirm: result.isDrugstoreConfirm,
                     maxPrice: result.maxPrice,
-                    percentOrganize: result.percentOrganize,
-
+                    serviceGroup: result.percentOrganize,
+                    percentOrganize: result.serviceGroup,
                 }
             }
             res.json(result)
