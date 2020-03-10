@@ -86,9 +86,9 @@ exports.getUsers = async (req, res, next) => {
                     role: result.role,
                     active: result.active,
                 }
-                users.push({count: users.length ,data: users})
+                users.push(user)
             }
-            res.status(200).json({ users });
+            res.status(200).json({ count: users.length, data: users });
         });
     } catch (err) {
 
