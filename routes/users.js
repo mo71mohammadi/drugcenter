@@ -114,7 +114,7 @@ exports.getUser = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
     try {
         const { username, email, password, active, role } = req.body;
-        let update = {active: active}
+        let update = {}
         if (username) update.username = username;
         if (email) update.email = email;
         if (active == undefined) update.active = active
