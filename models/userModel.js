@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema({
     role: {type: String, default: 'basic', enum: ["basic", "supervisor", "admin"]},
     credit: {type: Number},
     accessToken: {type: String},
+    active: {type: Boolean},
     address: [
         {
             city: {type: String},

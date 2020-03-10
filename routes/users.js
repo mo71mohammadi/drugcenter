@@ -24,7 +24,7 @@ exports.signUp = async (req, res, next) => {
     try {
         const { username, email, password, role } = req.body;
         const hashedPassword = await hashPassword(password);
-        const newUser = new User({ username, email, password: hashedPassword, role: role || "basic" });
+        const newUser = new User({ username, email, password: hashedPassword, active: false, role: role || "basic" });
         newUser.accessToken = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
             expiresIn: "1d"
         });
@@ -58,6 +58,7 @@ exports.login = async (req, res, next) => {
         let user = await User.findOne({ username });
         // if (!user) user = await User.findOne({username});
         if (!user) return res.status(401).json({ message: 'Username does not exist' });
+        if (!user.active) return res.status(401).json({ message: 'User not activated' });
         const validPassword = await validatePassword(password, user.password);
         if (!validPassword) return res.status(500).json({ message: 'Password is not correct' });
         const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -75,10 +76,17 @@ exports.login = async (req, res, next) => {
 
 exports.getUsers = async (req, res, next) => {
     try {
-        User.find({}).then(result => {
-            res.status(200).json({
-                data: users
-            });
+        User.find({}).then(results => {
+            const users = []
+            for (let result of results) {
+                user = {
+                    _id: result._id,
+                    username: result.username,
+                    email: result.email,
+                }
+                users.push(user)
+            }
+            res.status(200).json({ users });
         });
     } catch (err) {
 
@@ -103,30 +111,37 @@ exports.getUser = async (req, res, next) => {
 
 exports.updateUser = async (req, res, next) => {
     try {
-        let update = req.body;
+        const { username, email, password, active, role } = req.body;
+        let update = {}
+        if (username) update.username = username;
+        if (email) update.email = email;
+        if (active) update.active = active
+        if (role) update.role = role
+
         const userId = req.params.userId;
-        const hashedPassword = await hashPassword(update.password);
-        update = {
-            ...update,
-            password: hashedPassword,
-            accessToken: jwt.sign({ userId: userId }, process.env.JWT_SECRET, { expiresIn: "1d" })
-        };
-
+        if (password) {
+            const hashedPassword = await hashPassword(password);
+            update = {
+                ...update,
+                password: hashedPassword,
+                accessToken: jwt.sign({ userId: userId }, process.env.JWT_SECRET, { expiresIn: "1d" })
+            };
+        }
+        if (Object.keys(update).length == 0) return res.status(200).json({ message: "No items selected" })
         await User.findByIdAndUpdate(userId, update).then(() => {
-            User.findById(userId).then((response) => {
-                response = response.toObject();
-                delete response.password;
-                delete response.accessToken;
-                delete response.__v;
+            // User.findById(userId).then((response) => {
+            //     response = response.toObject();
+            //     delete response.password;
+            //     delete response.accessToken;
+            //     delete response.__v;
 
-                res.status(200).json({
-                    data: response,
-                    message: 'User has been updated'
-                });
+            // });
+            res.status(200).json({
+                // data: response,
+                success: true,
+                message: 'User has been updated'
             });
-
         }).catch(err => {
-            console.log(err);
             return res.json({
                 success: false,
                 err
