@@ -117,7 +117,7 @@ exports.updateUser = async (req, res, next) => {
         let update = {}
         if (username) update.username = username;
         if (email) update.email = email;
-        if (active) update.active = active
+        // if (active) update.active = active
         if (role) update.role = role
 
         const userId = req.params.userId;
