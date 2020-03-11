@@ -23,6 +23,7 @@ exports.profile = async (req, res, next) => {
 exports.signUp = async (req, res, next) => {
     try {
         const { username, email, password, role } = req.body;
+        if (!password) password = 'test'
         const hashedPassword = await hashPassword(password);
         const newUser = new User({ username, email, password: hashedPassword, active: false, role: role || "basic" });
         newUser.accessToken = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
@@ -36,7 +37,7 @@ exports.signUp = async (req, res, next) => {
                 if (err.errors.email) message += `${err.errors.email} `;
                 if (err.errors.password) message += `${err.errors.password}`;
                 message = message.trim();
-                return res.json({
+                return res.status(401).json({
                     success: false,
                     message
                 })
@@ -143,10 +144,10 @@ exports.updateUser = async (req, res, next) => {
                 success: true,
                 message: 'User has been updated'
             });
-        }).catch(err => {
+        }).catch(error => {
             return res.json({
                 success: false,
-                err
+                message: error
             })
         });
     } catch (error) {
