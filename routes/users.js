@@ -23,7 +23,6 @@ exports.profile = async (req, res, next) => {
 exports.signUp = async (req, res, next) => {
     try {
         const { username, email, password, role } = req.body;
-        if (!password) const password = 'test'
         const hashedPassword = await hashPassword(password);
         const newUser = new User({ username, email, password: hashedPassword, active: false, role: role || "basic" });
         newUser.accessToken = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
