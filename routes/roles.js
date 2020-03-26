@@ -9,7 +9,7 @@ const getGrants = function () {
             role.permissions.forEach(perms => {
                 grantList.push({
                     role: role.role,
-                    extend: role.extend,
+                    extend: role["extend"],
                     resource: perms.resource,
                     action: perms.action,
                     attributes: perms.attributes,
@@ -20,7 +20,7 @@ const getGrants = function () {
     });
 };
 
-getGrants();
+// getGrants();
 
 exports.addRole = async (req, res, next) => {
     try {
@@ -28,7 +28,7 @@ exports.addRole = async (req, res, next) => {
         const newRole = new Role({role, extend, permissions});
         newRole.save().then(role => {
             res.status(200).json({role});
-            getGrants();
+            // getGrants();
         }).catch(err => {
             res.status(400).json(err.message)
         });
