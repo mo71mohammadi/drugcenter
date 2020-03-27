@@ -132,11 +132,10 @@ exports.updateUser = async (req, res, next) => {
         if (Object.keys(update).length === 0) return res.status(200).json({ message: "No items selected" });
         User.findByIdAndUpdate(userId, update).then(response => {
             console.log(response)
-            res.status(200).json({
-                // data: response,
-                success: true,
-                message: 'User has been updated'
-            });
+            let message;
+            if (response) message = {success: true, message: 'User has been updated'};
+            else message = {success: false, message: 'User Not Found!'};
+            res.status(200).json(message);
         }).catch(error => {
             return res.json({
                 success: false,
