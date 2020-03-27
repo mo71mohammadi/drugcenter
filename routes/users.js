@@ -114,11 +114,11 @@ exports.getUser = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
     try {
         const { username, email, password, active, role } = req.body;
-        let update = {}
+        let update = {};
         if (username) update.username = username;
         if (email) update.email = email;
-        if (active != undefined) update.active = active
-        if (role) update.role = role
+        if (active !== undefined) update.active = active;
+        if (role) update.role = role;
 
         const userId = req.params.userId;
         if (password) {
@@ -129,15 +129,9 @@ exports.updateUser = async (req, res, next) => {
                 accessToken: jwt.sign({ userId: userId }, process.env.JWT_SECRET, { expiresIn: "1d" })
             };
         }
-        if (Object.keys(update).length == 0) return res.status(200).json({ message: "No items selected" })
-        await User.findByIdAndUpdate(userId, update).then(() => {
-            // User.findById(userId).then((response) => {
-            //     response = response.toObject();
-            //     delete response.password;
-            //     delete response.accessToken;
-            //     delete response.__v;
-
-            // });
+        if (Object.keys(update).length === 0) return res.status(200).json({ message: "No items selected" });
+        User.findByIdAndUpdate(userId, update).then(response => {
+            console.log(response)
             res.status(200).json({
                 // data: response,
                 success: true,
