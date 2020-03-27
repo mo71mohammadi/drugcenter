@@ -133,7 +133,7 @@ exports.updateUser = async (req, res, next) => {
         User.findByIdAndUpdate(userId, update).then(response => {
             console.log(response)
             let message;
-            if (response) message = {success: true, message: 'User has been updated'};
+            if (!response) message = {success: true, message: 'User has been updated'};
             else message = {success: false, message: 'User Not Found!'};
             res.status(200).json(message);
         }).catch(error => {
