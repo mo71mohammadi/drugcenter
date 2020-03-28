@@ -10,25 +10,18 @@ const insurance = require('./insurance');
 
 router.post('/signup', userController.signUp);
 router.post('/login', userController.login);
-router.get('/profile', userController.allowIfLoggedin, userController.profile);
+router.get('/profile', userController.allowIfLoggedin, userController.grantAccess('readAny', 'profile'), userController.profile);
 
 // router.get('/user/:userId', userController.allowIfLoggedin, userController.getUser);
 router.post('/users', userController.allowIfLoggedin, userController.grantAccess('readAny', 'user'), userController.getUsers);
-// router.post('/users', userController.getUsers);
 router.put('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'user'), userController.updateUser);
-// router.put('/user/:userId', userController.updateUser);
 router.delete('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'user'), userController.deleteUser);
-// router.delete('/user/:userId', userController.deleteUser);
 
-// router.post('/role', userController.allowIfLoggedin, userController.grantAccess('createAny', 'role'), roleController.addRole);
-router.post('/role', roleController.addRole);
+router.post('/role', userController.allowIfLoggedin, userController.grantAccess('createAny', 'role'), roleController.addRole);
 // router.get('/role/:roleId', userController.allowIfLoggedin, userController.grantAccess('readAny', 'role'), roleController.getRole);
-// router.get('/roles', userController.allowIfLoggedin, userController.grantAccess('readAny', 'role'), roleController.getRoles);
-router.post('/roles', roleController.getRoles);
-// router.put('/role/:roleId', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'role'), roleController.updateRole);
-router.put('/role/:roleId', roleController.updateRole);
-// router.delete('/role/:roleId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'role'), roleController.deleteRole);
-router.delete('/role/:roleId', roleController.deleteRole);
+router.get('/roles', userController.allowIfLoggedin, userController.grantAccess('readAny', 'role'), roleController.getRoles);
+router.put('/role/:roleId', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'role'), roleController.updateRole);
+router.delete('/role/:roleId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'role'), roleController.deleteRole);
 
 // Authentication
 router.get('/v1', async (req, res) => {
@@ -38,47 +31,48 @@ router.get('/v1', async (req, res) => {
 });
 
 // MedScape
-router.get('/medScape/multiInteraction', medScape.interactionChecker);
-router.post('/medScape/', medScape.addMedScape);
-router.get('/medScape/', medScape.getMedScape);
-router.put('/medScape', medScape.updateMedScape);
-router.delete('/medScape/:id', medScape.deleteMedScape);
-router.get('/medScape/name', medScape.name);
+router.get('/medScape/multiInteraction',userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape.api'), medScape.interactionChecker);
+router.post('/medScape/',userController.allowIfLoggedin, userController.grantAccess('createAny', 'medscape'), medScape.addMedScape);
+router.get('/medScape/',userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.getMedScape);
+router.put('/medScape',userController.allowIfLoggedin, userController.grantAccess('updateAny', 'medscape'), medScape.updateMedScape);
+router.delete('/medScape/:id',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'medscape'), medScape.deleteMedScape);
+router.get('/medScape/name',userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.name);
 
 
 // UpToDate
-router.get('/upToDate/multiInteraction', upToDate.interactionChecker);
-router.post('/upToDate/', upToDate.addUpToDate);
-router.get('/upToDate/name', upToDate.name);
+router.get('/upToDate/multiInteraction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'uptodate.api'), upToDate.interactionChecker);
+router.post('/upToDate/', userController.allowIfLoggedin, userController.grantAccess('createAny', 'uptodate'), upToDate.addUpToDate);
+router.get('/upToDate/name', userController.allowIfLoggedin, userController.grantAccess('readAny', 'uptodate'), upToDate.name);
 
 // Recommend
-router.post('/atc/import', recommend.importATC);
-router.get('/atc/get', recommend.atc);
+router.post('/atc/import',userController.allowIfLoggedin, userController.grantAccess('createAny', 'atc'), recommend.importATC);
+router.get('/atc/get',userController.allowIfLoggedin, userController.grantAccess('readAny', 'atc'), recommend.atc);
 
 
 // Drugs Product
-router.post('/drugs/getAll', drug.getAll);
-router.post('/drugs/create', drug.create);
-router.post('/drugs/delete', drug.delete);
-router.post('/drugs/update', drug.update);
-router.get('/drugs/import', drug.html);
-router.post('/drugs/import', drug.import);
-router.post('/drugs/export', drug.export);
-router.get('/drugs/getInfo', drug.getInfo);
-router.get('/drugs/distinct', drug.distinct);
+router.post('/drugs/getAll',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.getAll);
+router.post('/drugs/create',userController.allowIfLoggedin, userController.grantAccess('createAny', 'drug'), drug.create);
+router.post('/drugs/delete',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.delete);
+router.post('/drugs/update',userController.allowIfLoggedin, userController.grantAccess('updateAny', 'drug'), drug.update);
+router.post('/drugs/import',userController.allowIfLoggedin, userController.grantAccess('createAny', 'drug'), drug.import);
+router.post('/drugs/export',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.export);
+router.get('/drugs/getInfo',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug.api'), drug.getInfo);
+router.get('/drugs/distinct',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.distinct);
+// hazf shvad!
+router.get('/drugs/import',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.html);
 
-router.post('/drugs/atc', userController.allowIfLoggedin, drug.atc);
-router.post('/drugs/updateATC', drug.updateATC);
+router.post('/drugs/atc', userController.allowIfLoggedin, userController.grantAccess('readAny', 'atc'), drug.atc);
+router.post('/drugs/updateATC', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'atc'), drug.updateATC);
 
-router.post('/drugs/interaction', drug.interaction);
-router.post('/drugs/updateInteraction', drug.updateInteraction);
+router.post('/drugs/interaction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'interaction'),  drug.interaction);
+router.post('/drugs/updateInteraction', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'interaction'), drug.updateInteraction);
 
-router.post('/drugs/price', drug.price);
-router.post('/drugs/getPrice', drug.getPrice);
-router.post('/drugs/updatePrice', drug.updatePrice);
+router.post('/drugs/price', userController.allowIfLoggedin, userController.grantAccess('readAny', 'price'), drug.price);
+router.post('/drugs/getPrice', userController.allowIfLoggedin, userController.grantAccess('readAny', 'price'), drug.getPrice);
+router.post('/drugs/updatePrice', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'price'), drug.updatePrice);
 
 // Insurance
-router.get('/insurance', insurance.insurance)
-router.get('/insurance/special', recommend.special)
+router.get('/insurance', userController.allowIfLoggedin, userController.grantAccess('readAny', 'insurance.api'), insurance.insurance);
+router.get('/insurance/special', userController.allowIfLoggedin, userController.grantAccess('readAny', 'insurance.api'), recommend.special);
 
 module.exports = router;
