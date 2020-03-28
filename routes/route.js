@@ -13,12 +13,12 @@ router.post('/login', userController.login);
 router.get('/profile', userController.allowIfLoggedin, userController.profile);
 
 // router.get('/user/:userId', userController.allowIfLoggedin, userController.getUser);
-// router.get('/users', userController.allowIfLoggedin, userController.grantAccess('readAny', 'user'), userController.getUsers);
-router.post('/users', userController.getUsers);
-// router.put('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'user'), userController.updateUser);
-router.put('/user/:userId', userController.updateUser);
-// router.delete('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'user'), userController.deleteUser);
-router.delete('/user/:userId', userController.deleteUser);
+router.post('/users', userController.allowIfLoggedin, userController.grantAccess('readAny', 'user'), userController.getUsers);
+// router.post('/users', userController.getUsers);
+router.put('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'user'), userController.updateUser);
+// router.put('/user/:userId', userController.updateUser);
+router.delete('/user/:userId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'user'), userController.deleteUser);
+// router.delete('/user/:userId', userController.deleteUser);
 
 // router.post('/role', userController.allowIfLoggedin, userController.grantAccess('createAny', 'role'), roleController.addRole);
 router.post('/role', roleController.addRole);
