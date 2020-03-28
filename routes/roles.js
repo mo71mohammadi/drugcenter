@@ -27,7 +27,10 @@ exports.addRole = async (req, res, next) => {
         const {role, extend, permissions} = req.body;
         const newRole = new Role({role, extend, permissions});
         newRole.save().then(role => {
-            res.status(200).json({role});
+            res.status(200).json({
+                success: true,
+                message: 'Role Add successfully'
+            });
             // getGrants();
         }).catch(err => {
             res.status(400).json(err.message)
