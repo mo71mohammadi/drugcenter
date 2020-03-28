@@ -20,7 +20,7 @@ const getGrants = function () {
     });
 };
 
-// getGrants();
+getGrants();
 
 exports.addRole = async (req, res, next) => {
     try {
@@ -31,7 +31,7 @@ exports.addRole = async (req, res, next) => {
                 success: true,
                 message: 'Role Add successfully'
             });
-            // getGrants();
+            getGrants();
         }).catch(err => {
             res.status(400).json(err.message)
         });
