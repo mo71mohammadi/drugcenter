@@ -68,8 +68,8 @@ exports.updateRole = async (req, res, next) => {
         Role.findByIdAndUpdate(roleId, update).then(async result => {
             const role = await Role.findById(roleId);
             res.status(200).json({
-                data: role,
-                message: 'User has been updated'
+                success: true,
+                message: 'Role has been updated'
             });
             getGrants();
         }).catch(error => {
