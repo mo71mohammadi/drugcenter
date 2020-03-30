@@ -49,7 +49,7 @@ router.get('/atc/get',userController.allowIfLoggedin, userController.grantAccess
 router.post('/drugs/getAll',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.getAll);
 router.post('/drugs/create',userController.allowIfLoggedin, userController.grantAccess('createAny', 'drug'), drug.create);
 router.post('/drugs/delete',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.delete);
-router.post('/drugs/delete',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.deleteAll);
+router.post('/drugs/deleteAll',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.deleteAll);
 router.post('/drugs/update',userController.allowIfLoggedin, userController.grantAccess('updateAny', 'drug'), drug.update);
 router.post('/drugs/import',userController.allowIfLoggedin, userController.grantAccess('createAny', 'drug'), drug.import);
 router.post('/drugs/export',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.export);
