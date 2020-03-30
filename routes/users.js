@@ -57,7 +57,7 @@ exports.login = async (req, res, next) => {
 		let {username, expiresIn, password} = req.body;
 		let user = await User.findOne({username});
 		// if (!user) user = await User.findOne({username});
-		if (!expiresIn) expiresIn = "1800000";
+		if (!expiresIn) expiresIn = "1800000d";
 		if (!user) return res.status(401).json({message: 'Username does not exist'});
 		if (!user.active) return res.status(401).json({message: 'User not activated'});
 		const validPassword = await validatePassword(password, user.password);
@@ -65,11 +65,13 @@ exports.login = async (req, res, next) => {
 		const accessToken = jwt.sign({userId: user._id}, process.env.JWT_SECRET, {
 			expiresIn: expiresIn
 		});
-		User.findByIdAndUpdate(user._id, {accessToken});
-		res.status(200).json({
-			data: {email: user.email, role: user.role},
-			accessToken
-		})
+		User.findByIdAndUpdate(user._id, {accessToken: accessToken}).then(() => {
+			res.status(200).json({
+				data: {email: user.email, role: user.role},
+				accessToken
+			})
+
+		});
 	} catch (error) {
 		next(error);
 	}
