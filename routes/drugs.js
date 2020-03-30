@@ -473,7 +473,9 @@ exports.updatePrice = async (req, res) => {
 	try {
 		let rawData = fs.readFileSync('data.json');
 		let data = JSON.parse(rawData);
+		let count = 0;
 		data.forEach(obj => {
+			count ++;
 			if (obj.cPrice || obj.cPrice || obj.dPrice) {
 				Drug.findOne({irc: {$in: obj.irc}}).then(result => {
 					if (result) {
@@ -482,21 +484,13 @@ exports.updatePrice = async (req, res) => {
 								sPrice: obj.sPrice,
 								cPrice: obj.cPrice,
 								dPrice: obj.dPrice
-							}).then(result => {
-								console.log(result)
 							})
 						}
 					}
-					// else {
-					//     fs.appendFile('message.txt', obj.irc + '\n', function (err) {
-					//         count1 ++;
-					//         console.log('Not Found........', count1);
-					//     });
-					// }
 				})
 			}
 		});
-		res.status(200).json('f')
+		if (count === data.length) res.status(200).json('updated successfully!')
 
 	} catch (err) {
 		res.status(500).json(err.message)
