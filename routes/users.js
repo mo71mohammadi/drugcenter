@@ -57,7 +57,7 @@ exports.login = async (req, res, next) => {
 		let {username, expiresIn, password} = req.body;
 		let user = await User.findOne({username});
 		// if (!user) user = await User.findOne({username});
-		if (!expiresIn) expiresIn = "1800000d";
+		if (!expiresIn) expiresIn = "1800000";
 		if (!user) return res.status(401).json({message: 'Username does not exist'});
 		if (!user.active) return res.status(401).json({message: 'User not activated'});
 		const validPassword = await validatePassword(password, user.password);
