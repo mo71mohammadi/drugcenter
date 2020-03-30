@@ -159,7 +159,6 @@ exports.import = async (req, res) => {
 	try {
 		req.connection.setTimeout(1000 * 60 * 10);
 		if (req.files) {
-			// console.log(req.files)
 			const wb = xlsx.read(req.files.drugs.data, {cellDates: true});
 			const ws = wb.Sheets['Sheet2'];
 			const jsonData = xlsx.utils.sheet_to_json(ws);

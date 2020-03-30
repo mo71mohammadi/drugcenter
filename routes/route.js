@@ -51,7 +51,7 @@ router.post('/drugs/create',userController.allowIfLoggedin, userController.grant
 router.post('/drugs/delete',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.delete);
 router.post('/drugs/deleteAll',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.deleteAll);
 router.post('/drugs/update',userController.allowIfLoggedin, userController.grantAccess('updateAny', 'drug'), drug.update);
-router.post('/drugs/import',userController.allowIfLoggedin, userController.grantAccess('createAny', 'drug'), drug.import);
+router.post('/drugs/import', drug.import);
 router.post('/drugs/export',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.export);
 router.get('/drugs/getInfo',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug.api'), drug.getInfo);
 router.get('/drugs/distinct',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.distinct);
