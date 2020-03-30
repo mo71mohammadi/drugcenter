@@ -474,10 +474,10 @@ exports.updatePrice = async (req, res) => {
 		let rawData = fs.readFileSync('data.json');
 		let data = JSON.parse(rawData);
 		let count = 0;
-		data.forEach(obj => {
+		for (const obj of data) {
 			count ++;
 			if (obj.cPrice || obj.cPrice || obj.dPrice) {
-				Drug.findOne({irc: {$in: obj.irc}}).then(result => {
+				await Drug.findOne({irc: {$in: obj.irc}}).then(result => {
 					if (result) {
 						if (result.sPrice !== obj.sPrice || result.cPrice !== obj.cPrice || result.dPrice !== obj.dPrice) {
 							Drug.updateOne({irc: {$in: obj.irc}}, {
@@ -489,8 +489,8 @@ exports.updatePrice = async (req, res) => {
 					}
 				})
 			}
-		});
-		if (count === data.length) res.status(200).json('updated successfully!')
+		}
+		res.status(200).json('updated successfully!')
 
 	} catch (err) {
 		res.status(500).json(err.message)
