@@ -35,8 +35,10 @@ app.use(async (req, res, next) => {
     if (req.headers["authorization"]) {
         const accessToken = req.headers["authorization"];
         jwt.verify(accessToken, process.env.JWT_SECRET, async (err, decoded) => {
-            if (err && err.message) res.status(401).json({error: `${err.message}, please login to obtain a new one`});
-            else res.locals.loggedInUser = await User.findById(decoded.userId); next();
+            if (err && err.message) return res.status(401).json({error: `${err.message}, please login to obtain a new one`});
+            const user = await User.findById(decoded.userId);
+            if (user.accessToken !== accessToken) return res.status(401).json({error: `jwt expired, please login to obtain a new one`});
+            else res.locals.loggedInUser = user; next();
         });
     } else {
         next();

@@ -24,11 +24,7 @@ router.put('/role/:roleId', userController.allowIfLoggedin, userController.grant
 router.delete('/role/:roleId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'role'), roleController.deleteRole);
 
 // Authentication
-router.get('/v1', async (req, res) => {
-    res.json({
-        "status": "success", "object": {"user": null}
-    })
-});
+router.get('/v1', userController.authentication);
 
 // MedScape
 router.get('/medScape/multiInteraction',userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape.api'), medScape.interactionChecker);
