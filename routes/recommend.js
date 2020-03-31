@@ -38,7 +38,7 @@ exports.importATC = async (req, res) => {
 exports.atc = async (req, res) => {
     try {
         const { level, shortName } = query.parse(req.url, true).query;
-        const match = {};
+        const match = {atc: {$exists: true}};
 
         if (!level) {
             if (shortName.length === 7) match["atc.L5.shortName"] = shortName;
@@ -63,7 +63,7 @@ exports.atc = async (req, res) => {
             if (level === 'L4') match['atc.L3.shortName'] = shortName;
             if (level === 'L5') match['atc.L4.shortName'] = shortName;
             if (level === 'ddd') match['atc.L5.shortName'] = shortName;
-
+            console.log(level, match, group);
             Recommend.aggregate([
                 { $match: match },
                 { $group: group },
