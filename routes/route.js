@@ -56,7 +56,7 @@ router.post('/drugs/export',userController.allowIfLoggedin, userController.grant
 router.get('/drugs/getInfo',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug.api'), drug.getInfo);
 router.get('/drugs/distinct',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.distinct);
 // hazf shvad!
-router.get('/drugs/import',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.html);
+router.get('/drugs/import', drug.html);
 
 router.post('/drugs/atc', userController.allowIfLoggedin, userController.grantAccess('readAny', 'atc'), drug.atc);
 router.post('/drugs/updateATC', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'atc'), drug.updateATC);

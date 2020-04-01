@@ -170,6 +170,9 @@ exports.import = async (req, res) => {
 			const successList = [];
 			const repeatList = [];
 			for (const obj of jsonData) {
+				for (const key of Object.keys(obj) ) {
+					if (!["genericCode", "edl", "packageCount"].includes(key) && ['0', 0, '-'].includes(obj[key])) obj[key] = ''
+				}
 				eRxList.push(obj.eRx.slice(0, 9));
 				let count = 0;
 				eRxList.map(e => {
@@ -179,12 +182,12 @@ exports.import = async (req, res) => {
 				obj.packageCode = packObj[count];
 				// obj.packageCount = obj.packageCount;
 				obj.packageType = obj.packageType.trim();
+				// console.log(obj)
 				// obj.genericCode = obj.genericCode.trim();
 				obj.enBrandName = obj.enBrandName.trim();
+
 				obj.faBrandName = obj.faBrandName.trim();
-				obj.atc = [{
-					code: obj.atc.trim()
-				}];
+				obj.atc = [{code: obj.atc.trim()}];
 				obj.category = obj.category.trim();
 				// obj.ddd = obj.ddd.trim();
 				// obj.edl = obj.edl.trim();

@@ -84,8 +84,8 @@ exports.atc = async (req, res) => {
 exports.special = async (req, res) => {
     try {
         Recommend.find({special: {$exists: true}}).then(results => {
-            const specials = []
-            for (result in results) specials.push(results[result].special)
+            const specials = [];
+            for (const result of results) specials.push(result.special);
             res.status(200).json(specials)
         })
     } catch (err) {
