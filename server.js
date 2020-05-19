@@ -59,5 +59,5 @@ const options = {
 };
 
 const Port = 5000;
-// app.listen(Port, () => console.log('Server Started', Port));
-https.createServer(options, app).listen(Port, () => console.log('Server Started', Port));
+app.listen(Port, () => console.log('Server Started', Port));
+// https.createServer(options, app).listen(Port, () => console.log('Server Started', Port));
