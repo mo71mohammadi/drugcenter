@@ -11,6 +11,8 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const jwt = require('jsonwebtoken');
 const User = require('./models/userModel');
+const https = require('https');
+const fs = require('fs');
 
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify:false, useUnifiedTopology: true});
 
@@ -51,5 +53,11 @@ app.use('/api', insurancesRouter);
 app.use('/api', productsRouter);
 app.use('/api', routes);
 
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
+
 const Port = 5000;
-app.listen(Port, () => console.log('Server Started', Port));
+// app.listen(Port, () => console.log('Server Started', Port));
+https.createServer(options, app).listen(Port, () => console.log('Server Started', Port));
