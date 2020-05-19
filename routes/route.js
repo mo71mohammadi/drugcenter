@@ -3,6 +3,8 @@ const router = express.Router();
 const medScape = require('./medScapes');
 const upToDate = require('./upToDates');
 const drug = require('./drugs');
+const drugstore = require('./drugstores');
+const distributor = require('./distributors');
 const recommend = require('./recommend');
 const userController = require('./users');
 const roleController = require('./roles');
@@ -71,5 +73,19 @@ router.post('/drugs/updatePrice', userController.allowIfLoggedin, userController
 // Insurance
 router.get('/insurance', userController.allowIfLoggedin, userController.grantAccess('readAny', 'insurance.api'), insurance.insurance);
 router.get('/insurance/special', userController.allowIfLoggedin, userController.grantAccess('readAny', 'insurance.api'), recommend.special);
+
+// drugStore
+router.post('/drugstores/import', drugstore.import);
+router.post('/drugstores/getAll', drugstore.getAll);
+router.post('/drugstores/deleteAll', drugstore.deleteAll);
+
+// distributors
+router.post('/distributors/import', distributor.import);
+router.post('/distributors/getAll', distributor.getAll);
+router.post('/distributors/delete', distributor.delete);
+router.post('/distributors/update', distributor.update);
+
+// router.post('/drugstores/deleteAll', drugstore.deleteAll);
+
 
 module.exports = router;

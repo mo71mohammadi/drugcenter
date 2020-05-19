@@ -10,7 +10,7 @@ idsrv = re.findall('''xsrf&quot;,&quot;value&quot;:&quot;(.*?)&''', start.text)
 data = {
     "idsrv.xsrf": idsrv[0],
     "username": "hoseini",
-    "password": "S@jjad110"
+    "password": "H0seini@"
 }
 login = s.post(url=start.url, data=data)
 id_token = re.findall('''"id_token" value="(.*?)"''', login.text)

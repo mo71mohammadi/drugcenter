@@ -5,14 +5,14 @@ exports.insurance = async (req, res) => {
     try {
         const { insuranceType, generic, special } = query.parse(req.url, true).query;
         if (![1, 2, 3].includes(parseInt(insuranceType))) return res.status(404).json({ error: "insuranceType", message: "بیمه انتخابی وجود ندارد." })
-        const search = { insuranceType: insuranceType, genericCode: generic }
+        const search = { insuranceType: insuranceType, genericCode: generic };
         Insurance.findOne(search).then(result => {
-            if (!result) return res.status(404).json({ error: "generic", message: "این کد ژنریک در بانک تعهدات بیمه ها موجود نیست" })
-            result = result.toObject()
-            const specialIdSearch = result.special.find(item => item == special)
-            if (!specialIdSearch) return res.status(404).json({ error: "special", message: ".این ژنریک برای تخصص انتخاب شده قابل تجویز نیست" })
+            if (!result) return res.status(404).json({ error: "generic", message: "این کد ژنریک در بانک تعهدات بیمه ها موجود نیست" });
+            result = result.toObject();
+            const specialIdSearch = result.special.find(item => item === special);
+            if (!specialIdSearch) return res.status(404).json({ error: "special", message: ".این ژنریک برای تخصص انتخاب شده قابل تجویز نیست" });
 
-            if (insuranceType == 1) {
+            if (insuranceType === 1) {
                 result = {
                     insuranceType: result.insuranceType,
                     genericCode: result.genericCode,
@@ -30,7 +30,7 @@ exports.insurance = async (req, res) => {
                     percentOrganize: result.percentOrganize,
                 }
             }
-            if (insuranceType == 3) {
+            if (insuranceType === 3) {
                 result = {
                     insuranceType: result.insuranceType,
                     genericCode: result.genericCode,

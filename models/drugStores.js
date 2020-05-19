@@ -3,15 +3,15 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const drugStoreSchema = new mongoose.Schema({
 	id: {type: String, required: true},
-	nationalCode: {type: String, required: true},
-	hix: {type: Number},
+	nationalCode: {type: String},
+	hix: {type: String},
 	gln: {type: String},
-	contact: [{
-		work: {type: Number},
-		phone: {type: Number}
-	}],
+	contact: {
+		work: {type: String},
+		phone: {type: String}
+	},
 	licenseNumber: {type: String},
-	postalCode: {type: Number, required: true},
+	postalCode: {type: Number},
 	founder: {type: String},
 	name: {type: String},
 	organization: {type: String},
@@ -25,12 +25,12 @@ const drugStoreSchema = new mongoose.Schema({
 	address: {type: String},
 	latitude: {type: String},
 	longitude: {type: String},
-	distributor: [{
-		name: {type: String},
-		code: {type: Number},
-		branch: {type: String},
-		line: {type: Number}
-	}]
+	// distributor: [{
+	// 	name: {type: String},
+	// 	code: {type: Number},
+	// 	branch: {type: String},
+	// 	line: {type: Number}
+	// }]
 });
 
 drugStoreSchema.index({
@@ -38,4 +38,4 @@ drugStoreSchema.index({
 }, {unique: true});
 
 drugStoreSchema.plugin(uniqueValidator);
-module.exports = mongoose.model('drugStores', drugStoreSchema);
+module.exports = mongoose.model('drugStore', drugStoreSchema);
