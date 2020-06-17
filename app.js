@@ -20,7 +20,7 @@ const db = mongoose.connection;
 db.on('error', (error) => console.error(error));
 db.once('open', () => console.log("Connected to Datebase"));
 
-var allowCrossDomain = function(req, res, next) {
+const allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type Authorization');
@@ -28,8 +28,19 @@ var allowCrossDomain = function(req, res, next) {
     next();
 };
 
-app.use(allowCrossDomain);
+const http = require('http')
+const hostname = '127.0.0.1';
+const port = 3000;
+const server = http.createServer((req, res) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Hello World! NodeJS \n');
+});
+server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});
 
+app.use(allowCrossDomain);
 app.use(express.json());
 app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -46,18 +57,13 @@ app.use(async (req, res, next) => {
         next();
     }
 });
-
 app.use('/api', genericsRouter);
 app.use('/api', recommendsRouter);
 app.use('/api', insurancesRouter);
 app.use('/api', productsRouter);
 app.use('/api', routes);
 
-// const options = {
-//     key: fs.readFileSync('key.pem'),
-//     cert: fs.readFileSync('cert.pem')
-// };
 
 const Port = 5000;
-app.listen(Port, () => console.log('Server Started', Port));
+// app.listen(Port, () => console.log('Server Started', Port));
 // https.createServer(options, app).listen(Port, () => console.log('Server Started', Port));
