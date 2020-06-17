@@ -3,14 +3,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const genericsRouter = require('./routes/generics');
-const recommendsRouter = require('./routes/recommends');
-const insurancesRouter = require('./routes/insurances');
-const productsRouter = require('./routes/products');
-const routes = require('./routes/route');
+// const recommendsRouter = require('./routes/recommends');
+// const insurancesRouter = require('./routes/insurances');
+// const productsRouter = require('./routes/products');
+// const routes = require('./routes/route');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const jwt = require('jsonwebtoken');
-const User = require('./models/userModel');
+// const User = require('./models/userModel');
 const https = require('https');
 const fs = require('fs');
 
@@ -48,10 +48,10 @@ app.use(async (req, res, next) => {
 });
 
 app.use('/api', genericsRouter);
-app.use('/api', recommendsRouter);
-app.use('/api', insurancesRouter);
-app.use('/api', productsRouter);
-app.use('/api', routes);
+// app.use('/api', recommendsRouter);
+// app.use('/api', insurancesRouter);
+// app.use('/api', productsRouter);
+// app.use('/api', routes);
 
 // const options = {
 //     key: fs.readFileSync('key.pem'),
