@@ -16,7 +16,11 @@ const distributorSchema = new mongoose.Schema({
 		active: {type: Boolean},
 	}],
 	products: [{
-		
+		eRx: {type: String, required: true}, // دلیل عدم استفاده از reference: یکسان نبودن کالکشن محصولات
+		code: {type: Number}, // کد محصول در پخش
+		gift: {type: String}, // جایزه محصول
+		respite: {type: Number}, // فرجه محصول در پخش
+		expire: {type: Date} // انقضای محصول
 	}]
 });
 

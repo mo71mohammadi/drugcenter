@@ -2,9 +2,9 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",

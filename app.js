@@ -24,7 +24,7 @@ var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type Authorization');
-    res.header("Access-Control-Allow-Headers", 'Origin, X-Requested-With, Content-Type,Authorization, Accept');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type,Authorization, Accept');
     next();
 };
 
@@ -53,10 +53,10 @@ app.use('/api', insurancesRouter);
 app.use('/api', productsRouter);
 app.use('/api', routes);
 
-const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
-};
+// const options = {
+//     key: fs.readFileSync('key.pem'),
+//     cert: fs.readFileSync('cert.pem')
+// };
 
 const Port = 5000;
 app.listen(Port, () => console.log('Server Started', Port));

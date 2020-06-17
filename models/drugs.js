@@ -18,15 +18,15 @@ const drugSchema = new mongoose.Schema({
     edl: {type: Boolean},
     gtn: [{type: String}],
     irc: [{type: String}],
-    sPrice: {type: String},
-    cPrice: {type: String},
-    dPrice: {type: String},
+    // sPrice: {type: String},
+    // cPrice: {type: String},
+    // dPrice: {type: String},
     priceHistory: [
         {
-            validityDate: {type: String},
-            supplierPrice: {type: String},
-            distributorPrice: {type: String},
-            consumerPrice: {type: String},
+            Date: {type: Date},
+            sPrice: {type: String},
+            dPrice: {type: String},
+            cPrice: {type: String},
         }
     ],
     nativeIRC: {type: String},
