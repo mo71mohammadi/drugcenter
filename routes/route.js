@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const medScape = require('./medScapes');
-const upToDate = require('./upToDates');
-const drug = require('./drugs');
-const drugstore = require('./drugstores');
-const distributor = require('./distributors');
-const recommend = require('./recommend');
-const userController = require('./users');
-const roleController = require('./roles');
-const insurance = require('./insurance');
+const medScape = require('./medScapes.js');
+const upToDate = require('./upToDates.js');
+const drug = require('./drugs.js');
+const drugstore = require('./drugstores.js');
+const distributor = require('./distributors.js');
+const recommend = require('./recommend.js');
+const userController = require('./users.js');
+const roleController = require('./roles.js');
+const insurance = require('./insurance.js');
 
 router.post('/signup', userController.signUp);
 router.post('/login', userController.login);

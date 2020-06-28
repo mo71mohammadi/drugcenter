@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-// const genericsRouter = require('./routes/generics');
+const genericsRouter = require('./routes/generics');
 // const recommendsRouter = require('./routes/recommends');
 // const insurancesRouter = require('./routes/insurances');
 // const productsRouter = require('./routes/products');
@@ -47,7 +47,7 @@ app.use(async (req, res, next) => {
     }
 });
 
-// app.use('/api', genericsRouter);
+app.use('/api', genericsRouter);
 // app.use('/api', recommendsRouter);
 // app.use('/api', insurancesRouter);
 // app.use('/api', productsRouter);
