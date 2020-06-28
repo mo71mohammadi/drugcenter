@@ -2,10 +2,10 @@ require("dotenv").config();
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const genericsRouter = require('./routes/generics');
-const recommendsRouter = require('./routes/recommends');
-const insurancesRouter = require('./routes/insurances');
-const productsRouter = require('./routes/products');
+// const genericsRouter = require('./routes/generics');
+// const recommendsRouter = require('./routes/recommends');
+// const insurancesRouter = require('./routes/insurances');
+// const productsRouter = require('./routes/products');
 const routes = require('./routes/route');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
@@ -47,10 +47,10 @@ app.use(async (req, res, next) => {
     }
 });
 
-app.use('/api', genericsRouter);
-app.use('/api', recommendsRouter);
-app.use('/api', insurancesRouter);
-app.use('/api', productsRouter);
+// app.use('/api', genericsRouter);
+// app.use('/api', recommendsRouter);
+// app.use('/api', insurancesRouter);
+// app.use('/api', productsRouter);
 app.use('/api', routes);
 
 const Port = 5000;
