@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-/*
+
 const medScape = require('./medScapes');
 const upToDate = require('./upToDates');
 const drug = require('./drugs');
 const drugstore = require('./drugstores');
 const distributor = require('./distributors');
 const recommend = require('./recommend');
-const userController = require('./users');
 const roleController = require('./roles');
+const userController = require('./users');
 const insurance = require('./insurance');
-*/
-/*
+
+
 router.post('/signup', userController.signUp);
 router.post('/login', userController.login);
 router.get('/profile', userController.allowIfLoggedin, userController.grantAccess('readAny', 'profile'), userController.profile);
@@ -88,6 +88,6 @@ router.post('/distributors/delete', distributor.delete);
 router.post('/distributors/update', distributor.update);
 
 // router.post('/drugstores/deleteAll', drugstore.deleteAll);
-*/
+
 
 module.exports = router;
