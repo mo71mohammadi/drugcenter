@@ -10,7 +10,7 @@ const routes = require('./routes/route');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const jwt = require('jsonwebtoken');
-// const User = require('./models/userModel');
+const User = require('./models/userModel');
 const https = require('https');
 const fs = require('fs');
 
