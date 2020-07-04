@@ -461,7 +461,7 @@ exports.price = async (req, res) => {
 exports.getPrice = async (req, res) => {
 	try {
 		let options = {
-			// pythonPath: '/home/mojtaba/PycharmProjects/metraj/venv/bin/python3',
+			pythonPath: '/home/ehrs/virtualenv/python/3.7/bin/python3',
 			// scriptPath: '/home/mojtaba/WebstormProjects/api/routes/',
 		};
 		let test = new PythonShell('./routes/script.py', options);
