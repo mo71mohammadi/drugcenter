@@ -24,6 +24,8 @@ exports.import = async (req, res) => {
 			}
 			colObj[params['collection']].insertMany(student).then(result => {
 				res.status(200).json(result.length)
+			}).catch(err=>{
+				res.status(200).json(err.message)
 			})
 		});
 	} catch (e) {
