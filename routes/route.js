@@ -10,7 +10,9 @@ const recommend = require('./recommend');
 const roleController = require('./roles');
 const userController = require('./users');
 const insurance = require('./insurance');
+const importData = require('./import');
 
+router.get('/import', importData.import);
 
 router.post('/signup', userController.signUp);
 router.post('/login', userController.login);
