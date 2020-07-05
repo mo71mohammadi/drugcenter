@@ -1,4 +1,3 @@
-'use strict';
 const Drug = require("../models/drugs");
 const UpToDate = require("../models/upToDate");
 const MedScape = require("../models/medScape");
