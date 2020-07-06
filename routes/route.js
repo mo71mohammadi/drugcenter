@@ -75,7 +75,7 @@ router.post('/drugs/getPrice', userController.allowIfLoggedin, userController.gr
 router.post('/drugs/updatePrice', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'price'), drug.updatePrice);
 
 // Insurance
-router.get('/insurance', userController.allowIfLoggedin, userController.grantAccess('readAny', 'insurance.api'), insurance.insurance);
+router.get('/insurance', insurance.insurance);
 router.get('/insurance/special', userController.allowIfLoggedin, userController.grantAccess('readAny', 'insurance.api'), recommend.special);
 
 // drugStore

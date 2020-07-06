@@ -9,10 +9,10 @@ exports.insurance = async (req, res) => {
         Insurance.findOne(search).then(result => {
             if (!result) return res.status(404).json({ error: "generic", message: "این کد ژنریک در بانک تعهدات بیمه ها موجود نیست" });
             result = result.toObject();
-            const specialIdSearch = result.special.find(item => item === special);
+            const specialIdSearch = result.special.find(item => item === parseInt(special));
             if (!specialIdSearch) return res.status(404).json({ error: "special", message: ".این ژنریک برای تخصص انتخاب شده قابل تجویز نیست" });
 
-            if (insuranceType === 1) {
+            if (insuranceType === "1") {
                 result = {
                     insuranceType: result.insuranceType,
                     genericCode: result.genericCode,
@@ -30,7 +30,7 @@ exports.insurance = async (req, res) => {
                     percentOrganize: result.percentOrganize,
                 }
             }
-            if (insuranceType === 3) {
+            if (insuranceType === "3") {
                 result = {
                     insuranceType: result.insuranceType,
                     genericCode: result.genericCode,

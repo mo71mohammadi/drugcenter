@@ -2,6 +2,7 @@ const Drug = require("../models/drugs");
 const UpToDate = require("../models/upToDate");
 const MedScape = require("../models/medScape");
 const Recommend = require("../models/recommends");
+const Insurance = require("../models/insurance");
 
 const fs = require('fs');
 const query = require('url');
@@ -20,7 +21,8 @@ exports.import = async (req, res) => {
 				Recommend: Recommend,
 				MedScape: MedScape,
 				UpToDate: UpToDate,
-				Drug: Drug
+				Drug: Drug,
+				Insurance: Insurance
 			}
 			colObj[params['collection']].insertMany(student).then(result => {
 				res.status(200).json(result.length)
