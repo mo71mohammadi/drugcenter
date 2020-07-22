@@ -95,8 +95,12 @@ exports.updatePrice = async (req, res) => {
 		Product.updateOne({
 			_id: _id,
 			$or: [{"price.sPrice": {$ne: sPrice}}, {"price.cPrice": {$ne: cPrice}}, {"price.dPrice": {$ne: dPrice}}]
-		}, {$addToSet: {price: obj}}).then(result => {
-			res.status(200).json({message: result})
+		}, {$addToSet: {price: obj}}).then((result) => {
+			if (result.n === 0) res.status(401).json({message: "_id Not Found or Price Add previously", result: null})
+			res.status(200).json({message: "Price Add Successfully", result})
+		}).catch(err => {
+			res.status(401).json({message: err.message, result: null})
+
 		})
 		// { "carrier.state": { $ne: "NY" }
 		// Product.findOne({_id: _id}).then(result => {
@@ -151,6 +155,7 @@ exports.import = async (req, res) => {
 				for (const key of Object.keys(obj)) {
 					if (!["genericCode", "packageCount"].includes(key) && ['0', 0, '-'].includes(obj[key])) obj[key] = ''
 				}
+				console.log(obj)
 				eRxList.push(obj.eRx.slice(0, 9));
 				let count = 0;
 				eRxList.map(e => {
@@ -172,7 +177,7 @@ exports.import = async (req, res) => {
 				obj.gtn = [obj.gtn.trim()];
 				obj.irc = [obj.irc.trim()];
 				obj.nativeIRC = obj.nativeIRC.toString().trim();
-				obj.licenseOwner = obj.licenseOwner.trim();
+				obj.licenceOwner = obj.licenceOwner.trim();
 				obj.brandOwner = obj.brandOwner.trim();
 				obj.countryBrandOwner = obj.countryBrandOwner.trim();
 				obj.countryProducer = obj.countryProducer.trim();
