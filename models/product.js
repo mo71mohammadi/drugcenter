@@ -56,10 +56,10 @@ const productSchema = new mongoose.Schema({
     image: [{type: String}]
 });
 
-productSchema.index({
-    "data.eRx": 1,
-    "data.packageCode": 1
-}, {unique: true});
+// productSchema.index({
+//     "data.eRx": 1,
+//     "data.packageCode": 1
+// }, {unique: true});
 
 // productSchema.plugin(uniqueValidator);
 // module.exports = mongoose.model('products', productSchema);
