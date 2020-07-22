@@ -82,7 +82,7 @@ exports.getOne = async (req, res) => {
 
 		const regex = new RegExp(`^${prevId}`);
 		Category.find({id: {$regex: regex}, level: level}).then(results => {
-			res.status(200).json({results})
+			res.status(200).json({count: results.length, data: results})
 		})
 	} catch (err) {
 		res.status(500).json(err.message)
@@ -247,8 +247,7 @@ exports.import = async (req, res) => {
 				await Category.findOne({name: item.L1}).then(async result => {
 					if (!result) {
 						let newObj = await request({
-							url: 'localhost:5000/api/products/category/create',
-							// url: 'http://127.0.0.1:5000' + "http://[::1]:8000" + constants.PATH_TO_API,
+							url: 'http://127.0.0.1:5000/api/products/category/create',
 							method: 'POST',
 							json: {level: "L1", name: item.L1}
 						})
