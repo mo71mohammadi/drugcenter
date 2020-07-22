@@ -247,7 +247,8 @@ exports.import = async (req, res) => {
 				await Category.findOne({name: item.L1}).then(async result => {
 					if (!result) {
 						let newObj = await request({
-							url: 'http://127.0.0.1:5000/api/products/category/create',
+							url: 'localhost:5000/api/products/category/create',
+							// url: 'http://127.0.0.1:5000' + "http://[::1]:8000" + constants.PATH_TO_API,
 							method: 'POST',
 							json: {level: "L1", name: item.L1}
 						})
