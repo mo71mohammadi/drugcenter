@@ -77,10 +77,10 @@ exports.update = async (req, res) => {
 	try {
 		const filter = req.body;
 		delete filter.price
-		Product.updateOne({_id: filter._id}, filter).then(() => {
-			res.status(200).json({message: "product Update Successfully!"});
+		Product.updateOne({_id: filter._id}, filter).then((result) => {
+			res.status(200).json({message: "product Update Successfully!", result});
 		}).catch(err => {
-			if (err.path === '_id') res.status(500).json("Product _id not found!");
+			if (err.path === '_id') res.status(500).json({message: "Product _id not found!", result: null});
 			else res.status(500).json(err.message)
 		})
 	} catch (err) {
