@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
 	faGenericName: {type: String},
 	enBrandName: {type: String},
 	faBrandName: {type: String},
-	category: [{type: Number}],
+	category: [{type: String}],
 	// category : [B03A02, B04B01, A]
 	gtn: [{type: String}],
 	irc: [{type: String}],
