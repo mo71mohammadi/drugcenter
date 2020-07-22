@@ -61,5 +61,5 @@ productSchema.index({
     "data.packageCode": 1
 }, {unique: true});
 
-productSchema.plugin(uniqueValidator);
-module.exports = mongoose.model('products', productSchema);
+// productSchema.plugin(uniqueValidator);
+// module.exports = mongoose.model('products', productSchema);

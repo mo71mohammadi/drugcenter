@@ -47,10 +47,10 @@ app.use(async (req, res, next) => {
     }
 });
 
-app.use('/api', genericsRouter);
-app.use('/api', recommendsRouter);
-app.use('/api', insurancesRouter);
-app.use('/api', productsRouter);
+// app.use('/api', genericsRouter);
+// app.use('/api', recommendsRouter);
+// app.use('/api', insurancesRouter);
+// app.use('/api', productsRouter);
 app.use('/api', routes);
 
 const Port = 5000;

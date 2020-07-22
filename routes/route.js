@@ -11,6 +11,24 @@ const roleController = require('./roles');
 const userController = require('./users');
 const insurance = require('./insurance');
 const importData = require('./import');
+const product = require('./products');
+const category = require('./category');
+
+router.post('/products/getAll', product.getAll);
+router.post('/products/getOne', product.getOne);
+router.post('/products/create', product.create);
+router.post('/products/delete', product.delete);
+router.post('/products/deletePrice', product.deletePrice);
+router.post('/products/update', product.update);
+router.post('/products/updatePrice', product.updatePrice);
+router.post('/products/import', product.import);
+router.post('/products/importPrice', product.importPrice);
+router.post('/products/category/getAll', category.getAll);
+router.post('/products/category/getOne', category.getOne);
+router.post('/products/category/create', category.create);
+router.post('/products/category/delete', category.delete);
+router.post('/products/category/update', category.update);
+router.post('/products/category/import', category.import);
 
 router.get('/import', importData.import);
 
