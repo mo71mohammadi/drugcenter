@@ -63,7 +63,6 @@ exports.create = async (req, res) => {
 		const filter = req.body;
 		delete filter.price
 		Product.create(filter).then(result => {
-			console.log(result)
 			res.status(200).json(result)
 		}).catch(err => {
 			res.status(401).json(err.message)

@@ -2,17 +2,13 @@ require("dotenv").config();
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const genericsRouter = require('./routes/generics');
-const recommendsRouter = require('./routes/recommends');
-const insurancesRouter = require('./routes/insurances');
-const productsRouter = require('./routes/products');
 const routes = require('./routes/route');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const jwt = require('jsonwebtoken');
 const User = require('./models/userModel');
-const https = require('https');
-const fs = require('fs');
+const  swaggerJsDoc = require("swagger-jsdoc")
+const  swaggerUi = require("swagger-ui-express")
 
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify:false, useUnifiedTopology: true});
 
@@ -29,6 +25,26 @@ var allowCrossDomain = function(req, res, next) {
 };
 
 app.use(allowCrossDomain);
+
+// Extended:
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            title: 'EHRS API',
+            description: "ehrs API Information",
+            contact: {
+                name: "Amazing Developer"
+            },
+            servers: ["http://localhost:5000"]
+        }
+    },
+    // [".routes/*.js"]
+    apis: ["swagger.js"]
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions)
+app.use('/api/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+
 
 app.use(express.json());
 app.use(fileUpload());
@@ -47,10 +63,6 @@ app.use(async (req, res, next) => {
     }
 });
 
-// app.use('/api', genericsRouter);
-// app.use('/api', recommendsRouter);
-// app.use('/api', insurancesRouter);
-// app.use('/api', productsRouter);
 app.use('/api', routes);
 
 const Port = 5000;
