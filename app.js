@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./models/userModel');
 const  swaggerJsDoc = require("swagger-jsdoc")
 const  swaggerUi = require("swagger-ui-express")
+const swaggerDocument = require('./swagger.json');
 
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify:false, useUnifiedTopology: true});
 
@@ -41,9 +42,9 @@ const swaggerOptions = {
     // [".routes/*.js"]
     apis: ["swagger.js"]
 }
-
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
-app.use('/api/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+
+app.use('/api/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 
 app.use(express.json());

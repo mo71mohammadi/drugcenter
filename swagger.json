@@ -1,0 +1,793 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample server EHRS server.",
+    "version": "1.0.0",
+    "title": "EHRS",
+    "contact": {
+      "email": "Admin@ehrs.ir"
+    }
+  },
+  "host": "api.ehrs.ir",
+  "tags": [
+    {
+      "name": "User",
+      "description": "Operations about Users"
+    },
+    {
+      "name": "Product",
+      "description": "Operations about Product"
+    },
+    {
+      "name": "Category",
+      "description": "Operations about Category"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/api/products/getAll": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Return all product by filters",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product filters",
+            "schema": {
+              "type": "object",
+              "required": [
+                "size",
+                "page"
+              ],
+              "properties": {
+                "size": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "page": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/products/getOne": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get product by _id",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product _id",
+            "schema": {
+              "type": "object",
+              "required": [
+                "_id"
+              ],
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bd1d"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/products/create": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Create product item",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product object that needs to save",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/update": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "update product item by _id",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product object that needs to update",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/import": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "import product items from xlsx file",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "products",
+            "in": "formData",
+            "description": "Updated file of the product",
+            "required": true,
+            "type": "file"
+          }        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/delete": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "delete product item by _id",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "_id of the product that needs to be deleted",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bd1d"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/updatePrice": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "add Price product",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "_id of the product that needs to be add price",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bd1d"
+                },
+                "sPrice": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "dPrice": {
+                  "type": "integer",
+                  "example": 300
+                },
+                "cPrice": {
+                  "type": "integer",
+                  "example": 400
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/deletePrice": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "delete Price product",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "_id of the product & _id of the price doc that needs to be delete price",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bd1d"
+                },
+                "priceId": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bsa"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+
+    "/api/products/category/getAll": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "get all categories",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "500": {
+            "description": "error"
+          }
+        }
+      }
+    },
+    "/api/products/category/getOne": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "get category by level",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "name of current level & id of previous level.",
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string",
+                  "example": "L2"
+                },
+                "prevId": {
+                  "type": "string",
+                  "example": "A"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/category/create": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Create new category",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "level and name of current level & id of previous level. if level is 'L1' the 'prevId' is null.",
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string",
+                  "example": "L2"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "ارتوپدی"
+                },
+                "prevId": {
+                  "type": "string",
+                  "example": "A"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          },
+          "500": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/category/import": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "import product items from xlsx file",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "formData",
+            "description": "Updated file of the category",
+            "required": true,
+            "type": "file"
+          }        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/category/delete": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "delete category product",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "id of the category that needs to be delete price",
+            "schema": {
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "C"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/category/update": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "delete Price product",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "id of the category & new name that needs to be update category",
+            "schema": {
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "B"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "رادیولوژی"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Product": {
+      "type": "object",
+      "required": [
+        "eRx",
+        "packageCode"
+      ],
+      "properties": {
+        "eRx": {
+          "type": "string",
+          "example": "eRx123466"
+        },
+        "packageCode": {
+          "type": "string",
+          "example": "A"
+        },
+        "eRxGeneric": {
+          "type": "string",
+          "example": "eRx464545"
+        },
+        "genericCode": {
+          "type": "integer",
+          "example": 45
+
+        },
+        "packageCount": {
+          "type": "integer",
+          "example": 100
+        },
+        "enGenericName": {
+          "type": "string",
+          "example": "Sertraline"
+        },
+        "faGenericName": {
+          "type": "string",
+          "example": "سرترالین"
+        },
+        "enBrandName": {
+          "type": "string",
+          "example": "Zoloft"
+        },
+        "faBrandName": {
+          "type": "string",
+          "example": "زولوفت"
+        },
+        "licenceOwner": {
+          "type": "string",
+          "example": "داروپخش"
+        },
+        "brandOwner": {
+          "type": "string",
+          "example": "داروپخش"
+        },
+        "producer": {
+          "type": "string",
+          "example": "داروپخش"
+        },
+        "countryBrandOwner": {
+          "type": "string",
+          "example": "ایران"
+        },
+        "countryProducer": {
+          "type": "string",
+          "example": "ایران"
+        },
+        "gtn": {
+          "type": "array",
+          "example": ["123456998855"]
+        },
+        "irc": {
+          "type": "array",
+          "example": ["123456998855"]
+        },
+        "category": {
+          "type": "array",
+          "example": ["A01B02"]
+        },
+        "nativeIrc": {
+          "type": "array",
+          "example": ["123456998855005"]
+        },
+        "cName": {
+          "type": "array",
+          "example": ["ضدافسردگی"]
+        },
+        "image": {
+          "type": "array",
+          "example": ["/img/file.png"]
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Category"
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Tag"
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "petId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "shipDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "Order Status",
+          "enum": [
+            "placed",
+            "approved",
+            "delivered"
+          ]
+        },
+        "complete": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "Order"
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
