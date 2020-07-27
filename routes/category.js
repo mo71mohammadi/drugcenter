@@ -243,7 +243,8 @@ exports.import = async (req, res) => {
 			const jsonFile = excel.utils.sheet_to_json(ws);
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
-				await Category.findOne({name: item.L1}).then(async result => {
+				await Category.findOne({level: "L1", name: item.L1}).then(async result => {
+
 					if (!result) {
 						let newObj = await request({
 							url: 'http://api.ehrs.ir/api/products/category/create',
@@ -258,7 +259,7 @@ exports.import = async (req, res) => {
 			}
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
-				await Category.findOne({name: item.L2}).then(async result => {
+				await Category.findOne({level: "L2",name: item.L2}).then(async result => {
 					if (!result) {
 						let newObj = await request({
 							url: 'http://api.ehrs.ir/api/products/category/create',
@@ -273,7 +274,7 @@ exports.import = async (req, res) => {
 			}
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
-				await Category.findOne({name: item.L3}).then(async result => {
+				await Category.findOne({level: "L3",name: item.L3}).then(async result => {
 					if (!result) {
 						let newObj = await request({
 							url: 'http://api.ehrs.ir/api/products/category/create',
@@ -288,7 +289,7 @@ exports.import = async (req, res) => {
 			}
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
-				await Category.findOne({name: item.L4}).then(async result => {
+				await Category.findOne({level: "L4",name: item.L4}).then(async result => {
 					if (!result) {
 						let newObj = await request({
 							url: 'http://api.ehrs.ir/api/products/category/create',
