@@ -141,7 +141,9 @@ exports.import = async (req, res) => {
 		req.connection.setTimeout(1000 * 60 * 10);
 		if (req.files) {
 			const wb = excel.read(req.files.products.data, {cellDates: true});
-			const ws = wb.Sheets['Sheet2'];
+			console.log("obj")
+
+			const ws = wb.Sheets['Sheet1'];
 			const jsonData = excel.utils.sheet_to_json(ws);
 			console.log(jsonData.length);
 			const packObj = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E", 6: "F", 7: "G", 8: "H"};
@@ -167,15 +169,14 @@ exports.import = async (req, res) => {
 				// console.log(obj)
 				// obj.genericCode = obj.genericCode.trim();
 				obj.enBrandName = obj.enBrandName.trim();
-
 				obj.faBrandName = obj.faBrandName.trim();
 				// obj.atc = [{code: obj.atc.trim()}];
 				// obj.category = obj.category.trim();
 				// obj.ddd = obj.ddd.trim();
 				// obj.edl = obj.edl.trim();
-				obj.gtn = [obj.gtn.trim()];
-				obj.irc = [obj.irc.trim()];
-				obj.nativeIRC = obj.nativeIRC.toString().trim();
+				obj.gtn = [obj.gtn.toString().trim()];
+				obj.irc = [obj.irc.toString().trim()];
+				obj.nativeIRC = obj.nativeIrc.toString().trim();
 				obj.licenceOwner = obj.licenceOwner.trim();
 				obj.brandOwner = obj.brandOwner.trim();
 				obj.countryBrandOwner = obj.countryBrandOwner.trim();
@@ -231,7 +232,6 @@ exports.export = async (req, res) => {
 		const filter = req.body;
 		delete filter.page;
 		delete filter.size;
-		// delete filter.responseType;
 		Product.find(filter).then(products => {
 			let productList = [];
 			for (let product of products) {
@@ -246,12 +246,13 @@ exports.export = async (req, res) => {
 				fileName: "products.xlsx",
 				path: "temp"
 			};
+			console.log(productList)
+
 			mongoExcel.mongoData2Xlsx(productList, model, options, function (err, data) {
-				// res.json({'File saved at:': data.fullPath})
 				res.download('temp/' + data.fileName, data.fileName);
 			});
-			// res.json({data: dataList})
-
+		}).catch(err=>{
+			res.status(401).json(err.message)
 		})
 	} catch (err) {
 		res.status(500).json(err.message)

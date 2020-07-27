@@ -208,6 +208,39 @@
         }
       }
     },
+    "/api/products/export": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "export product items xlsx file",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product filters that needs to export",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
     "/api/products/delete": {
       "post": {
         "tags": [

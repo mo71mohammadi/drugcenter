@@ -22,6 +22,7 @@ router.post('/products/deletePrice', product.deletePrice);
 router.post('/products/update', product.update);
 router.post('/products/updatePrice', product.updatePrice);
 router.post('/products/import', product.import);
+router.get('/products/export', product.export);
 router.post('/products/importPrice', product.importPrice);
 router.post('/products/category/getAll', category.getAll);
 router.post('/products/category/getOne', category.getOne);
