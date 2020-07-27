@@ -261,7 +261,7 @@ exports.import = async (req, res) => {
 				await Category.findOne({name: item.L2}).then(async result => {
 					if (!result) {
 						let newObj = await request({
-							url: 'http://127.0.0.1:5000/api/products/category/create',
+							url: 'http://api.ehrs.ir/api/products/category/create',
 							method: 'POST',
 							json: {prevId: item.L1, level: "L2", name: item.L2}
 						})
@@ -276,7 +276,7 @@ exports.import = async (req, res) => {
 				await Category.findOne({name: item.L3}).then(async result => {
 					if (!result) {
 						let newObj = await request({
-							url: 'http://127.0.0.1:5000/api/products/category/create',
+							url: 'http://api.ehrs.ir/api/products/category/create',
 							method: 'POST',
 							json: {prevId: item.L2, level: "L3", name: item.L3}
 						})
@@ -291,7 +291,7 @@ exports.import = async (req, res) => {
 				await Category.findOne({name: item.L4}).then(async result => {
 					if (!result) {
 						let newObj = await request({
-							url: 'http://127.0.0.1:5000/api/products/category/create',
+							url: 'http://api.ehrs.ir/api/products/category/create',
 							method: 'POST',
 							json: {prevId: item.L3, level: "L4", name: item.L4}
 						})
