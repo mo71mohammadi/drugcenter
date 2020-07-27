@@ -246,7 +246,7 @@ exports.import = async (req, res) => {
 				await Category.findOne({name: item.L1}).then(async result => {
 					if (!result) {
 						let newObj = await request({
-							url: 'http://127.0.0.1:5000/api/products/category/create',
+							url: 'http://api.ehrs.ir/api/products/category/create',
 							method: 'POST',
 							json: {level: "L1", name: item.L1}
 						})
