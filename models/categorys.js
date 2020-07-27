@@ -20,13 +20,14 @@ const categorySchema = new mongoose.Schema({
 	// }
 	level: {type: String},
 	id: {type: String, unique: true},
-	name: {type: String, unique: true},
+	name: {type: String},
 	fullName: {type: String},
 })
 
-// categorySchema.index({
-// 	id: 1,
-// }, {unique: true});
+categorySchema.index({
+	level: 1,
+	name: 1
+}, {unique: true});
 categorySchema.plugin(uniqueValidator);
 
 
