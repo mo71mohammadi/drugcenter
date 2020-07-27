@@ -18,12 +18,14 @@ router.post('/products/getAll', product.getAll);
 router.post('/products/getOne', product.getOne);
 router.post('/products/create', product.create);
 router.post('/products/delete', product.delete);
-router.post('/products/deletePrice', product.deletePrice);
 router.post('/products/update', product.update);
-router.post('/products/updatePrice', product.updatePrice);
 router.post('/products/import', product.import);
 router.get('/products/export', product.export);
+
+router.put('/products/price', product.updatePrice);
+router.delete('/products/price', product.deletePrice);
 router.post('/products/importPrice', product.importPrice);
+
 router.post('/products/category/getAll', category.getAll);
 router.post('/products/category/getOne', category.getOne);
 router.post('/products/category/create', category.create);

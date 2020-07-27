@@ -19,7 +19,11 @@
       "description": "Operations about Product"
     },
     {
-      "name": "Category",
+      "name": "Product Price",
+      "description": "Operations about Price"
+    },
+    {
+      "name": "Product Category",
       "description": "Operations about Category"
     }
   ],
@@ -279,10 +283,11 @@
         }
       }
     },
-    "/api/products/updatePrice": {
-      "post": {
+
+    "/api/products/price": {
+      "put": {
         "tags": [
-          "Product"
+          "Product Price"
         ],
         "summary": "add Price product",
         "description": "",
@@ -327,12 +332,10 @@
             "description": "product validation failed"
           }
         }
-      }
-    },
-    "/api/products/deletePrice": {
-      "post": {
+      },
+      "delete": {
         "tags": [
-          "Product"
+          "Product Price"
         ],
         "summary": "delete Price product",
         "description": "",
@@ -375,7 +378,7 @@
     "/api/products/category/getAll": {
       "post": {
         "tags": [
-          "Category"
+          "Product Category"
         ],
         "summary": "get all categories",
         "description": "",
@@ -398,7 +401,7 @@
     "/api/products/category/getOne": {
       "post": {
         "tags": [
-          "Category"
+          "Product Category"
         ],
         "summary": "get category by level",
         "description": "",
@@ -440,7 +443,7 @@
     "/api/products/category/create": {
       "post": {
         "tags": [
-          "Category"
+          "Product Category"
         ],
         "summary": "Create new category",
         "description": "",
@@ -489,7 +492,7 @@
     "/api/products/category/import": {
       "post": {
         "tags": [
-          "Category"
+          "Product Category"
         ],
         "summary": "import product items from xlsx file",
         "description": "",
@@ -520,7 +523,7 @@
     "/api/products/category/delete": {
       "post": {
         "tags": [
-          "Category"
+          "Product Category"
         ],
         "summary": "delete category product",
         "description": "",
@@ -558,7 +561,7 @@
     "/api/products/category/update": {
       "post": {
         "tags": [
-          "Category"
+          "Product Category"
         ],
         "summary": "delete Price product",
         "description": "",
