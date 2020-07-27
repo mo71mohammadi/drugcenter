@@ -63,7 +63,7 @@ exports.create = async (req, res) => {
 		const filter = req.body;
 		delete filter.price
 		Product.create(filter).then(result => {
-			res.status(200).json(result)
+			res.status(200).json({message: "product insert Successfully.", result})
 		}).catch(err => {
 			res.status(401).json(err.message)
 		})
@@ -77,7 +77,7 @@ exports.update = async (req, res) => {
 		const filter = req.body;
 		delete filter.price
 		Product.updateOne({_id: filter._id}, filter).then((result) => {
-			res.status(200).json({message: "product Update Successfully!", result});
+			res.status(200).json({message: "product Update Successfully.", result});
 		}).catch(err => {
 			if (err.path === '_id') res.status(500).json({message: "Product _id not found!", result: null});
 			else res.status(500).json(err.message)
@@ -162,6 +162,19 @@ exports.import = async (req, res) => {
 				eRxList.map(e => {
 					if (e === obj.eRx.slice(0, 9)) count++
 				});
+				if (obj.L1) obj.L1 = obj.L1.replace(/ {2,}/g, ' ').trim();
+				if (obj.L2) obj.L2 = obj.L2.replace(/ {2,}/g, ' ').trim();
+				if (obj.L3) obj.L3 = obj.L3.replace(/ {2,}/g, ' ').trim();
+				if (obj.L4) obj.L4 = obj.L4.replace(/ {2,}/g, ' ').trim()
+				let search
+				if (!obj.L1) return res.status(401).json({message: "L1 not found."})
+				else if (!obj.L2) search = {level: "L1", name: obj.L1}
+				else if (!obj.L3) search = {level: "L2", name: obj.L1 + "-" + obj.L2}
+				else if (!obj.L4) search = {level: "L3", name: obj.L1 + "-" + obj.L2 + "-" + obj.L3}
+				else search = {level: "L4", name: obj.L1 + "-" + obj.L2 + "-" + obj.L3 + "-" + obj.L4}
+				const category = await Category.findOne(search)
+				if (!category) return res.status(401).json({message: "category not found. first import Category"})
+				obj.category = category.id
 				obj.eRx = obj.eRx.slice(0, 9);
 				obj.packageCode = packObj[count];
 				// obj.packageCount = obj.packageCount;

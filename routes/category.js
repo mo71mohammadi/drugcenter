@@ -156,8 +156,7 @@ exports.create = async (req, res) => {
 		// })
 		let regex
 		let {level, name, prevId} = req.body
-		name = name.replace(/ {2}/g, ' ').trim();
-		name = name.replace(/ {2}/g, ' ').trim();
+		name = name.replace(/ {2,}/g, ' ').trim();
 		let obj = {level: level, id: '', name: name, fullName: ""}
 		if (level === "L1") {
 			prevId = "";
