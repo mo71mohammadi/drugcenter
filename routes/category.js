@@ -241,8 +241,8 @@ exports.delete = async (req, res) => {
 exports.import = async (req, res) => {
 	try {
 		let regex
-		const url = 'http://api.ehrs.ir/api/products/category/create'
-		// const url = 'http://localhost:5000/api/products/category/create'
+		// const url = 'http://api.ehrs.ir/api/products/category/create'
+		const url = 'http://localhost:5000/api/products/category/create'
 		req.connection.setTimeout(1000 * 60 * 10);
 		if (req.files) {
 			const wb = excel.read(req.files.category.data, {cellDates: true});
@@ -252,11 +252,15 @@ exports.import = async (req, res) => {
 			// 	const level = jsonFile.level.split('-')
 			// 	console.log(level)
 			// }
+			const levelOne = []
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
 				if (jsonFile[index].hasOwnProperty('level')) {
 					item.L1 = item.level.split(' - ')[0].replace(/ {2,}/g, ' ').trim()
 				}
+				if (levelOne.includes(item.L1)) {
+					continue
+				} else levelOne.push(item.L1)
 				await Category.findOne({level: "L1", name: item.L1}).then(async result => {
 					if (!result) {
 						let newObj = await request({
@@ -270,13 +274,18 @@ exports.import = async (req, res) => {
 					}
 				})
 			}
+			const levelTwo = []
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
 				if (jsonFile[index].hasOwnProperty('level')) {
 					item.L2 = item.level.split(' - ')[1].replace(/ {2,}/g, ' ').trim()
 				}
+				if (levelTwo.includes(item.L2)) {
+					continue
+				} else levelTwo.push(item.L2)
+
 				regex = new RegExp(`^${item.L1}`);
-				await Category.findOne({id: {$regex: regex}, level: "L2",name: item.L2}).then(async result => {
+				await Category.findOne({id: {$regex: regex}, level: "L2", name: item.L2}).then(async result => {
 					if (!result) {
 						let newObj = await request({
 							url: url,
@@ -289,13 +298,18 @@ exports.import = async (req, res) => {
 					}
 				})
 			}
+			const levelThree = []
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
 				if (jsonFile[index].hasOwnProperty('level')) {
 					item.L3 = item.level.split(' - ')[2].replace(/ {2,}/g, ' ').trim()
 				}
+				if (levelThree.includes(item.L2)) {
+					continue
+				} else levelThree.push(item.L2)
+
 				regex = new RegExp(`^${item.L2}`);
-				await Category.findOne({id: {$regex: regex}, level: "L3",name: item.L3}).then(async result => {
+				await Category.findOne({id: {$regex: regex}, level: "L3", name: item.L3}).then(async result => {
 					if (!result) {
 						let newObj = await request({
 							url: url,
@@ -308,14 +322,18 @@ exports.import = async (req, res) => {
 					}
 				})
 			}
+			const levelFour = []
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
 				if (jsonFile[index].hasOwnProperty('level')) {
 					item.L4 = item.level.split(' - ')[3].replace(/ {2,}/g, ' ').trim()
 				}
+				if (levelFour.includes(item.L2)) {
+					continue
+				} else levelFour.push(item.L2)
 				regex = new RegExp(`^${item.L3}`);
 
-				await Category.findOne({id: {$regex: regex}, level: "L4",name: item.L4}).then(async result => {
+				await Category.findOne({id: {$regex: regex}, level: "L4", name: item.L4}).then(async result => {
 					if (!result) {
 						let newObj = await request({
 							url: url,
@@ -329,8 +347,7 @@ exports.import = async (req, res) => {
 				})
 			}
 			res.status(200).json({message: 'import categories successfully!'})
-		}
-		else {
+		} else {
 			res.status(401).json({message: 'File Not Found!'})
 		}
 	} catch (err) {
