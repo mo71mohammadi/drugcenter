@@ -37,6 +37,7 @@ exports.getAll = async (req, res) => {
 				product = product.toObject();
 				product.priceHistory = product.price
 				product.price = product.priceHistory[product.priceHistory.length - 1]
+				if (!product.price) product.price = {sPrice: 0, dPrice: 0, cPrice: 0}
 				productList.push(product)
 			}
 			res.status(200).json({count, data: productList})
