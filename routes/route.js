@@ -13,6 +13,7 @@ const insurance = require('./insurance');
 const importData = require('./import');
 const product = require('./products');
 const category = require('./category');
+const price = require('./prices');
 
 router.post('/products/getAll', product.getAll);
 router.post('/products/getOne', product.getOne);
@@ -22,9 +23,12 @@ router.post('/products/update', product.update);
 router.post('/products/import', product.import);
 router.get('/products/export', product.export);
 
-router.put('/products/price', product.updatePrice);
-router.delete('/products/price', product.deletePrice);
-router.post('/products/importPrice', product.importPrice);
+router.put('/products/price', price.update);
+router.delete('/products/price', price.delete);
+
+router.get('/price/getAll', price.getAll);
+router.get('/price/download', price.download);
+router.put('/price/update', price.Update);
 
 router.post('/products/category/getAll', category.getAll);
 router.post('/products/category/getOne', category.getOne);

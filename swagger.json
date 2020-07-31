@@ -8,7 +8,6 @@
       "email": "Admin@ehrs.ir"
     }
   },
-  "host": "api.ehrs.ir",
   "tags": [
     {
       "name": "User",
@@ -370,6 +369,62 @@
           },
           "401": {
             "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/price/getAll": {
+      "get": {
+        "tags": [
+          "Product Price"
+        ],
+        "summary": "get all prices",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Sites values that need to be considered for filter",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ttac"
+            ]
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "type",
+            "required": true,
+            "in": "query",
+            "type": "string",
+            "enum": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "500": {
+            "description": "error"
           }
         }
       }

@@ -3,6 +3,7 @@ import xlrd
 import requests
 import json
 import pandas as pd
+import pymongo
 
 s = requests.Session()
 start = s.get('https://statisticsreports.ttac.ir/Product/ExportToExcelForGetProducts?pageNumber=1&pageSize=85000')
@@ -50,4 +51,4 @@ j = json.dumps(product_list)
 with open('data.json', 'w') as f:
     f.write(j)
 
-print("finish")
+print("get price successfully from TTAC.")

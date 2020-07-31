@@ -32,22 +32,21 @@ exports.getAll = async (req, res) => {
 		}
 		Product.find(search).skip(size * page).limit(size).sort({_id: -1}).then(async products => {
 			const count = await Product.countDocuments(search);
-			// const productList = [];
-			// for (const product of products) {
-			// 	delete product.upToDateId;
-			// 	delete product.medScapeId;
-			// 	productList.push(product)
-			// }
-			res.status(200).json({count, data: products})
+			const productList = []
+			for (let product of products) {
+				product = product.toObject();
+				product.priceHistory = product.price
+				product.price = product.priceHistory[product.priceHistory.length - 1]
+				productList.push(product)
+			}
+			res.status(200).json({count, data: productList})
 		}).catch(err => {
 			res.status(401).json(err.message)
 		});
-
 	} catch (err) {
 		res.status(500).json(err.message)
 	}
 };
-
 exports.getOne = async (req, res) => {
 	try {
 		Product.findById(req.body._id).then(product => {
@@ -57,7 +56,6 @@ exports.getOne = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
 exports.create = async (req, res) => {
 	try {
 		const filter = req.body;
@@ -71,7 +69,6 @@ exports.create = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
 exports.update = async (req, res) => {
 	try {
 		const filter = req.body;
@@ -86,45 +83,6 @@ exports.update = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
-exports.updatePrice = async (req, res) => {
-	try {
-		const {_id, sPrice, dPrice, cPrice} = req.body;
-		const obj = {Date: `${new Date().toISOString()}`, sPrice: sPrice, cPrice: cPrice, dPrice: dPrice}
-		Product.updateOne({
-			_id: _id,
-			$or: [{"price.sPrice": {$ne: sPrice}}, {"price.cPrice": {$ne: cPrice}}, {"price.dPrice": {$ne: dPrice}}]
-		}, {$addToSet: {price: obj}}).then((result) => {
-			if (result.n === 0) res.status(401).json({message: "_id Not Found or Price Add previously", result: null})
-			res.status(200).json({message: "Price Add Successfully", result})
-		}).catch(err => {
-			res.status(401).json({message: err.message, result: null})
-
-		})
-		// { "carrier.state": { $ne: "NY" }
-		// Product.findOne({_id: _id}).then(result => {
-		// 	if (result) {
-		// 		console.log(result, object)
-		// 		if (result.sPrice !== sPrice || result.cPrice !== cPrice || result.dPrice !== dPrice) {
-		// 		}
-		// 	}
-		// })
-	} catch (err) {
-		res.status(500).json(err.message)
-	}
-}
-
-exports.deletePrice = async (req, res) => {
-	try {
-		const {_id, priceId} = req.body;
-		Product.updateOne({_id: _id}, {$pull: {price: {_id: priceId}}}).then(result => {
-			res.status(200).json({message: result})
-		})
-	} catch (err) {
-		res.status(500).json(err.message)
-	}
-}
-
 exports.delete = async (req, res) => {
 	try {
 		Product.findByIdAndDelete(req.body._id).then(result => {
@@ -135,7 +93,6 @@ exports.delete = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
 exports.import = async (req, res) => {
 	try {
 		req.connection.setTimeout(1000 * 60 * 10);
@@ -156,7 +113,6 @@ exports.import = async (req, res) => {
 				for (const key of Object.keys(obj)) {
 					if (!["genericCode", "packageCount"].includes(key) && ['0', 0, '-'].includes(obj[key])) obj[key] = ''
 				}
-				console.log(obj)
 				eRxList.push(obj.eRx.slice(0, 9));
 				let count = 0;
 				eRxList.map(e => {
@@ -167,11 +123,17 @@ exports.import = async (req, res) => {
 				if (obj.L3) obj.L3 = obj.L3.replace(/ {2,}/g, ' ').trim();
 				if (obj.L4) obj.L4 = obj.L4.replace(/ {2,}/g, ' ').trim()
 				let search
-				if (!obj.L1) return res.status(401).json({message: "L1 not found."})
-				else if (!obj.L2) search = {level: "L1", name: obj.L1}
-				else if (!obj.L3) search = {level: "L2", name: obj.L1 + "-" + obj.L2}
-				else if (!obj.L4) search = {level: "L3", name: obj.L1 + "-" + obj.L2 + "-" + obj.L3}
-				else search = {level: "L4", name: obj.L1 + "-" + obj.L2 + "-" + obj.L3 + "-" + obj.L4}
+				if (!obj.L1 && !obj.level) return res.status(401).json({message: "level 0r L1 not found."})
+				else if (obj.level)	{
+					const level = obj.level.split(' - ')
+					let levelList = []
+					for (let L of level) levelList.push(L.replace(/ {2,}/g, ' ').trim())
+					search = {level: "L4", fullName: levelList.join(' - ')}
+				}
+				else if (!obj.L2) search = {level: "L1", fullName: obj.L1}
+				else if (!obj.L3) search = {level: "L2", fullName: obj.L1 + " - " + obj.L2}
+				else if (!obj.L4) search = {level: "L3", fullName: obj.L1 + " - " + obj.L2 + " - " + obj.L3}
+				else search = {level: "L4", fullName: obj.L1 + " - " + obj.L2 + " - " + obj.L3 + " - " + obj.L4}
 				const category = await Category.findOne(search)
 				if (!category) return res.status(401).json({message: "category not found. first import Category"})
 				obj.category = category.id
@@ -181,21 +143,21 @@ exports.import = async (req, res) => {
 				// obj.packageType = obj.packageType.trim();
 				// console.log(obj)
 				// obj.genericCode = obj.genericCode.trim();
-				obj.enBrandName = obj.enBrandName.trim();
-				obj.faBrandName = obj.faBrandName.trim();
+				obj.enBrandName = obj.enBrandName.toString().trim();
+				obj.faBrandName = obj.faBrandName.toString().trim();
 				// obj.atc = [{code: obj.atc.trim()}];
 				// obj.category = obj.category.trim();
 				// obj.ddd = obj.ddd.trim();
 				// obj.edl = obj.edl.trim();
-				obj.gtn = [obj.gtn.toString().trim()];
-				obj.irc = [obj.irc.toString().trim()];
+				obj.gtn = obj.gtn.toString().trim().split('\n');
+				obj.irc = obj.irc.toString().trim().split('\n');
 				obj.nativeIRC = obj.nativeIrc.toString().trim();
-				obj.licenceOwner = obj.licenceOwner.trim();
-				obj.brandOwner = obj.brandOwner.trim();
-				obj.countryBrandOwner = obj.countryBrandOwner.trim();
-				obj.countryProducer = obj.countryProducer.trim();
-				obj.producer = obj.producer.trim();
-				obj.cName = [obj.cName.trim()];
+				obj.licenceOwner = obj.licenceOwner.toString().trim();
+				obj.brandOwner = obj.brandOwner.toString().trim();
+				obj.countryBrandOwner = obj.countryBrandOwner.toString().trim();
+				obj.countryProducer = obj.countryProducer.toString().trim();
+				obj.producer = obj.producer.toString().trim();
+				obj.cName = [obj.cName.toString().trim()];
 				// obj.enName = obj.enName.trim();
 				// obj.faName = obj.faName.trim();
 				// obj.strength = obj.strength.trim();
@@ -226,20 +188,6 @@ exports.import = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
-exports.importPrice = async (req, res) => {
-	try {
-		req.connection.setTimeout(1000 * 60 * 10);
-		const wb = excel.read(req.files.price.data, {cellDates: true});
-		const ws = wb.Sheets['Sheet1'];
-		const jsonData = excel.utils.sheet_to_json(ws);
-		console.log(jsonData);
-		// Product.
-	} catch (err) {
-		res.status(500).json(err.message)
-	}
-}
-
 exports.export = async (req, res) => {
 	try {
 		const filter = req.body;
@@ -271,4 +219,5 @@ exports.export = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
+
 

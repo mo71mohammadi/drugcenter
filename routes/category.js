@@ -164,7 +164,7 @@ exports.create = async (req, res) => {
 		} else if (["L2", "L3", "L4"].includes(level)) {
 			const prevObj = await Category.findOne({id: prevId})
 			if (!prevObj) return res.status(401).json({message: "This prevId not exist!"})
-			else obj.fullName = prevObj.fullName + "-" + name
+			else obj.fullName = prevObj.fullName + " - " + name
 		} else return res.status(401).json({message: "level is not exist!"})
 		const alphabet = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 		const number = [...Array(100).keys()];
@@ -178,10 +178,14 @@ exports.create = async (req, res) => {
 			}
 			if (level === "L1" || level === "L3") obj.id = prevId + alphabet[0]
 			if (level === "L2" || level === "L4") {
-				if (number[0].toString().length < 2) obj.id = prevId + "0" + number[1]
+				if (number[1].toString().length < 2) obj.id = prevId + "0" + number[1]
 				else obj.id = prevId + number[1]
 			}
-			Category.create(obj).then(result => res.status(200).json(result)).catch(err => res.status(200).json(err.message))
+			Category.create(obj).then(result => {
+				res.status(200).json(result)
+			}).catch(err => {
+				res.status(200).json(err.message)
+			})
 		})
 	} catch (err) {
 		res.status(500).json(err.message)
@@ -236,18 +240,27 @@ exports.delete = async (req, res) => {
 
 exports.import = async (req, res) => {
 	try {
+		let regex
+		// const url = 'http://api.ehrs.ir/api/products/category/create'
+		const url = 'http://localhost:5000/api/products/category/create'
 		req.connection.setTimeout(1000 * 60 * 10);
 		if (req.files) {
 			const wb = excel.read(req.files.category.data, {cellDates: true});
 			const ws = wb.Sheets['Sheet1'];
 			const jsonFile = excel.utils.sheet_to_json(ws);
+			// if (jsonFile[0].hasOwnProperty('level')) {
+			// 	const level = jsonFile.level.split('-')
+			// 	console.log(level)
+			// }
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
+				if (jsonFile[index].hasOwnProperty('level')) {
+					item.L1 = item.level.split(' - ')[0].replace(/ {2,}/g, ' ').trim()
+				}
 				await Category.findOne({level: "L1", name: item.L1}).then(async result => {
-
 					if (!result) {
 						let newObj = await request({
-							url: 'http://api.ehrs.ir/api/products/category/create',
+							url: url,
 							method: 'POST',
 							json: {level: "L1", name: item.L1}
 						})
@@ -259,10 +272,14 @@ exports.import = async (req, res) => {
 			}
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
-				await Category.findOne({level: "L2",name: item.L2}).then(async result => {
+				if (jsonFile[index].hasOwnProperty('level')) {
+					item.L2 = item.level.split(' - ')[1].replace(/ {2,}/g, ' ').trim()
+				}
+				regex = new RegExp(`^${item.L1}`);
+				await Category.findOne({id: {$regex: regex}, level: "L2",name: item.L2}).then(async result => {
 					if (!result) {
 						let newObj = await request({
-							url: 'http://api.ehrs.ir/api/products/category/create',
+							url: url,
 							method: 'POST',
 							json: {prevId: item.L1, level: "L2", name: item.L2}
 						})
@@ -274,10 +291,14 @@ exports.import = async (req, res) => {
 			}
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
-				await Category.findOne({level: "L3",name: item.L3}).then(async result => {
+				if (jsonFile[index].hasOwnProperty('level')) {
+					item.L3 = item.level.split(' - ')[2].replace(/ {2,}/g, ' ').trim()
+				}
+				regex = new RegExp(`^${item.L2}`);
+				await Category.findOne({id: {$regex: regex}, level: "L3",name: item.L3}).then(async result => {
 					if (!result) {
 						let newObj = await request({
-							url: 'http://api.ehrs.ir/api/products/category/create',
+							url: url,
 							method: 'POST',
 							json: {prevId: item.L2, level: "L3", name: item.L3}
 						})
@@ -289,10 +310,15 @@ exports.import = async (req, res) => {
 			}
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
-				await Category.findOne({level: "L4",name: item.L4}).then(async result => {
+				if (jsonFile[index].hasOwnProperty('level')) {
+					item.L4 = item.level.split(' - ')[3].replace(/ {2,}/g, ' ').trim()
+				}
+				regex = new RegExp(`^${item.L3}`);
+
+				await Category.findOne({id: {$regex: regex}, level: "L4",name: item.L4}).then(async result => {
 					if (!result) {
 						let newObj = await request({
-							url: 'http://api.ehrs.ir/api/products/category/create',
+							url: url,
 							method: 'POST',
 							json: {prevId: item.L3, level: "L4", name: item.L4}
 						})
