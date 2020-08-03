@@ -5,6 +5,19 @@ const mongoExcel = require('mongo-xlsx')
 const fs = require('fs')
 const Product = require("../models/products")
 const Category = require("../models/categorys")
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, './uploads/');
+	},
+	filename: function (req, file, cb) {
+		console.log(req)
+
+		cb(null, new Date().toISOString() + file.originalname)
+	}
+})
+const upload = multer({storage: storage}).single("productImg")
 
 
 /*
@@ -57,14 +70,19 @@ exports.getOne = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-exports.create = async (req, res) => {
+exports.create = async (req, res, next) => {
 	try {
-		const filter = req.body;
-		delete filter.price
-		Product.create(filter).then(result => {
-			res.status(200).json({message: "product insert Successfully.", result})
-		}).catch(err => {
-			res.status(401).json(err.message)
+
+		const name = `${Date.now() + Math.floor(Math.random() * 10000)}` + req.files.productImg.name.match(/(\.\b)(?!.*\1).*/)[0]
+		fs.writeFile(`uploads/${name}`, req.files.productImg.data, 'binary', function (err, data){
+			const filter = req.body;
+			delete filter.price
+			filter.image = name
+			Product.create(filter).then(result => {
+				res.status(200).json({message: "product insert Successfully.", result})
+			}).catch(err => {
+				res.status(401).json(err.message)
+			})
 		})
 	} catch (err) {
 		res.status(500).json(err.message)
@@ -125,13 +143,12 @@ exports.import = async (req, res) => {
 				if (obj.L4) obj.L4 = obj.L4.replace(/ {2,}/g, ' ').trim()
 				let search
 				if (!obj.L1 && !obj.level) return res.status(401).json({message: "level 0r L1 not found."})
-				else if (obj.level)	{
+				else if (obj.level) {
 					const level = obj.level.split(' - ')
 					let levelList = []
 					for (let L of level) levelList.push(L.replace(/ {2,}/g, ' ').trim())
 					search = {level: "L4", fullName: levelList.join(' - ')}
-				}
-				else if (!obj.L2) search = {level: "L1", fullName: obj.L1}
+				} else if (!obj.L2) search = {level: "L1", fullName: obj.L1}
 				else if (!obj.L3) search = {level: "L2", fullName: obj.L1 + " - " + obj.L2}
 				else if (!obj.L4) search = {level: "L3", fullName: obj.L1 + " - " + obj.L2 + " - " + obj.L3}
 				else search = {level: "L4", fullName: obj.L1 + " - " + obj.L2 + " - " + obj.L3 + " - " + obj.L4}
@@ -213,7 +230,7 @@ exports.export = async (req, res) => {
 			mongoExcel.mongoData2Xlsx(productList, model, options, function (err, data) {
 				res.download('temp/' + data.fileName, data.fileName);
 			});
-		}).catch(err=>{
+		}).catch(err => {
 			res.status(401).json(err.message)
 		})
 	} catch (err) {

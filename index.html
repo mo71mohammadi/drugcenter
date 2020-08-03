@@ -6,6 +6,10 @@
 </head>
 <body>
  <h1>Hellow World</h1>
+ <form action="/test" method="post" enctype="multipart/form-data">
+         <input type="file" id="productImg" name="productImg">
+     <input type="submit" value="upload">
+ </form>
  <form action="/api/products/import" method="post" enctype="multipart/form-data">
          <input type="file" id="products" name="products">
      <input type="submit" value="upload">

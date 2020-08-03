@@ -15,6 +15,7 @@ const product = require('./products');
 const category = require('./category');
 const price = require('./prices');
 
+
 router.post('/products/getAll', product.getAll);
 router.post('/products/getOne', product.getOne);
 router.post('/products/create', product.create);
