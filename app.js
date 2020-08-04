@@ -11,8 +11,6 @@ const swaggerJsDoc = require("swagger-jsdoc")
 const swaggerUi = require("swagger-ui-express")
 const swaggerDocument = require('./swagger.json');
 
-app.use(express.static(__dirname+'/uploads'));
-
 
 mongoose.connect(process.env.DATABASE_URL, {
 	useNewUrlParser: true,
@@ -56,7 +54,7 @@ app.use('/api/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 
 app.use(express.json());
-app.use(fileUpload());
+// app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(async (req, res, next) => {
 	if (req.headers["authorization"]) {
@@ -72,6 +70,7 @@ app.use(async (req, res, next) => {
 		next();
 	}
 });
+app.use(express.static(__dirname + '/uploads'));
 
 app.use('/api', routes);
 

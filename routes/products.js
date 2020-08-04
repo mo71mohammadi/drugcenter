@@ -6,18 +6,18 @@ const fs = require('fs')
 const Product = require("../models/products")
 const Category = require("../models/categorys")
 const multer = require('multer')
-
 const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, './uploads/');
+	destination: function(req, file, cb) {
+		cb(null, 'uploads/');
 	},
-	filename: function (req, file, cb) {
-		console.log(req)
 
-		cb(null, new Date().toISOString() + file.originalname)
+	// By default, multer removes file extensions so let's add them back
+	filename: function(req, file, cb) {
+		cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
 	}
-})
-const upload = multer({storage: storage}).single("productImg")
+});
+const helpers = require('../helpers');
+const path = require('path');
 
 
 /*
@@ -70,20 +70,28 @@ exports.getOne = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-exports.create = async (req, res, next) => {
+exports.create = async (req, res) => {
 	try {
-
-		const name = `${Date.now() + Math.floor(Math.random() * 10000)}` + req.files.productImg.name.match(/(\.\b)(?!.*\1).*/)[0]
-		fs.writeFile(`uploads/${name}`, req.files.productImg.data, 'binary', function (err, data){
+		let upload = multer({ storage: storage, fileFilter: helpers.imageFilter }).single('profile_pic');
+		upload(req, res, function(err) {
+			if (req.fileValidationError) return res.send(req.fileValidationError)
+			else if (!req.file) return res.send('Please select an image to upload')
+			else if (err instanceof multer.MulterError) return res.send(err)
+			else if (err) return res.send(err)
 			const filter = req.body;
 			delete filter.price
-			filter.image = name
+			filter.image = req.file.filename
 			Product.create(filter).then(result => {
 				res.status(200).json({message: "product insert Successfully.", result})
 			}).catch(err => {
 				res.status(401).json(err.message)
 			})
-		})
+			res.send(`You have uploaded this image: <hr/><img src="${req.file.path}" width="500"><hr /><a href="./">Upload another image</a>`);
+		});
+
+		// const name = `${Date.now() + Math.floor(Math.random() * 10000)}` + req.files.productImg.name.match(/(\.\b)(?!.*\1).*/)[0]
+		// fs.writeFile(`uploads/${name}`, req.files.productImg.data, 'binary', function (err, data){
+		// })
 	} catch (err) {
 		res.status(500).json(err.message)
 	}
