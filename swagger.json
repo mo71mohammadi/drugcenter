@@ -122,7 +122,7 @@
         "summary": "Create product item",
         "description": "",
         "consumes": [
-          "application/json"
+          "multipart/form-data"
         ],
         "produces": [
           "application/json"
