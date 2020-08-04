@@ -72,7 +72,7 @@ exports.getOne = async (req, res) => {
 };
 exports.create = async (req, res) => {
 	try {
-		let upload = multer({ storage: storage, fileFilter: helpers.imageFilter }).single('profile_pic');
+		let upload = multer({ storage: storage, fileFilter: helpers.imageFilter }).single('productImg');
 		upload(req, res, function(err) {
 			if (req.fileValidationError) return res.send(req.fileValidationError)
 			else if (!req.file) return res.send('Please select an image to upload')
@@ -84,9 +84,9 @@ exports.create = async (req, res) => {
 			Product.create(filter).then(result => {
 				res.status(200).json({message: "product insert Successfully.", result})
 			}).catch(err => {
+				fs.unlinkSync(req.file.path)
 				res.status(401).json(err.message)
 			})
-			res.send(`You have uploaded this image: <hr/><img src="${req.file.path}" width="500"><hr /><a href="./">Upload another image</a>`);
 		});
 
 		// const name = `${Date.now() + Math.floor(Math.random() * 10000)}` + req.files.productImg.name.match(/(\.\b)(?!.*\1).*/)[0]
