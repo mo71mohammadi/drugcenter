@@ -129,12 +129,105 @@
         ],
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "description": "Product object that needs to save",
-            "schema": {
-              "$ref": "#/definitions/Product"
-            }
+            "name": "eRx",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "packageCode",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "eRxGeneric",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "genericCode",
+            "in": "formData",
+            "type": "number"
+          },
+          {
+            "name": "packageCount",
+            "in": "formData",
+            "type": "number"
+          },
+          {
+            "name": "enGenericName",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "faGenericName",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "enBrandName",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "faBrandName",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "licenceOwner",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "brandOwner",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "producer",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "countryBrandOwner",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "countryProducer",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "gtn",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "irc",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "nativeIrc",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "cName",
+            "in": "formData",
+            "type": "string"
+          },
+          {
+            "name": "productImg",
+            "in": "formData",
+            "description": "Updated images of the product",
+            "type": "file"
           }
         ],
         "responses": {
@@ -200,7 +293,8 @@
             "description": "Updated file of the product",
             "required": true,
             "type": "file"
-          }        ],
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response"
@@ -282,7 +376,6 @@
         }
       }
     },
-
     "/api/products/price": {
       "put": {
         "tags": [
@@ -429,7 +522,6 @@
         }
       }
     },
-
     "/api/products/category/getAll": {
       "post": {
         "tags": [
@@ -564,7 +656,8 @@
             "description": "Updated file of the category",
             "required": true,
             "type": "file"
-          }        ],
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response"
@@ -695,7 +788,6 @@
         "genericCode": {
           "type": "integer",
           "example": 45
-
         },
         "packageCount": {
           "type": "integer",
@@ -739,27 +831,33 @@
         },
         "gtn": {
           "type": "array",
-          "example": ["123456998855"]
+          "example": [
+            "123456998855"
+          ]
         },
         "irc": {
           "type": "array",
-          "example": ["123456998855"]
+          "example": [
+            "123456998855"
+          ]
         },
         "category": {
           "type": "array",
-          "example": ["A01B02"]
+          "example": [
+            "A01B02"
+          ]
         },
         "nativeIrc": {
           "type": "array",
-          "example": ["123456998855005"]
+          "example": [
+            "123456998855005"
+          ]
         },
         "cName": {
           "type": "array",
-          "example": ["ضدافسردگی"]
-        },
-        "image": {
-          "type": "array",
-          "example": ["/img/file.png"]
+          "example": [
+            "ضدافسردگی"
+          ]
         }
       }
     }

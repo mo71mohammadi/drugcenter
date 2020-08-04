@@ -72,19 +72,26 @@ exports.getOne = async (req, res) => {
 };
 exports.create = async (req, res) => {
 	try {
-		let upload = multer({ storage: storage, fileFilter: helpers.imageFilter }).single('productImg');
+		let upload = multer({ storage: storage, fileFilter: helpers.imageFilter }).array('productImg', 10);
 		upload(req, res, function(err) {
 			if (req.fileValidationError) return res.send(req.fileValidationError)
-			else if (!req.file) return res.send('Please select an image to upload')
+			// else if (!req.file) return res.send('Please select an image to upload')
 			else if (err instanceof multer.MulterError) return res.send(err)
 			else if (err) return res.send(err)
+
+			let index, len;
+			const imgPath = []
+			for (index = 0, len = req.files.length; index < len; ++index) {
+				imgPath.push(req.files[index].filename)
+			}
+
 			const filter = req.body;
 			delete filter.price
-			filter.image = req.file.filename
+			if (req.files) filter.image = imgPath
 			Product.create(filter).then(result => {
 				res.status(200).json({message: "product insert Successfully.", result})
 			}).catch(err => {
-				fs.unlinkSync(req.file.path)
+				if (req.file) fs.unlinkSync(req.file.path)
 				res.status(401).json(err.message)
 			})
 		});
