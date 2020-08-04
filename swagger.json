@@ -201,33 +201,51 @@
           {
             "name": "gtn",
             "in": "formData",
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           {
             "name": "irc",
             "in": "formData",
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           {
             "name": "category",
             "in": "formData",
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           {
             "name": "nativeIrc",
             "in": "formData",
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           {
             "name": "cName",
             "in": "formData",
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           {
             "name": "productImg",
             "in": "formData",
             "description": "Updated images of the product",
-            "type": "file"
+            "type": "array",
+            "items": {
+              "type": "file"
+            }
           }
         ],
         "responses": {
