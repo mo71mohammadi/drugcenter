@@ -23,6 +23,8 @@ router.post('/products/delete', product.delete);
 router.post('/products/update', product.update);
 router.post('/products/import', product.import);
 router.get('/products/export', product.export);
+router.put('/products/image', product.uploadImg);
+router.delete('/products/image', product.deleteImg);
 
 router.put('/products/price', price.update);
 router.delete('/products/price', price.delete);

@@ -122,6 +122,39 @@
         "summary": "Create product item",
         "description": "",
         "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product object that needs to insert",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/products/image": {
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Add product image (max 10)",
+        "description": "",
+        "consumes": [
           "multipart/form-data"
         ],
         "produces": [
@@ -129,114 +162,9 @@
         ],
         "parameters": [
           {
-            "name": "eRx",
+            "name": "_id",
             "in": "formData",
             "type": "string"
-          },
-          {
-            "name": "packageCode",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "eRxGeneric",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "genericCode",
-            "in": "formData",
-            "type": "number"
-          },
-          {
-            "name": "packageCount",
-            "in": "formData",
-            "type": "number"
-          },
-          {
-            "name": "enGenericName",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "faGenericName",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "enBrandName",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "faBrandName",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "licenceOwner",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "brandOwner",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "producer",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "countryBrandOwner",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "countryProducer",
-            "in": "formData",
-            "type": "string"
-          },
-          {
-            "name": "gtn",
-            "in": "formData",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "irc",
-            "in": "formData",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "category",
-            "in": "formData",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "nativeIrc",
-            "in": "formData",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "cName",
-            "in": "formData",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           },
           {
             "name": "productImg",
@@ -253,7 +181,48 @@
             "description": "A successful response"
           },
           "401": {
-            "description": "product validation failed"
+            "description": "Product _id not found!"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Create product item",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Image item that needs to delete",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "10000000000"
+                },
+                "item": {
+                  "type": "string",
+                  "example": "cccccc.jpg"
+                }
+              }
+
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "Product _id not found!"
           }
         }
       }
@@ -803,6 +772,10 @@
           "type": "string",
           "example": "eRx464545"
         },
+        "sepasCode": {
+          "type": "string",
+          "example": "2000000"
+        },
         "genericCode": {
           "type": "integer",
           "example": 45
@@ -866,10 +839,8 @@
           ]
         },
         "nativeIrc": {
-          "type": "array",
-          "example": [
-            "123456998855005"
-          ]
+          "type": "string",
+          "example": "123456998855005"
         },
         "cName": {
           "type": "array",

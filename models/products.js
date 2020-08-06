@@ -5,6 +5,7 @@ const productSchema = new mongoose.Schema({
 	eRx: {type: String, required: true},
 	packageCode: {type: String, required: true},
 	eRxGeneric: {type: String},
+	sepasCode: {type: String},
 	genericCode: {type: Number},
 	packageCount: {type: Number},
 	packageForm: {type: String},
@@ -17,7 +18,7 @@ const productSchema = new mongoose.Schema({
 	gtn: [{type: String}],
 	updateCode: String,
 	irc: [{type: String}],
-	nativeIrc: [{type: String}],
+	nativeIrc: {type: String},
 	price: [{
 		sPrice: {type: Number, require: true},
 		dPrice: {type: Number, require: true},

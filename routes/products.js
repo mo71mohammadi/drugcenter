@@ -7,12 +7,12 @@ const Product = require("../models/products")
 const Category = require("../models/categorys")
 const multer = require('multer')
 const storage = multer.diskStorage({
-	destination: function(req, file, cb) {
+	destination: function (req, file, cb) {
 		cb(null, 'uploads/');
 	},
 
 	// By default, multer removes file extensions so let's add them back
-	filename: function(req, file, cb) {
+	filename: function (req, file, cb) {
 		cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
 	}
 });
@@ -72,29 +72,29 @@ exports.getOne = async (req, res) => {
 };
 exports.create = async (req, res) => {
 	try {
-		let upload = multer({ storage: storage, fileFilter: helpers.imageFilter }).array('productImg', 10);
-		upload(req, res, function(err) {
-			if (req.fileValidationError) return res.send(req.fileValidationError)
-			// else if (!req.file) return res.send('Please select an image to upload')
-			else if (err instanceof multer.MulterError) return res.send(err)
-			else if (err) return res.send(err)
-
-			let index, len;
-			const imgPath = []
-			for (index = 0, len = req.files.length; index < len; ++index) {
-				imgPath.push(req.files[index].filename)
-			}
-
-			const filter = req.body;
-			delete filter.price
-			if (req.files) filter.image = imgPath
-			Product.create(filter).then(result => {
-				res.status(200).json({message: "product insert Successfully.", result})
-			}).catch(err => {
-				if (req.file) fs.unlinkSync(req.file.path)
-				res.status(401).json(err.message)
-			})
-		});
+		// let upload = multer({storage: storage, fileFilter: helpers.imageFilter}).array('productImg', 10);
+		// upload(req, res, function (err) {
+		// 	if (req.fileValidationError) return res.send(req.fileValidationError)
+		// 	// else if (!req.file) return res.send('Please select an image to upload')
+		// 	else if (err instanceof multer.MulterError) return res.send(err)
+		// 	else if (err) return res.send(err)
+		//
+		// 	let index, len;
+		// 	const imgPath = []
+		// 	for (index = 0, len = req.files.length; index < len; ++index) {
+		// 		imgPath.push(req.files[index].filename)
+		// 	}
+		//
+		// });
+		const filter = req.body;
+		delete filter.price
+		// if (req.files) filter.image = imgPath
+		Product.create(filter).then(result => {
+			res.status(200).json({message: "product insert Successfully.", result})
+		}).catch(err => {
+			// if (req.file) fs.unlinkSync(req.file.path)
+			res.status(401).json(err.message)
+		})
 
 		// const name = `${Date.now() + Math.floor(Math.random() * 10000)}` + req.files.productImg.name.match(/(\.\b)(?!.*\1).*/)[0]
 		// fs.writeFile(`uploads/${name}`, req.files.productImg.data, 'binary', function (err, data){
@@ -103,6 +103,51 @@ exports.create = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
+
+exports.uploadImg = async (req, res) => {
+	try {
+		let upload = multer({storage: storage, fileFilter: helpers.imageFilter}).array('productImg', 10);
+		upload(req, res, function (err) {
+			const {_id} = req.body
+			if (req.fileValidationError) return res.send(req.fileValidationError)
+			else if (!req.files) return res.send('Please select an image to upload')
+			else if (err instanceof multer.MulterError) return res.send(err)
+			else if (err) return res.send(err)
+			let index, len;
+			const imgPath = []
+			for (index = 0, len = req.files.length; index < len; ++index) {
+				imgPath.push(req.files[index].filename)
+			}
+			Product.updateOne({_id: _id}, {$push: {image: {$each: imgPath}}}).then(result => {
+				res.status(200).json({message: "image upload Successfully.", result});
+			}).catch(err => {
+				if (err.path === '_id') res.status(401).json({message: "Product _id not found!", result: null});
+				else res.status(500).json({message: err.message, result: null})
+			})
+		})
+	} catch (err) {
+		res.status(500).json(err.message)
+	}
+}
+
+exports.deleteImg = async (req, res) => {
+	try {
+		const {_id, item} = req.body
+		Product.updateOne({_id: _id}, {$pull: {image: item}}).then(result => {
+			fs.unlinkSync(`uploads/${item}`)
+			console.log(_id)
+
+			res.status(200).json({message: "image Delete Successfully.", result});
+		}).catch(err => {
+			if (err.path === '_id') res.status(401).json({message: "Product _id not found!", result: null});
+			else res.status(500).json({message: err.message, result: null})
+		})
+
+	} catch (err) {
+		res.status(500).json(err.message)
+	}
+}
+
 exports.update = async (req, res) => {
 	try {
 		const filter = req.body;
@@ -119,7 +164,9 @@ exports.update = async (req, res) => {
 };
 exports.delete = async (req, res) => {
 	try {
+		const product = Product.findOne({_id: req.body._id})
 		Product.findByIdAndDelete(req.body._id).then(result => {
+			console.log(product)
 			if (result) res.status(200).json("Deleted Successfully");
 			else res.status(401).json("_id Not Found!")
 		})
