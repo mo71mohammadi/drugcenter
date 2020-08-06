@@ -30,7 +30,11 @@ const productSchema = new mongoose.Schema({
 	countryBrandOwner: {type: String},
 	countryProducer: {type: String},
 	cName: [{type: String}],
-	image: [{type: String}]
+	image: [{type: String}],
+	properties: [{
+		key: String,
+		value: String
+	}]
 })
 
 productSchema.index({

@@ -847,6 +847,15 @@
           "example": [
             "ضدافسردگی"
           ]
+        },
+        "properties": {
+          "type": "array",
+          "example": [
+            {
+              "key": "size",
+              "value": "2.8nm"
+            }
+          ]
         }
       }
     }
