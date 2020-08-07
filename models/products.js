@@ -30,6 +30,7 @@ const productSchema = new mongoose.Schema({
 	countryBrandOwner: {type: String},
 	countryProducer: {type: String},
 	cName: [{type: String}],
+	videos: [{type: String}],
 	image: [{type: String}],
 	properties: [{
 		key: String,
