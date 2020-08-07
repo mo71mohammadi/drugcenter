@@ -848,6 +848,12 @@
             "ضدافسردگی"
           ]
         },
+        "videos": {
+          "type": "array",
+          "example": [
+            " https://www.aparat.com/v/WOS6C "
+          ]
+        },
         "properties": {
           "type": "array",
           "example": [
