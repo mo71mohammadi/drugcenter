@@ -61,13 +61,13 @@ exports.import = async (req, res) => {
 
 exports.getAll = async (req, res) => {
 	try {
-		let {site, size, page} = query.parse(req.url, true).query;
+		let {type, site, size, page} = query.parse(req.url, true).query;
 		size = parseInt(size)
 		page = parseInt(page)
 		if (!size || size < 1) size = 1
 		if (!page || page < 1) page = 1
-		Price.find({site: site}).skip(size * page).limit(size).then(async prices => {
-			const count = await Price.countDocuments({site: site});
+		Price.find({site: site, type: type}).skip(size * page).limit(size).then(async prices => {
+			const count = await Price.countDocuments({site: site, type: type});
 			res.status(200).json({count, data: prices})
 		})
 	} catch (err) {
@@ -76,11 +76,11 @@ exports.getAll = async (req, res) => {
 };
 exports.download = async (req, res) => {
 	try {
-		const {site} = query.parse(req.url, true).query;
+		const {site} = req.body;
 		if (site === "ttac") {
 			let options = {
-				pythonPath: '/home/ehrs/virtualenv/python/3.7/bin/python3.7',
-				// pythonPath: '/home/mojtaba/PycharmProjects/DrugCenter_0/venv/bin/python',
+				// pythonPath: '/home/ehrs/virtualenv/python/3.7/bin/python3.7',
+				pythonPath: '/home/mojtaba/PycharmProjects/DrugCenter_0/venv/bin/python',
 				// scriptPath: '/home/mojtaba/WebstormProjects/api/routes/',
 			};
 			let test = new PythonShell('./routes/script.py', options);
@@ -105,7 +105,7 @@ exports.download = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-exports.Update = async (req, res) => {
+exports.updateFrom = async (req, res) => {
 	try {
 		const prices = await Price.find({site: "ttac"})
 		for (const obj of prices) {

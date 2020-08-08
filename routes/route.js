@@ -30,8 +30,8 @@ router.put('/products/price', price.update);
 router.delete('/products/price', price.delete);
 
 router.get('/price/getAll', price.getAll);
-router.get('/price/download', price.download);
-router.put('/price/update', price.Update);
+router.post('/price/download', price.download);
+router.put('/price/updateFrom', price.updateFrom);
 
 router.post('/products/category/getAll', category.getAll);
 router.post('/products/category/getOne', category.getOne);

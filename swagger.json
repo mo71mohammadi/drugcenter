@@ -18,12 +18,12 @@
       "description": "Operations about Product"
     },
     {
-      "name": "Product Price",
-      "description": "Operations about Price"
+      "name": "Category",
+      "description": "Operations about Category"
     },
     {
-      "name": "Product Category",
-      "description": "Operations about Category"
+      "name": "Price",
+      "description": "Operations about Price"
     }
   ],
   "schemes": [
@@ -260,6 +260,96 @@
         }
       }
     },
+    "/api/products/price": {
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "add Price product",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "_id of the product that needs to be add price",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bd1d"
+                },
+                "sPrice": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "dPrice": {
+                  "type": "integer",
+                  "example": 300
+                },
+                "cPrice": {
+                  "type": "integer",
+                  "example": 400
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "delete Price product",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "_id of the product & _id of the price doc that needs to be delete price",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bd1d"
+                },
+                "priceId": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bsa"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
     "/api/products/import": {
       "post": {
         "tags": [
@@ -363,100 +453,10 @@
         }
       }
     },
-    "/api/products/price": {
-      "put": {
-        "tags": [
-          "Product Price"
-        ],
-        "summary": "add Price product",
-        "description": "",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "_id of the product that needs to be add price",
-            "schema": {
-              "properties": {
-                "_id": {
-                  "type": "string",
-                  "example": "5f180141e7d39f2f5f53bd1d"
-                },
-                "sPrice": {
-                  "type": "integer",
-                  "example": 200
-                },
-                "dPrice": {
-                  "type": "integer",
-                  "example": 300
-                },
-                "cPrice": {
-                  "type": "integer",
-                  "example": 400
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A successful response"
-          },
-          "401": {
-            "description": "product validation failed"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Product Price"
-        ],
-        "summary": "delete Price product",
-        "description": "",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "_id of the product & _id of the price doc that needs to be delete price",
-            "schema": {
-              "properties": {
-                "_id": {
-                  "type": "string",
-                  "example": "5f180141e7d39f2f5f53bd1d"
-                },
-                "priceId": {
-                  "type": "string",
-                  "example": "5f180141e7d39f2f5f53bsa"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A successful response"
-          },
-          "401": {
-            "description": "product validation failed"
-          }
-        }
-      }
-    },
     "/api/price/getAll": {
       "get": {
         "tags": [
-          "Product Price"
+          "Price"
         ],
         "summary": "get all prices",
         "description": "",
@@ -491,6 +491,7 @@
             "name": "type",
             "required": true,
             "in": "query",
+            "description": "0 is initial type. 1 is update item and 2 is irc that not null but not found in DB",
             "type": "string",
             "enum": [
               0,
@@ -509,10 +510,78 @@
         }
       }
     },
+    "/api/price/download": {
+      "post": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "download price file from ttac",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product filters",
+            "schema": {
+              "type": "object",
+              "required": [
+                "site"
+              ],
+              "properties": {
+                "site": {
+                  "type": "string",
+                  "example": "ttac"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "500": {
+            "description": "error"
+          }
+        }
+      }
+    },
+    "/api/price/updateFrom": {
+      "put": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "update product price from ttac file",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "500": {
+            "description": "error"
+          }
+        }
+      }
+    },
+
     "/api/products/category/getAll": {
       "post": {
         "tags": [
-          "Product Category"
+          "Category"
         ],
         "summary": "get all categories",
         "description": "",
@@ -535,7 +604,7 @@
     "/api/products/category/getOne": {
       "post": {
         "tags": [
-          "Product Category"
+          "Category"
         ],
         "summary": "get category by level",
         "description": "",
@@ -577,7 +646,7 @@
     "/api/products/category/create": {
       "post": {
         "tags": [
-          "Product Category"
+          "Category"
         ],
         "summary": "Create new category",
         "description": "",
@@ -626,7 +695,7 @@
     "/api/products/category/import": {
       "post": {
         "tags": [
-          "Product Category"
+          "Category"
         ],
         "summary": "import product items from xlsx file",
         "description": "",
@@ -658,7 +727,7 @@
     "/api/products/category/delete": {
       "post": {
         "tags": [
-          "Product Category"
+          "Category"
         ],
         "summary": "delete category product",
         "description": "",
@@ -696,7 +765,7 @@
     "/api/products/category/update": {
       "post": {
         "tags": [
-          "Product Category"
+          "Category"
         ],
         "summary": "delete Price product",
         "description": "",
