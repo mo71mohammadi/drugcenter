@@ -40,6 +40,11 @@ router.post('/products/category/delete', category.delete);
 router.post('/products/category/update', category.update);
 router.post('/products/category/import', category.import);
 
+router.post('/drugs/getName', drug.interaction);
+router.put('/Interaction/update', drug.updateInteraction);
+router.get('/Interaction/medScape/getName', medScape.name);
+router.get('/Interaction/upToDate/getName', upToDate.name);
+
 router.get('/import', importData.import);
 
 router.post('/signup', userController.signUp);

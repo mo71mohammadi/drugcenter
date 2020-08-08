@@ -734,6 +734,157 @@
           }
         }
       }
+    },
+
+    "/api/drugs/getName": {
+      "post": {
+        "tags": [
+          "Interaction"
+        ],
+        "summary": "get unique enName and enRoute of drugs",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "size",
+                "page"
+              ],
+              "properties": {
+                "size": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "page": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/Interaction/update": {
+      "put": {
+        "tags": [
+          "Interaction"
+        ],
+        "summary": "update Interactions of drugs",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "enName",
+                "enRoute"
+              ],
+              "properties": {
+                "enName": {
+                  "type": "string",
+                  "example": "IBUPROFEN"
+                },
+                "enRoute": {
+                  "type": "string",
+                  "example": "INTRAVENOUS"
+                },
+                "upToDateId": {
+                  "type": "string",
+                  "example": "6351"
+                },
+                "medScapeId": {
+                  "type": "string",
+                  "example": "343289"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/Interaction/medScape/getName": {
+      "get": {
+        "tags": [
+          "Interaction"
+        ],
+        "summary": "get unique name and id of medScape collection",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/Interaction/upToDate/getName": {
+      "get": {
+        "tags": [
+          "Interaction"
+        ],
+        "summary": "get unique name and id of upToDate collection",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {

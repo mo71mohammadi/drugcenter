@@ -103,7 +103,6 @@ exports.create = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
 exports.uploadImg = async (req, res) => {
 	try {
 		let upload = multer({storage: storage, fileFilter: helpers.imageFilter}).array('productImg', 10);
@@ -129,7 +128,6 @@ exports.uploadImg = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 }
-
 exports.deleteImg = async (req, res) => {
 	try {
 		const {_id, item} = req.body
@@ -147,7 +145,6 @@ exports.deleteImg = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 }
-
 exports.update = async (req, res) => {
 	try {
 		const filter = req.body;
