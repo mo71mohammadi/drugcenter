@@ -14,6 +14,7 @@ const importData = require('./import');
 const product = require('./products');
 const category = require('./category');
 const price = require('./prices');
+const fileUpload = require('express-fileupload');
 
 
 router.post('/products/getAll', product.getAll);
@@ -21,8 +22,8 @@ router.post('/products/getOne', product.getOne);
 router.post('/products/create', product.create);
 router.post('/products/delete', product.delete);
 router.post('/products/update', product.update);
-router.post('/products/import', product.import);
-router.get('/products/export', product.export);
+router.post('/products/import', fileUpload(),  product.import);
+router.post('/products/export', product.export);
 router.put('/products/image', product.uploadImg);
 router.delete('/products/image', product.deleteImg);
 

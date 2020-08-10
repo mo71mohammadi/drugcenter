@@ -174,6 +174,7 @@ exports.delete = async (req, res) => {
 exports.import = async (req, res) => {
 	try {
 		req.connection.setTimeout(1000 * 60 * 10);
+		console.log(req.file)
 		if (req.files) {
 			const wb = excel.read(req.files.products.data, {cellDates: true});
 			console.log("obj")
