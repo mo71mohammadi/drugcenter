@@ -277,10 +277,13 @@ exports.importUpdate = async (req, res) => {
 			const successList = [];
 			const repeatList = [];
 			for (const obj of jsonData) {
-				await Product.updateMany({eRx: obj.eRx.slice(0, 9)}, {updateCode: obj.irc.toString().trim()}).then(result => {
+				await Product.updateMany({eRx: obj.eRx.slice(0, 9)}, {
+					"update.code": obj.irc.toString().trim(), "update.type": obj.type.toString().trim()
+				}).then(result => {
 					success++;
 					successList.push(obj.eRx)
 				}).catch(err => {
+					console.log(err)
 					repeat++;
 					repeatList.push(obj.eRx);
 				})

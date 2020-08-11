@@ -107,33 +107,56 @@ exports.download = async (req, res) => {
 };
 exports.updateFrom = async (req, res) => {
 	try {
+		req.connection.setTimeout(1000 * 60 * 10);
 		const prices = await Price.find({site: "ttac"})
-		for (const obj of prices) {
+		const update = await Product.aggregate([{$match: {"update.type": "ttac"}}, {
+			$group: {"_id": {}, update: {$addToSet: {code: "$update.code"}}}
+		}])
+		const ircList = []
+		for (const item of update[0].update) if (item.code) ircList.push(item.code)
+
+		let count = 0
+		for (const irc of ircList) {
+			const obj = prices.find(item => item.irc === irc)
 			if (obj.cPrice || obj.sPrice || obj.dPrice) {
-				await Product.findOne({updateCode: obj.irc}).then(async result => {
-					if (result) {
-						await Price.updateOne({_id: obj._id}, {$set: {status: 1}})
-						const newPrice = result.price
-						let change = 0
-						if (obj.sPrice && obj.sPrice !== newPrice.sPrice) {
-							newPrice.sPrice = obj.sPrice;
-							change++
-						}
-						if (obj.dPrice && obj.dPrice !== newPrice.dPrice) {
-							newPrice.dPrice = obj.dPrice;
-							change++
-						}
-						if (obj.cPrice && obj.cPrice !== newPrice.cPrice) {
-							newPrice.cPrice = obj.cPrice;
-							change++
-						}
-						if (change !== 0) await Product.updateOne({irc: {$in: obj.irc}}, {$addToSet: {price: newPrice}})
-					} else {
-						await Price.updateOne({_id: obj._id}, {$set: {type: 2}})
-					}
-				}).catch(err => {
-					res.status(401).json(err.message)
+				count++
+				console.log(count)
+				const newPrice = {sPrice: obj.sPrice, dPrice: obj.dPrice, cPrice: obj.cPrice}
+				await Product.updateOne({
+					updateCode: obj.irc,
+					$or: [{"price.sPrice": {$ne: newPrice.sPrice}}, {"price.cPrice": {$ne: newPrice.cPrice}}, {"price.dPrice": {$ne: newPrice.dPrice}}]
+				}, {$addToSet: {price: newPrice}}).then(result => {
+					if (result.n > 0) Price.updateOne({_id: obj._id}, {$set: {status: 1}})
+					// else console.log(obj.irc, result)
 				})
+
+				// await Product.findOne({updateCode: obj.irc}).then(async result => {
+				// 	if (result) {
+				// 		await Price.updateOne({_id: obj._id}, {$set: {status: 1}})
+				// 		const newPrice = {}
+				// 		let change = 0
+				// 		if (obj.sPrice && obj.sPrice !== newPrice.sPrice) {
+				// 			newPrice.sPrice = obj.sPrice;
+				// 			change++
+				// 		}
+				// 		if (obj.dPrice && obj.dPrice !== newPrice.dPrice) {
+				// 			newPrice.dPrice = obj.dPrice;
+				// 			change++
+				// 		}
+				// 		if (obj.cPrice && obj.cPrice !== newPrice.cPrice) {
+				// 			newPrice.cPrice = obj.cPrice;
+				// 			change++
+				// 		}
+				// 		if (change !== 0) await Product.updateOne({
+				// 			updateCode: obj.irc,
+				// 			$or: [{"price.sPrice": {$ne: obj.sPrice}}, {"price.cPrice": {$ne: obj.cPrice}}, {"price.dPrice": {$ne: obj.dPrice}}]
+				// 		}, {$addToSet: {price: newPrice}})
+				// 	} else {
+				// 		await Price.updateOne({_id: obj._id}, {$set: {type: 2}})
+				// 	}
+				// }).catch(err => {
+				// 	res.status(401).json(err.message)
+				// })
 			}
 		}
 		res.status(200).json({message: 'updated successfully!'})
