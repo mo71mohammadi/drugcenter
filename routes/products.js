@@ -174,7 +174,6 @@ exports.delete = async (req, res) => {
 exports.import = async (req, res) => {
 	try {
 		req.connection.setTimeout(1000 * 60 * 10);
-		console.log(req.file)
 		if (req.files) {
 			const wb = excel.read(req.files.products.data, {cellDates: true});
 			console.log("obj")
@@ -254,6 +253,36 @@ exports.import = async (req, res) => {
 					repeatList.push(obj.eRx + obj.packageCode);
 					// fs.appendFile('test.txt', obj.eRx + obj.packageCode + '\n', result => {
 					// })
+				})
+			}
+			res.status(200).json({
+				success: {0: `${success} item import successfully`, successList},
+				repeat: {0: `${repeat} item duplicate`, repeatList},
+
+			})
+		} else res.status(401).json({message: 'File Not Found!'})
+	} catch (err) {
+		res.status(500).json(err.message)
+	}
+};
+exports.importUpdate = async (req, res) => {
+	try {
+		req.connection.setTimeout(1000 * 60 * 10);
+		if (req.files) {
+			const wb = excel.read(req.files.update.data, {cellDates: true});
+			const ws = wb.Sheets['Sheet1'];
+			const jsonData = excel.utils.sheet_to_json(ws);
+			let success = 0;
+			let repeat = 0;
+			const successList = [];
+			const repeatList = [];
+			for (const obj of jsonData) {
+				await Product.updateMany({eRx: obj.eRx.slice(0, 9)}, {updateCode: obj.irc.toString().trim()}).then(result => {
+					success++;
+					successList.push(obj.eRx)
+				}).catch(err => {
+					repeat++;
+					repeatList.push(obj.eRx);
 				})
 			}
 			res.status(200).json({

@@ -382,6 +382,38 @@
         }
       }
     },
+    "/api/products/importUpdate": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "import product items from xlsx file",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "update",
+            "in": "formData",
+            "description": "Updated file of the category",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
     "/api/products/export": {
       "post": {
         "tags": [
