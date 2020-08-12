@@ -79,8 +79,8 @@ exports.download = async (req, res) => {
 		const {site} = req.body;
 		if (site === "ttac") {
 			let options = {
-				pythonPath: '/home/ehrs/virtualenv/python/3.7/bin/python3.7',
-				// pythonPath: '/home/mojtaba/PycharmProjects/DrugCenter_0/venv/bin/python',
+				// pythonPath: '/home/ehrs/virtualenv/python/3.7/bin/python3.7',
+				pythonPath: '/home/mojtaba/PycharmProjects/DrugCenter_0/venv/bin/python',
 				// scriptPath: '/home/mojtaba/WebstormProjects/api/routes/',
 			};
 			let test = new PythonShell('./routes/script.py', options);
@@ -118,7 +118,7 @@ exports.updateFrom = async (req, res) => {
 		let count = 0
 		for (const irc of update[0].update) {
 			const obj = prices.find(item => item.irc === irc.code)
-			Price.updateOne({_id: obj._id}, {$set: {status: 1}})
+			await Price.updateOne({_id: obj._id}, {type: 1})
 			if (obj.cPrice || obj.sPrice || obj.dPrice) {
 				count++
 				console.log(count)
