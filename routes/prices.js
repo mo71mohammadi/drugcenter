@@ -112,12 +112,13 @@ exports.updateFrom = async (req, res) => {
 		const update = await Product.aggregate([{$match: {"update.type": "ttac"}}, {
 			$group: {"_id": {}, update: {$addToSet: {code: "$update.code"}}}
 		}])
-		const ircList = []
-		for (const item of update[0].update) if (item.code) ircList.push(item.code)
+		// const ircList = []
+		// for (const item of update[0].update) if (item.code) ircList.push(item.code)
 
 		let count = 0
-		for (const irc of ircList) {
-			const obj = prices.find(item => item.irc === irc)
+		for (const irc of update[0].update) {
+			const obj = prices.find(item => item.irc === irc.code)
+			Price.updateOne({_id: obj._id}, {$set: {status: 1}})
 			if (obj.cPrice || obj.sPrice || obj.dPrice) {
 				count++
 				console.log(count)
@@ -126,7 +127,7 @@ exports.updateFrom = async (req, res) => {
 					updateCode: obj.irc,
 					$or: [{"price.sPrice": {$ne: newPrice.sPrice}}, {"price.cPrice": {$ne: newPrice.cPrice}}, {"price.dPrice": {$ne: newPrice.dPrice}}]
 				}, {$addToSet: {price: newPrice}}).then(result => {
-					Price.updateOne({_id: obj._id}, {$set: {status: 1}})
+
 					// else console.log(obj.irc, result)
 				})
 
