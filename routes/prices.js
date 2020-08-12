@@ -126,7 +126,7 @@ exports.updateFrom = async (req, res) => {
 					updateCode: obj.irc,
 					$or: [{"price.sPrice": {$ne: newPrice.sPrice}}, {"price.cPrice": {$ne: newPrice.cPrice}}, {"price.dPrice": {$ne: newPrice.dPrice}}]
 				}, {$addToSet: {price: newPrice}}).then(result => {
-					if (result.n > 0) Price.updateOne({_id: obj._id}, {$set: {status: 1}})
+					Price.updateOne({_id: obj._id}, {$set: {status: 1}})
 					// else console.log(obj.irc, result)
 				})
 
