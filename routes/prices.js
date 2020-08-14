@@ -76,6 +76,7 @@ exports.download = async (req, res) => {
 			test.on('message', async message => {
 				let rawData = fs.readFileSync('data.json');
 				let data = JSON.parse(rawData);
+				await Price.deleteMany({})
 				for (const item of data) {
 					item.type = 0;
 					item.site = "ttac";
