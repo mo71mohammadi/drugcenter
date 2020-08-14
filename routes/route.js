@@ -27,13 +27,16 @@ router.post('/products/importUpdate', fileUpload(),  product.importUpdate);
 router.post('/products/export', product.export);
 router.put('/products/image', product.uploadImg);
 router.delete('/products/image', product.deleteImg);
-
-router.put('/products/price', price.update);
-router.delete('/products/price', price.delete);
+router.put('/products/price', product.updatePrice);
+router.delete('/products/price', product.deletePrice);
+router.get('/products/search', product.search);
 
 router.get('/price/getAll', price.getAll);
+router.post('/price/create', price.create);
+router.put('/price/update', price.update);
+router.delete('/price/delete', price.delete);
 router.post('/price/download', price.download);
-router.put('/price/updateFrom', price.updateFrom);
+router.put('/price/updateFrom', price.updateFromTTAC);
 
 router.post('/products/category/getAll', category.getAll);
 router.post('/products/category/getOne', category.getOne);

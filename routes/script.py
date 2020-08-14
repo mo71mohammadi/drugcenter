@@ -10,8 +10,10 @@ start = s.get('https://statisticsreports.ttac.ir/Product/ExportToExcelForGetProd
 idsrv = re.findall('''xsrf&quot;,&quot;value&quot;:&quot;(.*?)&''', start.text)
 data = {
     "idsrv.xsrf": idsrv[0],
-    "username": "hoseini",
-    "password": "H0seini@"
+    "username": "az1357",
+    "password": "az13577"
+#     "username": "hoseini",
+#     "password": "H0seini@"
 }
 login = s.post(url=start.url, data=data)
 id_token = re.findall('''"id_token" value="(.*?)"''', login.text)
@@ -41,7 +43,23 @@ for row in dataFrame.index:
     obj = {}
     obj['irc'] = dataFrame["کد IRC"][row]
     obj['gtn'] = dataFrame["کد GTIN"][row]
-    obj['packageCount'] = dataFrame['تعداد در بسته'][row]
+    obj['brandOwner'] = dataFrame["نام صاحب برند"][row]
+    obj['enBrandName'] = dataFrame["نام لاتین برند"][row]
+    obj['faBrandName'] = dataFrame["نام برند"][row]
+    obj['packageCount'] = dataFrame["تعداد در بسته"][row]
+    obj['enLicenceOwner'] = dataFrame["نام لاتین شرکت تامین کننده"][row]
+    obj['faLicenceOwner'] = dataFrame["نام شرکت تامین کننده"][row]
+    obj['faProducer'] = dataFrame["نام شرکت تولید کننده"][row]
+    obj['enProducer'] = dataFrame["نام لاتین شرکت تولید کننده"][row]
+    obj['isBulk'] = dataFrame["IsBulk"][row]
+    obj['enName'] = dataFrame["نام لاتین فهرست"][row]
+    obj['genericName'] = dataFrame['نام ژنریک'][row]
+    obj['genericCode'] = dataFrame['کد ژنریک'][row]
+#     obj['packageCount'] = dataFrame['موقت'][row]
+    obj['atc'] = dataFrame['کد ATC'][row]
+    obj['officialCode'] = dataFrame['Official Code'][row]
+    obj['statusType'] = dataFrame['وضعیت'][row]
+    obj['category'] = dataFrame['نوع فرآورده'][row]
     obj['cPrice'] = dataFrame["قیمت فروش به مصرف کننده"][row]
     obj['dPrice'] = dataFrame["قیمت فروش به داروخانه"][row]
     obj['sPrice'] = dataFrame["قیمت فروش به توزیع کننده"][row]

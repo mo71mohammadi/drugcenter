@@ -329,5 +329,47 @@ exports.export = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
+exports.updatePrice = async (req, res) => {
+	try {
+		const {_id, sPrice, dPrice, cPrice} = req.body;
+		const obj = {Date: `${new Date().toISOString()}`, sPrice: sPrice, cPrice: cPrice, dPrice: dPrice}
+		Product.updateOne({
+			_id: _id,
+			$or: [{"price.sPrice": {$ne: sPrice}}, {"price.cPrice": {$ne: cPrice}}, {"price.dPrice": {$ne: dPrice}}]
+		}, {$addToSet: {price: obj}}).then((result) => {
+			if (result.n === 0) res.status(401).json({message: "_id Not Found or Price Add previously", result: null})
+			else res.status(200).json({message: "Price Add Successfully", result})
+		}).catch(err => {
+			res.status(401).json({message: err.message, result: null})
 
+		})
+	} catch (err) {
+		res.status(500).json(err.message)
+	}
+}
+exports.deletePrice = async (req, res) => {
+	try {
+		const {_id, priceId} = req.body;
+		Product.updateOne({_id: _id}, {$pull: {price: {_id: priceId}}}).then(result => {
+			res.status(200).json({message: result})
+		})
+	} catch (err) {
+		res.status(500).json(err.message)
+	}
+}
 
+exports.search = async (req, res) => {
+	try {
+		let {q, limit} = query.parse(req.url, true).query;
+		if (!limit || limit > 50) limit = 50
+		let regex = new RegExp(q, 'i');
+		Product.find({
+			$or: [{enGenericName: regex}, {faGenericName: regex}, {enBrandName: regex}, {faBrandName: regex}]
+		}, {_id: 1, enGenericName: 1, faGenericName: 1, enBrandName: 1, faBrandName: 1, packageCount: 1}).limit(parseInt(limit)).then(result => {
+			// console.log(result)
+			res.status(200).json({count: result.length, data: result})
+		})
+	} catch (err) {
+		res.status(500).json(err.message)
+	}
+}

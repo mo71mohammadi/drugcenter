@@ -26,7 +26,9 @@ const productSchema = new mongoose.Schema({
 		sPrice: {type: Number, require: true},
 		dPrice: {type: Number, require: true},
 		cPrice: {type: Number, require: true},
+		// _id: false
 	}],
+	// dates: [{type: Date}],
 	licenceOwner: {type: String},
 	brandOwner: {type: String},
 	producer: {type: String},

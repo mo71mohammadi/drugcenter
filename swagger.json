@@ -485,6 +485,47 @@
         }
       }
     },
+    "/api/products/search": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "search product by query",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "search word",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ace"
+            ]
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+
     "/api/price/getAll": {
       "get": {
         "tags": [
@@ -542,6 +583,111 @@
         }
       }
     },
+    "/api/price/create": {
+      "post": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Create Price item",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Price object that needs to insert",
+            "schema": {
+              "$ref": "#/definitions/Price"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/price/update": {
+      "put": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Update Price item",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Price object that needs to Update",
+            "schema": {
+              "$ref": "#/definitions/Price"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/price/delete": {
+      "delete": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Delete Price item",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "_id of the product that needs to be deleted",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bd1d"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+
     "/api/price/download": {
       "post": {
         "tags": [
