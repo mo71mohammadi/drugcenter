@@ -1262,6 +1262,111 @@
           ]
         }
       }
+    },
+    "Price": {
+      "type": "object",
+      "required": [
+        "irc",
+        "site"
+      ],
+      "properties": {
+        "product": {
+          "type": "string",
+          "description": "product _id referenced",
+          "example": "5f3658003fe1531a7fab48d3"
+        },
+        "irc": {
+          "type": "string",
+          "example": "0003218424697049"
+        },
+        "site": {
+          "type": "string",
+          "example": "ttac"
+        },
+
+        "gtn": {
+          "type": "string",
+          "example": "04037353007154"
+        },
+        "brandOwner": {
+          "type": "string",
+          "example": "OXALIMEDAC"
+        },
+        "enBrandName": {
+          "type": "string",
+          "example": "OXALIMEDAC® 100MG/20ML  VIAL   INJECTION, POWDER, LYOPHILIZED, FOR SOLUTION PARENTERAL 100 mg"
+        },
+        "faBrandName": {
+          "type": "string",
+          "example": "اگزالی مداک® 100م گ ویال   پودر لئوفیلیزه برای تهیه محلول تزریقی پرنترال 100"
+        },
+        "packageCount": {
+          "type": "string",
+          "example": "100"
+        },
+        "enLicenceOwner": {
+          "type": "string",
+          "example": "Aram Pharmaceutical Co. Ltd"
+        },
+        "faLicenceOwner": {
+          "type": "string",
+          "example": "داروئی آرام"
+        },
+        "faProducer": {
+          "type": "string",
+          "example": "Zoloft"
+        },
+        "enProducer": {
+          "type": "string",
+          "example": "زولوفت"
+        },
+        "isBulk": {
+          "type": "string",
+          "example": "false"
+        },
+        "enName": {
+          "type": "string",
+          "example": "OXALIPLATIN   INJECTION, POWDER, LYOPHILIZED, FOR SOLUTION PARENTERAL 100 mg"
+        },
+        "genericName": {
+          "type": "string",
+          "example": "OXALIPLATIN INJECTION, POWDER, LYOPHILIZED, FOR SOLUTION PARENTERAL 100 mg"
+        },
+        "genericCode": {
+          "type": "string",
+          "example": "1916"
+        },
+        "atc": {
+          "type": "string",
+          "example": "L01XA03"
+        },
+        "officialCode": {
+          "type": "string",
+          "example": "7040"
+        },
+        "statusType": {
+          "type": "string",
+          "example": "لغو شده"
+        },
+        "category": {
+          "type": "string",
+          "example": "دارو"
+        },
+        "type": {
+          "type": "number",
+          "example": 0
+        },
+        "price": {
+          "type": "array",
+          "example": [
+            {
+              "sPrice": 0,
+              "cPrice": 0,
+              "dPrice": 0
+            }
+          ]
+        }
+      }
     }
   }
 }
