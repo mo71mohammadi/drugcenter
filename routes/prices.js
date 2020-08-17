@@ -39,7 +39,7 @@ exports.update = async (req, res) => {
 };
 exports.delete = async (req, res) => {
 	try {
-		Product.findByIdAndDelete(req.body._id).then(result => {
+		Price.findByIdAndDelete(req.body._id).then(result => {
 			if (result) res.status(200).json("Deleted Successfully");
 			else res.status(401).json("_id Not Found!")
 		})
