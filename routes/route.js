@@ -31,7 +31,7 @@ router.put('/products/price', product.updatePrice);
 router.delete('/products/price', product.deletePrice);
 router.get('/products/search', product.search);
 
-router.get('/price/getAll', price.getAll);
+router.post('/price/getAll', price.getAll);
 router.post('/price/create', price.create);
 router.put('/price/update', price.update);
 router.delete('/price/delete', price.delete);

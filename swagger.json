@@ -527,7 +527,7 @@
     },
 
     "/api/price/getAll": {
-      "get": {
+      "post": {
         "tags": [
           "Price"
         ],
@@ -541,37 +541,36 @@
         ],
         "parameters": [
           {
-            "name": "site",
-            "in": "query",
-            "description": "Sites values that need to be considered for filter",
-            "required": true,
-            "type": "string",
-            "enum": [
-              "ttac"
-            ]
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "type": "number"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "type": "number"
-          },
-          {
-            "name": "type",
-            "required": true,
-            "in": "query",
-            "description": "0 is initial type. 1 is update item and 2 is irc that not null but not found in DB",
-            "type": "string",
-            "enum": [
-              0,
-              1,
-              2
-            ]
+            "in": "body",
+            "name": "body",
+            "description": "Product filters",
+            "schema": {
+              "type": "object",
+              "required": [
+                "size",
+                "page"
+              ],
+              "properties": {
+                "size": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "page": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "site": {
+                  "type": "string",
+                  "example": "ttac"
+                },
+                "type": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
           }
+
         ],
         "responses": {
           "200": {

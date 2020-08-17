@@ -7,6 +7,15 @@ const Product = require("../models/products")
 const Price = require("../models/prices")
 let {PythonShell} = require('python-shell');
 
+const Pagination = body => {
+	let page;
+	let size;
+	if (body.page < 1 || !body.page) page = 0;
+	else page = body.page - 1;
+	if (body.size < 1 || !body.size) size = 1;
+	else size = body.size;
+	return {size, page}
+};
 
 exports.create = async (req, res) => {
 	try {
@@ -24,7 +33,8 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
 	try {
 		const filter = req.body;
-		delete filter.price; delete filter.date
+		delete filter.price;
+		delete filter.date
 		if (!filter._id) return res.status(401).json({message: "Price _id not found!", result: null})
 		Price.updateOne({_id: filter._id}, filter).then((result) => {
 			res.status(200).json({message: "Price Update Successfully.", result});
@@ -49,13 +59,20 @@ exports.delete = async (req, res) => {
 };
 exports.getAll = async (req, res) => {
 	try {
-		let {type, site, size, page} = query.parse(req.url, true).query;
+		// let {type, site, size, page} = query.parse(req.url, true).query;
+		let {size, page} = Pagination(req.body);
+		const filter = req.body;
+		delete filter.page;
+		delete filter.size;
+		let search = {};
+		for (const item of Object.keys(filter)) if (filter[item]) search[item] = filter[item]
 		size = parseInt(size)
 		page = parseInt(page)
 		if (!size || size < 1) size = 1
 		if (!page || page < 1) page = 1
-		Price.find({site: site, type: type}).skip(size * page).limit(size).then(async prices => {
-			const count = await Price.countDocuments({site: site, type: type});
+
+		Price.find(filter).skip(size * page).limit(size).then(async prices => {
+			const count = await Price.countDocuments(filter);
 			res.status(200).json({count, data: prices})
 		})
 	} catch (err) {
