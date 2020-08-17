@@ -68,8 +68,6 @@ exports.getAll = async (req, res) => {
 		for (const item of Object.keys(filter)) if (filter[item]) search[item] = filter[item]
 		size = parseInt(size)
 		page = parseInt(page)
-		if (!size || size < 1) size = 1
-		if (!page || page < 1) page = 1
 
 		Price.find(filter).skip(size * page).limit(size).then(async prices => {
 			const count = await Price.countDocuments(filter);
