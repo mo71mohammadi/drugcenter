@@ -4,7 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const upToDateSchema = new mongoose.Schema({
     globalId: {type: String, unique: true, required: true},
-    id: {type: Number, unique: true, required: true},
+    id: {type: Number, unique: true},
     name: {type: String, required: true},
     eRx: [{type: String}],
     generic: [{type: String}],
@@ -19,6 +19,20 @@ const upToDateSchema = new mongoose.Schema({
         riskRating: {type: String},
         text: {type: String},
     }],
+    information: {
+        general: {
+            outlineHtml: String,
+            bodyHtml: String
+        },
+        pediatric: {
+            outlineHtml: String,
+            bodyHtml: String
+        },
+        patient: {
+            outlineHtml: String,
+            bodyHtml: String
+        }
+    }
 
 });
 

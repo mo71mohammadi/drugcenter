@@ -48,7 +48,11 @@ router.post('/products/category/import', category.import);
 router.post('/drugs/getName', drug.interaction);
 router.put('/Interaction/update', drug.updateInteraction);
 router.get('/Interaction/medScape/getName', medScape.name);
-router.get('/Interaction/upToDate/getName', upToDate.name);
+// router.get('/Interaction/upToDate/getName', upToDate.name);
+
+
+// UpToDate API
+router.get('/Interaction/upToDate/getName', upToDate.getName)
 
 router.get('/import', importData.import);
 

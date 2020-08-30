@@ -41,7 +41,9 @@ exports.getAll = async (req, res) => {
 		delete filter.size;
 		let search = {};
 		for (const item of Object.keys(filter)) {
-			if (filter[item]) search[item] = filter[item]
+			let regex = new RegExp(filter[item], 'i');
+
+			if (filter[item]) search[item] = regex
 		}
 		Product.find(search).skip(size * page).limit(size).sort({_id: -1}).then(async products => {
 			const count = await Product.countDocuments(search);
