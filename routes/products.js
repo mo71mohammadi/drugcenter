@@ -305,7 +305,14 @@ exports.export = async (req, res) => {
 		const filter = req.body;
 		delete filter.page;
 		delete filter.size;
-		Product.find(filter).then(products => {
+		let search = {};
+		for (const item of Object.keys(filter)) {
+			let regex = new RegExp(filter[item], 'i');
+
+			if (filter[item]) search[item] = regex
+		}
+
+		Product.find(search).then(products => {
 			let productList = [];
 			for (let product of products) {
 				product = product.toObject();
