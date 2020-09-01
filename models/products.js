@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 
 const productSchema = new mongoose.Schema({
 	eRx: {type: String, required: true},
-	detail: {type: mongoose.Schema.Types.ObjectId, ref: 'Drug'},
+	drugInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Drug'},
 	packageCode: {type: String, required: true},
 	eRxGeneric: {type: String},
 	sepasCode: {type: String},

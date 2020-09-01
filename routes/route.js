@@ -14,6 +14,7 @@ const importData = require('./import');
 const product = require('./products');
 const category = require('./category');
 const price = require('./prices');
+const drugInfo = require('./drugInfo');
 const fileUpload = require('express-fileupload');
 
 
@@ -49,6 +50,9 @@ router.post('/drugs/getName', drug.interaction);
 router.put('/Interaction/update', drug.updateInteraction);
 router.get('/Interaction/medScape/getName', medScape.name);
 // router.get('/Interaction/upToDate/getName', upToDate.name);
+
+// drugsInfo API
+router.get('/drugs/search', drugInfo.search)
 
 
 // UpToDate API
