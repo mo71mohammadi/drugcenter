@@ -15,11 +15,11 @@ const drugSchema = new mongoose.Schema({
 	faForm: {type: String},
 	enRoute: {type: String},
 	faRoute: {type: String},
-	medScapeId: {
+	medScape: {
 		interaction: [{type: String}],
 		info: [{type: String}]
 	},
-	upToDateId: {
+	upToDate: {
 		interaction: [{type: String}],
 		info: [{type: String}]
 	},
