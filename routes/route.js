@@ -49,7 +49,7 @@ router.post('/products/category/import', category.import);
 router.post('/drugs/getName', drug.interaction);
 router.put('/Interaction/update', drug.updateInteraction);
 router.get('/Interaction/medScape/getName', medScape.name);
-// router.get('/Interaction/upToDate/getName', upToDate.name);
+router.get('/Interaction/upToDate/getName', upToDate.name);
 
 // drugsInfo API
 router.post('/drugs/getAll', drugInfo.getAll);
