@@ -23,8 +23,8 @@ router.post('/products/getOne', product.getOne);
 router.post('/products/create', product.create);
 router.post('/products/delete', product.delete);
 router.post('/products/update', product.update);
-router.post('/products/import', fileUpload(),  product.import);
-router.post('/products/importUpdate', fileUpload(),  product.importUpdate);
+router.post('/products/import', fileUpload(), product.import);
+router.post('/products/importUpdate', fileUpload(), product.importUpdate);
 router.post('/products/export', product.export);
 router.put('/products/image', product.uploadImg);
 router.delete('/products/image', product.deleteImg);
@@ -52,6 +52,13 @@ router.get('/Interaction/medScape/getName', medScape.name);
 // router.get('/Interaction/upToDate/getName', upToDate.name);
 
 // drugsInfo API
+router.post('/drugs/getAll', drugInfo.getAll);
+router.post('/drugs/getOne', drugInfo.getOne);
+router.post('/drugs/create', drugInfo.create);
+router.delete('/drugs/delete', drugInfo.delete);
+router.put('/drugs/update', drugInfo.update);
+router.post('/drugs/import', fileUpload(), drugInfo.import);
+router.post('/drugs/export', drugInfo.export);
 router.get('/drugs/search', drugInfo.search)
 
 
@@ -79,12 +86,12 @@ router.delete('/role/:roleId', userController.allowIfLoggedin, userController.gr
 router.get('/v1', userController.authentication);
 
 // MedScape
-router.get('/medScape/multiInteraction',userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape.api'), medScape.interactionChecker);
-router.post('/medScape/',userController.allowIfLoggedin, userController.grantAccess('createAny', 'medscape'), medScape.addMedScape);
-router.get('/medScape/',userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.getMedScape);
-router.put('/medScape',userController.allowIfLoggedin, userController.grantAccess('updateAny', 'medscape'), medScape.updateMedScape);
-router.delete('/medScape/:id',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'medscape'), medScape.deleteMedScape);
-router.get('/medScape/name',userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.name);
+router.get('/medScape/multiInteraction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape.api'), medScape.interactionChecker);
+router.post('/medScape/', userController.allowIfLoggedin, userController.grantAccess('createAny', 'medscape'), medScape.addMedScape);
+router.get('/medScape/', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.getMedScape);
+router.put('/medScape', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'medscape'), medScape.updateMedScape);
+router.delete('/medScape/:id', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'medscape'), medScape.deleteMedScape);
+router.get('/medScape/name', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.name);
 
 
 // UpToDate
@@ -93,27 +100,27 @@ router.post('/upToDate/', userController.allowIfLoggedin, userController.grantAc
 router.get('/upToDate/name', userController.allowIfLoggedin, userController.grantAccess('readAny', 'uptodate'), upToDate.name);
 
 // Recommend
-router.post('/atc/import',userController.allowIfLoggedin, userController.grantAccess('createAny', 'atc'), recommend.importATC);
-router.get('/atc/get',userController.allowIfLoggedin, userController.grantAccess('readAny', 'atc'), recommend.atc);
+router.post('/atc/import', userController.allowIfLoggedin, userController.grantAccess('createAny', 'atc'), recommend.importATC);
+router.get('/atc/get', userController.allowIfLoggedin, userController.grantAccess('readAny', 'atc'), recommend.atc);
 
 
 // Drugs Product
-router.post('/drugs/getAll',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.getAll);
-router.post('/drugs/create',userController.allowIfLoggedin, userController.grantAccess('createAny', 'drug'), drug.create);
-router.post('/drugs/delete',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.delete);
-router.post('/drugs/deleteAll',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.deleteAll);
-router.post('/drugs/update',userController.allowIfLoggedin, userController.grantAccess('updateAny', 'drug'), drug.update);
-router.post('/drugs/import', drug.import);
-router.post('/drugs/export',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.export);
-router.get('/drugs/getInfo',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug.api'), drug.getInfo);
-router.get('/drugs/distinct',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.distinct);
+// router.post('/drugs/getAll',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.getAll);
+// router.post('/drugs/create',userController.allowIfLoggedin, userController.grantAccess('createAny', 'drug'), drug.create);
+// router.post('/drugs/delete',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.delete);
+// router.post('/drugs/deleteAll',userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'drug'), drug.deleteAll);
+// router.post('/drugs/update',userController.allowIfLoggedin, userController.grantAccess('updateAny', 'drug'), drug.update);
+// router.post('/drugs/import', drug.import);
+// router.post('/drugs/export',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.export);
+// router.get('/drugs/getInfo',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug.api'), drug.getInfo);
+// router.get('/drugs/distinct',userController.allowIfLoggedin, userController.grantAccess('readAny', 'drug'), drug.distinct);
 // hazf shvad!
 router.get('/drugs/import', drug.html);
 
 router.post('/drugs/atc', userController.allowIfLoggedin, userController.grantAccess('readAny', 'atc'), drug.atc);
 router.post('/drugs/updateATC', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'atc'), drug.updateATC);
 
-router.post('/drugs/interaction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'interaction'),  drug.interaction);
+router.post('/drugs/interaction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'interaction'), drug.interaction);
 router.post('/drugs/updateInteraction', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'interaction'), drug.updateInteraction);
 
 router.post('/drugs/price', userController.allowIfLoggedin, userController.grantAccess('readAny', 'price'), drug.price);

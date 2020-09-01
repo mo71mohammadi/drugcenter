@@ -29,10 +29,10 @@ const drugSchema = new mongoose.Schema({
 	}]
 });
 
-drugSchema.index({
-	enName: 1,
-	enRoute: 1
-}, {unique: true});
+// drugSchema.index({
+// 	enName: 1,
+// 	enRoute: 1
+// }, {unique: true});
 
 drugSchema.plugin(uniqueValidator);
 module.exports = mongoose.model('Drugs', drugSchema);

@@ -18,6 +18,10 @@
       "description": "Operations about Product"
     },
     {
+      "name": "Drug",
+      "description": "Operations about Drug"
+    },
+    {
       "name": "Category",
       "description": "Operations about Category"
     },
@@ -521,6 +525,299 @@
           },
           "401": {
             "description": "product validation failed"
+          }
+        }
+      }
+    },
+
+    "/api/drugs/getAll": {
+      "post": {
+        "tags": [
+          "Drug"
+        ],
+        "summary": "Return all drugs by filters",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Drug filters",
+            "schema": {
+              "type": "object",
+              "required": [
+                "size",
+                "page"
+              ],
+              "properties": {
+                "size": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "page": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/drugs/getOne": {
+      "post": {
+        "tags": [
+          "Drug"
+        ],
+        "summary": "Get drug by _id",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "drug _id",
+            "schema": {
+              "type": "object",
+              "required": [
+                "_id"
+              ],
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bd1d"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/drugs/create": {
+      "post": {
+        "tags": [
+          "Drug"
+        ],
+        "summary": "Create drug item",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "drug object that needs to insert",
+            "schema": {
+              "$ref": "#/definitions/Drug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/drugs/update": {
+      "put": {
+        "tags": [
+          "Drug"
+        ],
+        "summary": "update Drug item by _id",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "drug object that needs to update",
+            "schema": {
+              "$ref": "#/definitions/Drug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/drugs/import": {
+      "post": {
+        "tags": [
+          "Drug"
+        ],
+        "summary": "import Drug items from xlsx file",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "drugs",
+            "in": "formData",
+            "description": "Updated file of the product",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/drugs/export": {
+      "post": {
+        "tags": [
+          "Drug"
+        ],
+        "summary": "export drug items xlsx file",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Drug filters that needs to export",
+            "schema": {
+              "$ref": "#/definitions/Drug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/drugs/delete": {
+      "delete": {
+        "tags": [
+          "Drug"
+        ],
+        "summary": "delete drug item by _id",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "_id of the drug that needs to be deleted",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5f180141e7d39f2f5f53bd1d"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+    "/api/drugs/search": {
+      "get": {
+        "tags": [
+          "Drug"
+        ],
+        "summary": "search drug by query",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "search word",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ace"
+            ]
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "drug validation failed"
           }
         }
       }
@@ -1257,6 +1554,83 @@
             {
               "key": "size",
               "value": "2.8nm"
+            }
+          ]
+        }
+      }
+    },
+    "Drug": {
+      "type": "object",
+      "required": [
+        "enName",
+        "enRoute"
+      ],
+      "properties": {
+        "enName": {
+          "type": "string",
+          "example": "eRx464545"
+        },
+        "enRoute": {
+          "type": "string",
+          "example": "Zoloft"
+        },
+        "faName": {
+          "type": "string",
+          "example": "2000000"
+        },
+        "strength": {
+          "type": "string",
+          "example": "45"
+        },
+        "volume": {
+          "type": "string",
+          "example": "100"
+        },
+        "enForm": {
+          "type": "string",
+          "example": "Sertraline"
+        },
+        "faForm": {
+          "type": "string",
+          "example": "سرترالین"
+        },
+        "faRoute": {
+          "type": "string",
+          "example": "زولوفت"
+        },
+        "edl": {
+          "type": "boolean",
+          "example": false
+        },
+        "medScapeId": {
+          "type": "object",
+          "example": {
+            "interaction": ["200"],
+            "info": ["230"]
+          }
+        },
+        "upToDateId": {
+          "type": "object",
+          "example": {
+            "interaction": [],
+            "info": []
+          }
+        },
+        "atc": {
+          "type": "array",
+          "example": [
+            {
+              "code": "ABCD01",
+              "ddd": "2 mg"
+            }
+          ]
+        },
+        "genericNames": {
+          "type": "array",
+          "example": [
+            {
+              "enName": "Acetaminophen",
+              "faName": "استامینوفن"
             }
           ]
         }

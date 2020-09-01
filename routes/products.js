@@ -366,7 +366,6 @@ exports.deletePrice = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 }
-
 exports.search = async (req, res) => {
 	try {
 		let {q, limit} = query.parse(req.url, true).query;
