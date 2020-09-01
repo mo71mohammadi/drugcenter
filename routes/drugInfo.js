@@ -9,7 +9,7 @@ exports.search = async (req, res) => {
 		let regex = new RegExp(q, 'i');
 		DrugInfo.find({
 			$or: [{enName: regex}, {faName: regex}]
-		}, {_id: 1, enName: 1, enRoute: 1, enForm: 1}).limit(parseInt(limit)).then(result => {
+		}, {_id: 1, enName: 1, enRoute: 1, enForm: 1, volume: 1, strength: 1}).limit(parseInt(limit)).then(result => {
 			// console.log(result)
 			res.status(200).json({count: result.length, data: result})
 		})
