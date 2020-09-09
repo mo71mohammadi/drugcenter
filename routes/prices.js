@@ -73,7 +73,7 @@ exports.getAll = async (req, res) => {
 		size = parseInt(size)
 		page = parseInt(page)
 
-		Price.find(search).skip(size * page).limit(size).then(async prices => {
+		Price.find(search).skip(size * page).limit(size).sort({_id: -1}).then(async prices => {
 			const count = await Price.countDocuments(filter);
 			res.status(200).json({count, data: prices})
 		})
