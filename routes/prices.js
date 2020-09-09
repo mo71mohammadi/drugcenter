@@ -69,12 +69,11 @@ exports.getAll = async (req, res) => {
 			let regex = new RegExp(filter[item], 'i');
 			if (filter[item]) search[item] = regex
 		}
-
 		// for (const item of Object.keys(filter)) if (filter[item]) search[item] = filter[item]
 		size = parseInt(size)
 		page = parseInt(page)
 
-		Price.find(filter).skip(size * page).limit(size).then(async prices => {
+		Price.find(search).skip(size * page).limit(size).then(async prices => {
 			const count = await Price.countDocuments(filter);
 			res.status(200).json({count, data: prices})
 		})
