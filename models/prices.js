@@ -4,7 +4,9 @@ const uniqueValidator = require('mongoose-unique-validator')
 const priceSchema = new mongoose.Schema({
 	product: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "product"
+		ref: "product",
+		unique: true,
+		null: true
 	},
 
 	site: {type: String},

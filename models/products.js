@@ -18,8 +18,8 @@ const productSchema = new mongoose.Schema({
 	// category : [B03A02, B04B01, A]
 	gtn: [{type: String}],
 	update: {
-		code: String,
-		type: String
+		from: String,
+		code: String
 	},
 	irc: [{type: String}],
 	nativeIrc: {type: String},

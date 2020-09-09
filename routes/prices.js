@@ -65,7 +65,12 @@ exports.getAll = async (req, res) => {
 		delete filter.page;
 		delete filter.size;
 		let search = {};
-		for (const item of Object.keys(filter)) if (filter[item]) search[item] = filter[item]
+		for (const item of Object.keys(filter)) {
+			let regex = new RegExp(filter[item], 'i');
+			if (filter[item]) search[item] = regex
+		}
+
+		// for (const item of Object.keys(filter)) if (filter[item]) search[item] = filter[item]
 		size = parseInt(size)
 		page = parseInt(page)
 
