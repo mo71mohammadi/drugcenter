@@ -87,8 +87,8 @@ exports.download = async (req, res) => {
 		const {site} = req.body;
 		if (site === "ttac") {
 			let options = {
-				// pythonPath: '/home/ehrs/virtualenv/python/3.7/bin/python3.7',
-				pythonPath: '/home/mojtaba/PycharmProjects/DrugCenter_0/venv/bin/python',
+				pythonPath: '/home/ehrs/virtualenv/python/3.7/bin/python3.7',
+				// pythonPath: '/home/mojtaba/PycharmProjects/DrugCenter_0/venv/bin/python',
 				// scriptPath: '/home/mojtaba/WebstormProjects/api/routes/',
 			};
 			let test = new PythonShell('./routes/script.py', options);
