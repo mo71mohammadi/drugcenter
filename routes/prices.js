@@ -73,9 +73,16 @@ exports.getAll = async (req, res) => {
 		size = parseInt(size)
 		page = parseInt(page)
 
-		Price.find(search).skip(size * page).limit(size).sort({_id: -1}).then(async prices => {
+		Price.find(search).skip(size * page).limit(size).sort({_id: 1}).populate('product').then(async prices => {
+			const newPrices = []
+			for (let price of prices) {
+				price = price.toObject()
+				if (price.product) price.eRx = price.product.eRx
+				delete price.product
+				newPrices.push(price)
+			}
 			const count = await Price.countDocuments(filter);
-			res.status(200).json({count, data: prices})
+			res.status(200).json({count, data: newPrices})
 		})
 	} catch (err) {
 		res.status(500).json(err.message)
@@ -95,7 +102,7 @@ exports.download = async (req, res) => {
 			test.on('message', async message => {
 				let rawData = fs.readFileSync('data.json');
 				let data = JSON.parse(rawData);
-				await Price.deleteMany({})
+				// await Price.deleteMany({})
 				for (const item of data) {
 					item.type = 0;
 					item.site = "ttac";
