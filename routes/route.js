@@ -33,7 +33,7 @@ router.post('/generics/export', generic.export);
 // محصولات
 router.post('/products/getAll', product.getAll);
 router.post('/products/getOne', product.getOne);
-router.get('/products/getBy', product.getBy);
+router.get('/products/getBy', userController.allowIfLoggedin, product.getBy);
 router.post('/products/create', product.create);
 router.post('/products/delete', product.delete);
 router.post('/products/update', product.update);
