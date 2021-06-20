@@ -138,6 +138,18 @@ exports.delete = async (req, res) => {
         res.status(500).json(err.message)
     }
 };
+exports.delete = async (req, res) => {
+    try {
+        Generic.deleteMany({}).then(result => {
+            res.status(200).json("Deleted All Successfully")
+        }).catch(err => {
+            res.status(401).json("ERROR!" + err.message)
+        })
+        // const product = Generic.findOne({_id: req.body._id})
+    } catch (err) {
+        res.status(500).json(err.message)
+    }
+};
 exports.export = async (req, res) => {
     try {
         const filter = req.body;

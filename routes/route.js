@@ -26,6 +26,7 @@ router.post('/generics/create', generic.create);
 router.post('/generics/delete', generic.delete);
 router.post('/generics/update', generic.update);
 router.post('/generics/export', generic.export);
+router.delete('/generics/deleteAll', userController.allowIfLoggedin, generic.deleteAll);
 
 
 //.............................
@@ -36,7 +37,7 @@ router.post('/products/getOne', product.getOne);
 router.get('/products/getBy', userController.allowIfLoggedin, product.getBy);
 router.post('/products/create', product.create);
 router.post('/products/delete', product.delete);
-router.post('/products/deleteAll', userController.allowIfLoggedin, product.delete);
+router.delete('/products/deleteAll', userController.allowIfLoggedin, product.deleteAll);
 router.post('/products/update', product.update);
 router.post('/products/import', fileUpload(), product.import);
 router.post('/products/importUpdate', fileUpload(), product.importUpdate);
