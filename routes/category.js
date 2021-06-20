@@ -263,8 +263,8 @@ exports.deleteAll = async (req, res) => {
 exports.import = async (req, res) => {
 	try {
 		let regex
-		// const url = 'http://api.ehrs.ir/api/products/category/create'
-		const url = 'http://localhost:5000/api/products/category/create'
+		const url = 'http://api.ehrs.ir/api/products/category/create'
+		// const url = 'http://localhost:5000/api/products/category/create'
 		req.connection.setTimeout(1000 * 60 * 10);
 		if (req.files) {
 			const wb = excel.read(req.files.category.data, {cellDates: true});

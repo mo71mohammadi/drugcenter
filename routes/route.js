@@ -34,7 +34,7 @@ router.delete('/generics/deleteAll', userController.allowIfLoggedin, generic.del
 // محصولات
 router.post('/products/getAll', product.getAll);
 router.post('/products/getOne', product.getOne);
-router.get('/products/getBy', userController.allowIfLoggedin, product.getBy);
+router.get('/products/getBy', product.getBy);
 router.post('/products/create', product.create);
 router.post('/products/delete', product.delete);
 router.delete('/products/deleteAll', userController.allowIfLoggedin, product.deleteAll);
