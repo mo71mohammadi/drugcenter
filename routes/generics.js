@@ -138,7 +138,7 @@ exports.delete = async (req, res) => {
         res.status(500).json(err.message)
     }
 };
-exports.delete = async (req, res) => {
+exports.deleteAll = async (req, res) => {
     try {
         Generic.deleteMany({}).then(result => {
             res.status(200).json("Deleted All Successfully")
