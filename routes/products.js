@@ -238,6 +238,15 @@ exports.delete = async (req, res) => {
         res.status(500).json(err.message)
     }
 };
+exports.deleteAll = async (req, res) => {
+    try {
+        Product.deleteMany().then(result => {
+            res.status(200).json("Deleted Successfully!")
+        })
+    } catch (err) {
+        res.status(500).json(err.message)
+    }
+};
 exports.import = async (req, res) => {
     try {
         req.connection.setTimeout(1000 * 60 * 10);

@@ -36,6 +36,7 @@ router.post('/products/getOne', product.getOne);
 router.get('/products/getBy', userController.allowIfLoggedin, product.getBy);
 router.post('/products/create', product.create);
 router.post('/products/delete', product.delete);
+router.post('/products/deleteAll', userController.allowIfLoggedin, product.delete);
 router.post('/products/update', product.update);
 router.post('/products/import', fileUpload(), product.import);
 router.post('/products/importUpdate', fileUpload(), product.importUpdate);
@@ -100,7 +101,7 @@ router.put('/role/:roleId', userController.allowIfLoggedin, userController.grant
 router.delete('/role/:roleId', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'role'), roleController.deleteRole);
 
 // Authentication
-router.get('/v1', userController.authentication);
+router.get('/auth/v1', userController.authentication);
 
 // MedScape
 // router.get('/medScape/multiInteraction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape.api'), medScape.interactionChecker);
