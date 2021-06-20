@@ -267,6 +267,7 @@ exports.import = async (req, res) => {
                 for (const key of Object.keys(obj)) {
                     if (!["genericCode", "packageCount"].includes(key) && ['0', 0, '-'].includes(obj[key])) obj[key] = ''
                 }
+                obj.eRx = obj.eRx.slice(0, 6)
                 console.log(obj.eRx)
 
                 // تغییر به eRx
@@ -341,10 +342,10 @@ exports.import = async (req, res) => {
                 //
                 await Product.create(obj).then(result => {
                     success++;
-                    successList.push(obj.eRx + obj.packageCode)
+                    successList.push(obj.eRx)
                 }).catch(err => {
                     repeat++;
-                    repeatList.push(obj.eRx + obj.packageCode);
+                    repeatList.push(obj.eRx);
                     // fs.appendFile('test.txt', obj.eRx + obj.packageCode + '\n', result => {
                     // })
                 })
