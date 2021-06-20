@@ -3,7 +3,7 @@
   "info": {
     "description": "This is a sample server EHRS server.",
     "version": "1.0.0",
-    "title": "EHRS",
+    "title": "eRx",
     "contact": {
       "email": "Admin@ehrs.ir"
     }
