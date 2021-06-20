@@ -3,23 +3,37 @@ const router = express.Router();
 
 const medScape = require('./medScapes');
 const upToDate = require('./upToDates');
-const drug = require('./drugs');
+const drug = require('./archive/drugs');
 const drugstore = require('./drugstores');
 const distributor = require('./distributors');
-const recommend = require('./recommend');
+const recommend = require('./archive/recommend');
 const roleController = require('./roles');
 const userController = require('./users');
 const insurance = require('./insurance');
 const importData = require('./import');
 const product = require('./products');
+const generic = require('./generics');
 const category = require('./category');
 const price = require('./prices');
-const drugInfo = require('./drugInfo');
+const drugInfo = require('./archive/drugInfo');
 const fileUpload = require('express-fileupload');
 
+//اطلاعات پایه
+router.post('/generics/import', fileUpload(), generic.import);
+router.post('/generics/getAll', generic.getAll);
+router.post('/generics/getOne', generic.getOne);
+router.post('/generics/create', generic.create);
+router.post('/generics/delete', generic.delete);
+router.post('/generics/update', generic.update);
+router.post('/generics/export', generic.export);
 
+
+//.............................
+
+// محصولات
 router.post('/products/getAll', product.getAll);
 router.post('/products/getOne', product.getOne);
+router.get('/products/getBy', product.getBy);
 router.post('/products/create', product.create);
 router.post('/products/delete', product.delete);
 router.post('/products/update', product.update);
@@ -31,6 +45,9 @@ router.delete('/products/image', product.deleteImg);
 router.put('/products/price', product.updatePrice);
 router.delete('/products/price', product.deletePrice);
 router.get('/products/search', product.search);
+router.post('/products/generic', product.generic);
+router.put('/products/interaction', product.updateMany);
+// .......................................................
 
 router.post('/price/getAll', price.getAll);
 router.post('/price/create', price.create);
@@ -44,7 +61,7 @@ router.post('/products/category/getOne', category.getOne);
 router.post('/products/category/create', category.create);
 router.post('/products/category/delete', category.delete);
 router.post('/products/category/update', category.update);
-router.post('/products/category/import', category.import);
+router.post('/products/category/import',fileUpload(), category.import);
 
 router.post('/drugs/getName', drug.interaction);
 router.put('/Interaction/update', drug.updateInteraction);
@@ -68,7 +85,7 @@ router.get('/Interaction/upToDate/getName', upToDate.getName)
 router.get('/import', importData.import);
 
 router.post('/signup', userController.signUp);
-router.post('/login', userController.login);
+router.post('/auth/login', userController.login);
 router.get('/profile', userController.allowIfLoggedin, userController.grantAccess('readAny', 'profile'), userController.profile);
 
 // router.get('/user/:userId', userController.allowIfLoggedin, userController.getUser);
@@ -86,18 +103,27 @@ router.delete('/role/:roleId', userController.allowIfLoggedin, userController.gr
 router.get('/v1', userController.authentication);
 
 // MedScape
-router.get('/medScape/multiInteraction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape.api'), medScape.interactionChecker);
-router.post('/medScape/', userController.allowIfLoggedin, userController.grantAccess('createAny', 'medscape'), medScape.addMedScape);
-router.get('/medScape/', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.getMedScape);
-router.put('/medScape', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'medscape'), medScape.updateMedScape);
-router.delete('/medScape/:id', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'medscape'), medScape.deleteMedScape);
-router.get('/medScape/name', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.name);
+// router.get('/medScape/multiInteraction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape.api'), medScape.interactionChecker);
+// router.post('/medScape/', userController.allowIfLoggedin, userController.grantAccess('createAny', 'medscape'), medScape.addMedScape);
+// router.get('/medScape/', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.getMedScape);
+// router.put('/medScape', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'medscape'), medScape.updateMedScape);
+// router.delete('/medScape/:id', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'medscape'), medScape.deleteMedScape);
+// router.get('/medScape/name', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.name);
+router.get('/medScape/multiInteraction', medScape.interactionChecker);
+router.post('/medScape/', medScape.addMedScape);
+router.get('/medScape/', medScape.getMedScape);
+router.put('/medScape', medScape.updateMedScape);
+router.delete('/medScape/:id', medScape.deleteMedScape);
+router.get('/medScape/name', medScape.name);
 
 
 // UpToDate
-router.get('/upToDate/multiInteraction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'uptodate.api'), upToDate.interactionChecker);
-router.post('/upToDate/', userController.allowIfLoggedin, userController.grantAccess('createAny', 'uptodate'), upToDate.addUpToDate);
-router.get('/upToDate/name', userController.allowIfLoggedin, userController.grantAccess('readAny', 'uptodate'), upToDate.name);
+// router.get('/upToDate/multiInteraction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'uptodate.api'), upToDate.interactionChecker);
+// router.post('/upToDate/', userController.allowIfLoggedin, userController.grantAccess('createAny', 'uptodate'), upToDate.addUpToDate);
+// router.get('/upToDate/name', userController.allowIfLoggedin, userController.grantAccess('readAny', 'uptodate'), upToDate.name);
+router.get('/upToDate/multiInteraction', upToDate.interactionChecker);
+router.post('/upToDate/', upToDate.addUpToDate);
+router.get('/upToDate/name', upToDate.name);
 
 // Recommend
 router.post('/atc/import', userController.allowIfLoggedin, userController.grantAccess('createAny', 'atc'), recommend.importATC);
@@ -120,7 +146,8 @@ router.get('/drugs/import', drug.html);
 router.post('/drugs/atc', userController.allowIfLoggedin, userController.grantAccess('readAny', 'atc'), drug.atc);
 router.post('/drugs/updateATC', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'atc'), drug.updateATC);
 
-router.post('/drugs/interaction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'interaction'), drug.interaction);
+// router.post('/drugs/interaction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'interaction'), drug.interaction);
+router.post('/drugs/interaction',  drug.interaction);
 router.post('/drugs/updateInteraction', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'interaction'), drug.updateInteraction);
 
 router.post('/drugs/price', userController.allowIfLoggedin, userController.grantAccess('readAny', 'price'), drug.price);
@@ -129,6 +156,9 @@ router.post('/drugs/updatePrice', userController.allowIfLoggedin, userController
 
 // Insurance
 router.get('/insurance', insurance.insurance);
+router.post('/insurances/download', insurance.download);
+router.post('/insurances/getAll', insurance.getAll);
+
 router.get('/insurance/special', userController.allowIfLoggedin, userController.grantAccess('readAny', 'insurance.api'), recommend.special);
 
 // drugStore

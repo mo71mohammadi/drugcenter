@@ -5,8 +5,9 @@ const query = require('url');
 exports.interactionChecker = async (req, res) => {
 	try {
 		const params = query.parse(req.url, true).query;
+		console.log(params)
 		let search = {};
-		if (params['item'] === 'eRx' || "generic" || "gtn") search[params['item']] = {$in: params['values'].split(',')};
+		if (params['item'] === 'eRx' || "generic" || "gtn" || "globalId") search[params['item']] = {$in: params['values'].split(',')};
 		else return res.status(500).json({massage: "parameter not correct!"});
 		// if ("eRx" in params) search = {eRx: {$in: params.eRx.split(',')}};
 		// else if ("generic" in params) search = {generic: {$in: params.generic.split(',')}};
@@ -99,7 +100,6 @@ exports.deleteMedScape = async (req, res, next) => {
 		next(err)
 	}
 };
-
 exports.name = async (req, res) => {
 	try {
 		UpToDate.aggregate([{

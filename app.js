@@ -11,8 +11,10 @@ const swaggerJsDoc = require("swagger-jsdoc")
 const swaggerUi = require("swagger-ui-express")
 const swaggerDocument = require('./swagger.json');
 
+var user = encodeURIComponent('medrep');
+var password = encodeURIComponent('Zxcv4194!@#$');
 
-mongoose.connect(process.env.DATABASE_URL, {
+mongoose.connect(`mongodb://localhost/drugCenter`, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useFindAndModify: false,

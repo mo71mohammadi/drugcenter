@@ -15,6 +15,7 @@ const drugSchema = new mongoose.Schema({
 	faForm: {type: String},
 	enRoute: {type: String},
 	faRoute: {type: String},
+	// در حال حاضر علت وجود تداخلات در این مدل مشخص نیست!
 	medScape: {
 		interaction: [{type: String}],
 		info: [{type: String}]
@@ -23,6 +24,7 @@ const drugSchema = new mongoose.Schema({
 		interaction: [{type: String}],
 		info: [{type: String}]
 	},
+	//ذخیره نام های ژنریک پیشنهادی جهت عدم پردازش مجدد
 	genericNames: [{
 		enName: String,
 		faName: String

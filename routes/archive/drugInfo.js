@@ -1,4 +1,4 @@
-const DrugInfo = require("../models/drugsInfo");
+const DrugInfo = require("../../models/archive/drugsInfo");
 const query = require('url');
 const mongoExcel = require('mongo-xlsx')
 

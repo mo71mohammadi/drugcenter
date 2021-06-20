@@ -35,7 +35,6 @@ exports.getAll = async (req, res) => {
 
 	}
 };
-
 exports.getOne = async (req, res) => {
 	try {
 		// const {level, shortName} = req.body;
@@ -88,7 +87,6 @@ exports.getOne = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
 exports.create = async (req, res) => {
 	try {
 		// let shortName
@@ -156,6 +154,7 @@ exports.create = async (req, res) => {
 		// })
 		let regex
 		let {level, name, prevId} = req.body
+		// console.log(level, name, prevId)
 		name = name.replace(/ {2,}/g, ' ').trim();
 		let obj = {level: level, id: '', name: name, fullName: ""}
 		if (level === "L1") {
@@ -170,17 +169,25 @@ exports.create = async (req, res) => {
 		const number = [...Array(100).keys()];
 		regex = new RegExp(`^${prevId}`);
 		Category.find({id: {$regex: regex}, level: level}).then(results => {
+			console.log(results)
 			for (const result of results) {
+				console.log(result.id.slice(1, 3))
 				if (level === "L1") alphabet.splice(alphabet.indexOf(result.id), 1)
 				if (level === "L2") number.splice(number.indexOf(parseInt(result.id.slice(1, 3))), 1)
-				if (level === "L3") alphabet.splice(alphabet.indexOf(result.id.slice(3, 4)), 1)
-				if (level === "L4") number.splice(number.indexOf(parseInt(result.id.slice(4, 6))), 1)
+				if (level === "L3") number.splice(number.indexOf(parseInt(result.id.slice(3, 5))), 1)
+				// if (level === "L3") alphabet.splice(alphabet.indexOf(result.id.slice(3, 4)), 1)
+				if (level === "L4") alphabet.splice(alphabet.indexOf(result.id.slice(5, 6)), 1)
+				// if (level === "L4") number.splice(number.indexOf(parseInt(result.id.slice(4, 6))), 1)
+				console.log(alphabet)
 			}
-			if (level === "L1" || level === "L3") obj.id = prevId + alphabet[0]
-			if (level === "L2" || level === "L4") {
+			console.log(alphabet)
+
+			if (level === "L1" || level === "L4") obj.id = prevId + alphabet[0]
+			if (level === "L2" || level === "L3") {
 				if (number[1].toString().length < 2) obj.id = prevId + "0" + number[1]
 				else obj.id = prevId + number[1]
 			}
+			console.log(obj)
 			Category.create(obj).then(result => {
 				res.status(200).json(result)
 			}).catch(err => {
@@ -191,7 +198,6 @@ exports.create = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
 exports.update = async (req, res) => {
 	try {
 		let {id, name} = req.body
@@ -223,7 +229,6 @@ exports.update = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
 exports.delete = async (req, res) => {
 	try {
 		let {id} = req.body
@@ -237,12 +242,11 @@ exports.delete = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
-
 exports.import = async (req, res) => {
 	try {
 		let regex
-		const url = 'http://api.ehrs.ir/api/products/category/create'
-		// const url = 'http://localhost:5000/api/products/category/create'
+		// const url = 'http://api.ehrs.ir/api/products/category/create'
+		const url = 'http://localhost:5000/api/products/category/create'
 		req.connection.setTimeout(1000 * 60 * 10);
 		if (req.files) {
 			const wb = excel.read(req.files.category.data, {cellDates: true});
@@ -256,8 +260,9 @@ exports.import = async (req, res) => {
 			const levelOneId = []
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
+				const level = item.level.split('\n')[0]
 				if (jsonFile[index].hasOwnProperty('level')) {
-					item.L1 = item.level.split(' - ')[0].replace(/ {2,}/g, ' ').trim()
+					item.L1 = level.split(' - ')[0].replace(/ {2,}/g, ' ').trim()
 				}
 				if (levelOne.includes(item.L1)) {
 					jsonFile[index].L1 = levelOneId[levelOne.indexOf(item.L1)]
@@ -277,12 +282,15 @@ exports.import = async (req, res) => {
 					levelOneId.push(jsonFile[index].L1)
 				})
 			}
+			console.log("item.eRx")
+
 			const levelTwo = []
 			const levelTwoId = []
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
+				const level = item.level.split('\n')[0]
 				if (jsonFile[index].hasOwnProperty('level')) {
-					item.L2 = item.level.split(' - ')[1].replace(/ {2,}/g, ' ').trim()
+					item.L2 = level.split(' - ')[1].replace(/ {2,}/g, ' ').trim()
 				}
 				if (levelTwo.includes(item.L2 + item.L1)) {
 					jsonFile[index].L2 = levelTwoId[levelTwo.indexOf(item.L2 + item.L1)]
@@ -293,6 +301,8 @@ exports.import = async (req, res) => {
 
 				regex = new RegExp(`^${item.L1}`);
 				await Category.findOne({id: {$regex: regex}, level: "L2", name: item.L2}).then(async result => {
+					console.log(item.eRx, item.L1, item.L2)
+
 					if (!result) {
 						let newObj = await request({
 							url: url,
@@ -307,12 +317,15 @@ exports.import = async (req, res) => {
 
 				})
 			}
+
 			const levelThree = []
 			const levelThreeId = []
 			for (const item of jsonFile) {
 				let index = jsonFile.indexOf(item);
+				const level = item.level.split('\n')[0]
+
 				if (jsonFile[index].hasOwnProperty('level')) {
-					item.L3 = item.level.split(' - ')[2].replace(/ {2,}/g, ' ').trim()
+					item.L3 = level.split(' - ')[2].replace(/ {2,}/g, ' ').trim()
 				}
 				if (levelThree.includes(item.L3 + item.L2 + item.L1)) {
 					jsonFile[index].L3 = levelThreeId[levelThree.indexOf(item.L3 + item.L2 + item.L1)]
@@ -320,6 +333,8 @@ exports.import = async (req, res) => {
 				} else levelThree.push(item.L3 + item.L2 + item.L1)
 				regex = new RegExp(`^${item.L2}`);
 				await Category.findOne({id: {$regex: regex}, level: "L3", name: item.L3}).then(async result => {
+					console.log(item.eRx, item.L2, item.L3)
+
 					if (!result) {
 						let newObj = await request({
 							url: url,
@@ -333,17 +348,23 @@ exports.import = async (req, res) => {
 					levelThreeId.push(jsonFile[index].L3)
 				})
 			}
+
 			const levelFour = []
 			for (const item of jsonFile) {
+				// console.log(item.eRx)
+
 				let index = jsonFile.indexOf(item);
+				const level = item.level.split('\n')[0]
 				if (jsonFile[index].hasOwnProperty('level')) {
-					item.L4 = item.level.split(' - ')[3].replace(/ {2,}/g, ' ').trim()
+					item.L4 = level.split(' - ')[3].replace(/ {2,}/g, ' ').trim()
 				}
 				if (levelFour.includes(item.L4 + item.L3 + item.L2 + item.L1)) {
 					continue
 				} else levelFour.push(item.L4 + item.L3 + item.L2 + item.L1)
 				regex = new RegExp(`^${item.L3}`);
 				await Category.findOne({id: {$regex: regex}, level: "L4", name: item.L4}).then(async result => {
+					console.log(item.eRx, item.L3, item.L4)
+					// if (item.eRx === 124474) console.log(result)
 					if (!result) {
 						let newObj = await request({
 							url: url,
@@ -356,6 +377,7 @@ exports.import = async (req, res) => {
 					}
 				})
 			}
+
 			res.status(200).json({message: 'import categories successfully!'})
 		} else {
 			res.status(401).json({message: 'File Not Found!'})

@@ -18,8 +18,8 @@
       "description": "Operations about Product"
     },
     {
-      "name": "Drug",
-      "description": "Operations about Drug"
+      "name": "Generic",
+      "description": "Operations about Generic"
     },
     {
       "name": "Category",
@@ -529,6 +529,40 @@
         }
       }
     },
+
+    "/api/generics/import": {
+      "post": {
+        "tags": [
+          "Generic"
+        ],
+        "summary": "import generic items from xlsx file",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "generic",
+            "in": "formData",
+            "description": "Updated file of the generic",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "product validation failed"
+          }
+        }
+      }
+    },
+
 
     "/api/drugs/getAll": {
       "post": {

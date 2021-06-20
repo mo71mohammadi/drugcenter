@@ -4,7 +4,10 @@ const uniqueValidator = require('mongoose-unique-validator')
 const productSchema = new mongoose.Schema({
 	eRx: {type: String, required: true},
 	drugInfo: {type: mongoose.Schema.Types.ObjectId, ref: 'Drug'},
-	packageCode: {type: String, required: true},
+	// تغییر به کد eRx_Brand
+	// packageCode: {type: String, required: true},
+	eRxBrand: {type: String},
+	//
 	eRxGeneric: {type: String},
 	sepasCode: {type: String},
 	genericCode: {type: Number},
@@ -15,6 +18,11 @@ const productSchema = new mongoose.Schema({
 	enBrandName: {type: String},
 	faBrandName: {type: String},
 	category: [{type: String}],
+	atcCode: [{type: String}],
+	// atc: [{
+	// 	code: {type: String},
+	// 	ddd: {type: String}
+	// }],
 	// category : [B03A02, B04B01, A]
 	gtn: [{type: String}],
 	update: {
@@ -31,6 +39,7 @@ const productSchema = new mongoose.Schema({
 	}],
 	// dates: [{type: Date}],
 	licenceOwner: {type: String},
+	licenceOwnerId: {type: Number},
 	brandOwner: {type: String},
 	producer: {type: String},
 	countryBrandOwner: {type: String},
@@ -38,6 +47,18 @@ const productSchema = new mongoose.Schema({
 	cName: [{type: String}],
 	videos: [{type: String}],
 	image: [{type: String}],
+	medScapeId: {type: String},
+	upToDateId: {type: String},
+	// موقتا اضافه شده
+	enName: {type: String},
+	faName: {type: String},
+	strength: {type: String},
+	volume: {type: String},
+	enForm: {type: String},
+	faForm: {type: String},
+	enRoute: {type: String},
+	faRoute: {type: String},
+	// .........
 	properties: [{
 		key: String,
 		value: String

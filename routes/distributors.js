@@ -1,5 +1,5 @@
 const Distributor = require('../models/distributors');
-const DrugStore = require("../models/drugStores");
+const DrugStore = require("../models/archive/drugStores");
 const xlsx = require('xlsx');
 
 const Pagination = body => {

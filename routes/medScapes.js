@@ -6,7 +6,7 @@ exports.interactionChecker = async (req, res) => {
     try {
         const params = query.parse(req.url, true).query;
         const search = {};
-        if (params['item'] === 'eRx' || "generic" || "gtn") search[params['item']] = {$in: params['values'].split(',')};
+        if (params['item'] === 'eRx' || "generic" || "gtn" || "drugId") search[params['item']] = {$in: params['values'].split(',')};
         else return res.status(500).json({massage: "parameter not correct!"});
         // if ("eRx" in params) search = {eRx: {$in: params.eRx.split(',')}};
         // else if ("generic" in params) search = {generic: {$in: params.generic.split(',')}};
@@ -43,7 +43,6 @@ exports.interactionChecker = async (req, res) => {
         return res.status(500).json({massage: err.message})
     }
 };
-
 exports.addMedScape = async (req, res) => {
     try {
         const {drugId, eRx, interactions} = req.body;
@@ -57,7 +56,6 @@ exports.addMedScape = async (req, res) => {
         res.status(400).json(err.message)
     }
 };
-
 exports.getMedScape = async (req, res, next) => {
     try {
         const params = query.parse(req.url, true).query;
@@ -72,7 +70,6 @@ exports.getMedScape = async (req, res, next) => {
         next(err)
     }
 };
-
 exports.updateMedScape = async (req, res) => {
     try {
         const params = query.parse(req.url, true).query;
@@ -88,7 +85,6 @@ exports.updateMedScape = async (req, res) => {
 
     }
 };
-
 exports.deleteMedScape = async (req, res, next) => {
     try {
         const medScapeId = req.params.id;
@@ -106,7 +102,6 @@ exports.deleteMedScape = async (req, res, next) => {
         next(err)
     }
 };
-
 exports.name = async (req, res) => {
     try {
         MedScape.aggregate([{

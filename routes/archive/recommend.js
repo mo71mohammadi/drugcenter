@@ -1,4 +1,4 @@
-const Recommend = require("../models/recommends");
+const Recommend = require("../../models/archive/recommends");
 const xlsx = require('xlsx');
 const query = require('url');
 

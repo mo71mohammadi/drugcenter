@@ -1,8 +1,8 @@
-const Drug = require("../models/drugs");
+const Drug = require("../models/archive/drugs");
 const UpToDate = require("../models/upToDate");
 const MedScape = require("../models/medScape");
-const Recommend = require("../models/recommends");
-const Insurance = require("../models/insurance");
+const Recommend = require("../models/archive/recommends");
+const Insurance = require("../models/insurances");
 
 const fs = require('fs');
 const query = require('url');

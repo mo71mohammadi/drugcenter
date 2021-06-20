@@ -1,6 +1,6 @@
-const Drug = require("../models/drugs");
-const UpToDate = require("../models/upToDate");
-const MedScape = require("../models/medScape");
+const Drug = require("../../models/archive/drugs");
+const UpToDate = require("../../models/upToDate");
+const MedScape = require("../../models/medScape");
 const query = require('url');
 const xlsx = require('xlsx');
 const fs = require('fs');
@@ -320,6 +320,7 @@ exports.getInfo = async (req, res) => {
 exports.interaction = async (req, res) => {
 	try {
 		const {size, page} = Pagination(req.body);
+		console.log(size)
 		Drug.aggregate([{
 			"$group": {
 				"_id": {
@@ -334,6 +335,7 @@ exports.interaction = async (req, res) => {
 			for (const result of results) {
 				objs.push(result._id)
 			}
+			console.log(objs)
 			res.status(200).json({count: objs.length, data: objs.slice(page * size, (page * size) + size)})
 		});
 	} catch (err) {

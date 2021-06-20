@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "accesscontrol": "^2.2.1",
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
@@ -30,7 +30,8 @@
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui": "^3.30.2",
     "swagger-ui-express": "^4.1.4",
-    "xlsx": "^0.15.4"
+    "xlsx": "^0.15.4",
+    "yarn": "^1.22.10"
   },
   "devDependencies": {
     "axios": "^0.19.1",

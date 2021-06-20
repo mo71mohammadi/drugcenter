@@ -35,6 +35,7 @@ exports.update = async (req, res) => {
 		const filter = req.body;
 		delete filter.price;
 		delete filter.date
+		console.log(filter)
 		if (!filter._id) return res.status(401).json({message: "Price _id not found!", result: null})
 		Price.updateOne({_id: filter._id}, filter).then((result) => {
 			res.status(200).json({message: "Price Update Successfully.", result});

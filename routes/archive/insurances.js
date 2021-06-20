@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Insurance = require('../models/insurance');
+const Insurance = require('../../models/insurances');
 const xlsx = require('xlsx');
 
 const type = {1: "inTa", 2: "inSa", 3: "inMo"};

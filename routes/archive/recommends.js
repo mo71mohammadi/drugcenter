@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Recommend = require("../models/recommends");
+const Recommend = require("../../models/archive/recommends");
 
 // Creating ATC
 router.post('/atc/create', async (req, res) => {
