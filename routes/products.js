@@ -267,7 +267,7 @@ exports.import = async (req, res) => {
                 for (const key of Object.keys(obj)) {
                     if (!["genericCode", "packageCount"].includes(key) && ['0', 0, '-'].includes(obj[key])) obj[key] = ''
                 }
-                obj.eRx = obj.eRx.slice(0, 6)
+                obj.eRx = obj.eRx.toString().slice(0, 6)
                 console.log(obj.eRx)
 
                 // تغییر به eRx
@@ -287,9 +287,9 @@ exports.import = async (req, res) => {
                 if (!obj.L1 && !obj.level) return res.status(401).json({message: "level 0r L1 not found."})
                 else if (obj.level) {
                     const levels = obj.level.split('\n')
-                    console.log(levels)
+                    // console.log(levels)
                     const level = levels[0].split(' - ')
-                    console.log(level)
+                    // console.log(level)
 
                     let levelList = []
                     for (let L of level) levelList.push(L.replace(/ {2,}/g, ' ').trim())
@@ -300,9 +300,9 @@ exports.import = async (req, res) => {
                 else if (!obj.L3) search = {level: "L2", fullName: obj.L1 + " - " + obj.L2}
                 else if (!obj.L4) search = {level: "L3", fullName: obj.L1 + " - " + obj.L2 + " - " + obj.L3}
                 else search = {level: "L4", fullName: obj.L1 + " - " + obj.L2 + " - " + obj.L3 + " - " + obj.L4}
-                console.log(search)
+                // console.log(search)
                 const category = await Category.findOne(search)
-                console.log(category)
+                // console.log(category)
                 if (!category) return res.status(401).json({message: "category not found. first import Category"})
                 obj.category = category.id
                 // obj.eRx = obj.eRx.slice(0, 6);
