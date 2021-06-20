@@ -242,6 +242,24 @@ exports.delete = async (req, res) => {
 		res.status(500).json(err.message)
 	}
 };
+exports.deleteAll = async (req, res) => {
+	try {
+		// let {id} = req.body
+		// const regex = new RegExp(`^${id}`);
+		Category.deleteMany({}).then(result => {
+			return res.status(200).json({message: result})
+		}).catch(err => {
+			return res.status(401).json({message: err.message})
+		})
+		// Category.deleteMany({id: {$regex: regex}}).then(result => {
+		// 	return res.status(200).json({message: result})
+		// }).catch(err => {
+		// 	return res.status(401).json({message: err.message})
+		// })
+	} catch (err) {
+		res.status(500).json(err.message)
+	}
+};
 exports.import = async (req, res) => {
 	try {
 		let regex

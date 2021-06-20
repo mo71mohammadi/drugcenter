@@ -64,6 +64,7 @@ router.post('/products/category/create', category.create);
 router.post('/products/category/delete', category.delete);
 router.post('/products/category/update', category.update);
 router.post('/products/category/import',fileUpload(), category.import);
+router.delete('/products/category/deleteAll', userController.allowIfLoggedin, category.deleteAll);
 
 router.post('/drugs/getName', drug.interaction);
 router.put('/Interaction/update', drug.updateInteraction);
