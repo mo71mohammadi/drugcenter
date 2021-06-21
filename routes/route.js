@@ -19,79 +19,79 @@ const drugInfo = require('./archive/drugInfo');
 const fileUpload = require('express-fileupload');
 
 //اطلاعات پایه
-router.post('/generics/import', fileUpload(), generic.import);
-router.post('/generics/getAll', generic.getAll);
-router.post('/generics/getOne', generic.getOne);
-router.post('/generics/create', generic.create);
-router.post('/generics/delete', generic.delete);
-router.post('/generics/update', generic.update);
-router.post('/generics/export', generic.export);
+router.post('/generics/import', userController.allowIfLoggedin, fileUpload(), generic.import);
+router.post('/generics/getAll', userController.allowIfLoggedin, generic.getAll);
+router.post('/generics/getOne', userController.allowIfLoggedin, generic.getOne);
+router.post('/generics/create', userController.allowIfLoggedin, generic.create);
+router.post('/generics/delete', userController.allowIfLoggedin, generic.delete);
+router.post('/generics/update', userController.allowIfLoggedin, generic.update);
+router.post('/generics/export', userController.allowIfLoggedin, generic.export);
 router.delete('/generics/deleteAll', userController.allowIfLoggedin, generic.deleteAll);
 
 
 //.............................
 
 // محصولات
-router.post('/products/getAll', product.getAll);
-router.post('/products/getOne', product.getOne);
-router.get('/products/getBy', product.getBy);
-router.post('/products/create', product.create);
-router.post('/products/delete', product.delete);
+router.post('/products/getAll', userController.allowIfLoggedin, product.getAll);
+router.post('/products/getOne', userController.allowIfLoggedin, product.getOne);
+router.get('/products/getBy', userController.allowIfLoggedin, product.getBy);
+router.post('/products/create', userController.allowIfLoggedin, product.create);
+router.post('/products/delete', userController.allowIfLoggedin, product.delete);
 router.delete('/products/deleteAll', userController.allowIfLoggedin, product.deleteAll);
-router.post('/products/update', product.update);
-router.post('/products/import', fileUpload(), product.import);
-router.post('/products/importUpdate', fileUpload(), product.importUpdate);
-router.post('/products/export', product.export);
-router.put('/products/image', product.uploadImg);
-router.delete('/products/image', product.deleteImg);
-router.put('/products/price', product.updatePrice);
-router.delete('/products/price', product.deletePrice);
-router.get('/products/search', product.search);
-router.post('/products/generic', product.generic);
-router.put('/products/interaction', product.updateMany);
-router.get('/products/getInfo', product.getInfo);
-router.get('/products/price', product.price);
+router.post('/products/update', userController.allowIfLoggedin, product.update);
+router.post('/products/import', userController.allowIfLoggedin, fileUpload(), product.import);
+router.post('/products/importUpdate', userController.allowIfLoggedin, fileUpload(), product.importUpdate);
+router.post('/products/export', userController.allowIfLoggedin, product.export);
+router.put('/products/image', userController.allowIfLoggedin, product.uploadImg);
+router.delete('/products/image', userController.allowIfLoggedin, product.deleteImg);
+router.put('/products/price', userController.allowIfLoggedin, product.updatePrice);
+router.delete('/products/price', userController.allowIfLoggedin, product.deletePrice);
+router.get('/products/search', userController.allowIfLoggedin, product.search);
+router.post('/products/generic', userController.allowIfLoggedin, product.generic);
+router.put('/products/interaction', userController.allowIfLoggedin, product.updateMany);
+router.get('/products/getInfo', userController.allowIfLoggedin, product.getInfo);
+router.get('/products/price', userController.allowIfLoggedin, product.price);
 // .......................................................
 
-router.post('/price/getAll', price.getAll);
-router.post('/price/create', price.create);
-router.put('/price/update', price.update);
-router.delete('/price/delete', price.delete);
-router.post('/price/download', price.download);
-router.put('/price/updateFrom', price.updateFromTTAC);
-router.post('/price/updateIRC', fileUpload(), price.updateIRC);
+router.post('/price/getAll', userController.allowIfLoggedin, price.getAll);
+router.post('/price/create', userController.allowIfLoggedin, price.create);
+router.put('/price/update', userController.allowIfLoggedin, price.update);
+router.delete('/price/delete', userController.allowIfLoggedin, price.delete);
+router.post('/price/download', userController.allowIfLoggedin, price.download);
+router.put('/price/updateFrom', userController.allowIfLoggedin, price.updateFromTTAC);
+router.post('/price/updateIRC', userController.allowIfLoggedin, fileUpload(), price.updateIRC);
 
-router.post('/products/category/getAll', category.getAll);
-router.post('/products/category/getOne', category.getOne);
-router.post('/products/category/create', category.create);
-router.post('/products/category/delete', category.delete);
-router.post('/products/category/update', category.update);
-router.post('/products/category/import',fileUpload(), category.import);
+router.post('/products/category/getAll', userController.allowIfLoggedin, category.getAll);
+router.post('/products/category/getOne', userController.allowIfLoggedin, category.getOne);
+router.post('/products/category/create', userController.allowIfLoggedin, category.create);
+router.post('/products/category/delete', userController.allowIfLoggedin, category.delete);
+router.post('/products/category/update', userController.allowIfLoggedin, category.update);
+router.post('/products/category/import', userController.allowIfLoggedin, fileUpload(), category.import);
 router.delete('/products/category/deleteAll', userController.allowIfLoggedin, category.deleteAll);
 
-router.post('/drugs/getName', drug.interaction);
-router.put('/Interaction/update', drug.updateInteraction);
-router.get('/Interaction/medScape/getName', medScape.name);
-router.get('/Interaction/upToDate/getName', upToDate.name);
+router.post('/drugs/getName', userController.allowIfLoggedin, drug.interaction);
+router.put('/Interaction/update', userController.allowIfLoggedin, drug.updateInteraction);
+router.get('/Interaction/medScape/getName', userController.allowIfLoggedin, medScape.name);
+router.get('/Interaction/upToDate/getName', userController.allowIfLoggedin, upToDate.name);
 
 // drugsInfo API
-router.post('/drugs/getAll', drugInfo.getAll);
-router.post('/drugs/getOne', drugInfo.getOne);
-router.post('/drugs/create', drugInfo.create);
-router.delete('/drugs/delete', drugInfo.delete);
-router.put('/drugs/update', drugInfo.update);
-router.post('/drugs/import', fileUpload(), drugInfo.import);
-router.post('/drugs/export', drugInfo.export);
-router.get('/drugs/search', drugInfo.search)
+router.post('/drugs/getAll', userController.allowIfLoggedin, drugInfo.getAll);
+router.post('/drugs/getOne', userController.allowIfLoggedin, drugInfo.getOne);
+router.post('/drugs/create', userController.allowIfLoggedin, drugInfo.create);
+router.delete('/drugs/delete', userController.allowIfLoggedin, drugInfo.delete);
+router.put('/drugs/update', userController.allowIfLoggedin, drugInfo.update);
+router.post('/drugs/import', userController.allowIfLoggedin, fileUpload(), drugInfo.import);
+router.post('/drugs/export', userController.allowIfLoggedin, drugInfo.export);
+router.get('/drugs/search', userController.allowIfLoggedin, drugInfo.search)
 
 
 // UpToDate API
-router.get('/Interaction/upToDate/getName', upToDate.getName)
+router.get('/Interaction/upToDate/getName', userController.allowIfLoggedin, upToDate.getName)
 
-router.get('/import', importData.import);
+router.get('/import', userController.allowIfLoggedin, importData.import);
 
-router.post('/signup', userController.signUp);
-router.post('/auth/login', userController.login);
+router.post('/signup', userController.allowIfLoggedin, userController.signUp);
+router.post('/auth/login',  userController.allowIfLoggedin, userController.login);
 router.get('/profile', userController.allowIfLoggedin, userController.grantAccess('readAny', 'profile'), userController.profile);
 
 // router.get('/user/:userId', userController.allowIfLoggedin, userController.getUser);
@@ -115,21 +115,21 @@ router.get('/auth/v1', userController.authentication);
 // router.put('/medScape', userController.allowIfLoggedin, userController.grantAccess('updateAny', 'medscape'), medScape.updateMedScape);
 // router.delete('/medScape/:id', userController.allowIfLoggedin, userController.grantAccess('deleteAny', 'medscape'), medScape.deleteMedScape);
 // router.get('/medScape/name', userController.allowIfLoggedin, userController.grantAccess('readAny', 'medscape'), medScape.name);
-router.get('/medScape/multiInteraction', medScape.interactionChecker);
-router.post('/medScape/', medScape.addMedScape);
-router.get('/medScape/', medScape.getMedScape);
-router.put('/medScape', medScape.updateMedScape);
-router.delete('/medScape/:id', medScape.deleteMedScape);
-router.get('/medScape/name', medScape.name);
+router.get('/medScape/multiInteraction',userController.allowIfLoggedin, medScape.interactionChecker);
+router.post('/medScape/',userController.allowIfLoggedin, medScape.addMedScape);
+router.get('/medScape/',userController.allowIfLoggedin, medScape.getMedScape);
+router.put('/medScape',userController.allowIfLoggedin, medScape.updateMedScape);
+router.delete('/medScape/:id', userController.allowIfLoggedin,medScape.deleteMedScape);
+router.get('/medScape/name', userController.allowIfLoggedin,medScape.name);
 
 
 // UpToDate
 // router.get('/upToDate/multiInteraction', userController.allowIfLoggedin, userController.grantAccess('readAny', 'uptodate.api'), upToDate.interactionChecker);
 // router.post('/upToDate/', userController.allowIfLoggedin, userController.grantAccess('createAny', 'uptodate'), upToDate.addUpToDate);
 // router.get('/upToDate/name', userController.allowIfLoggedin, userController.grantAccess('readAny', 'uptodate'), upToDate.name);
-router.get('/upToDate/multiInteraction', upToDate.interactionChecker);
-router.post('/upToDate/', upToDate.addUpToDate);
-router.get('/upToDate/name', upToDate.name);
+router.get('/upToDate/multiInteraction', userController.allowIfLoggedin,upToDate.interactionChecker);
+router.post('/upToDate/', userController.allowIfLoggedin,upToDate.addUpToDate);
+router.get('/upToDate/name', userController.allowIfLoggedin,upToDate.name);
 
 // Recommend
 router.post('/atc/import', userController.allowIfLoggedin, userController.grantAccess('createAny', 'atc'), recommend.importATC);
