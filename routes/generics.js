@@ -4,6 +4,7 @@ const Generic = require("../models/generics")
 const helpers = require('../helpers');
 const path = require('path');
 const excel = require('xlsx')
+const query = require('url');
 
 
 const Pagination = body => {
@@ -55,7 +56,7 @@ exports.import = async (req, res) => {
                     successList.push(obj.genericCode)
                 }).catch(err => {
                     repeat++;
-                    repeatList.push(obj.genericCode);
+                    repeatList.push(err.message);
                 })
             }
             res.status(200).json({

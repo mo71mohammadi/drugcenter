@@ -49,6 +49,7 @@ router.delete('/products/price', product.deletePrice);
 router.get('/products/search', product.search);
 router.post('/products/generic', product.generic);
 router.put('/products/interaction', product.updateMany);
+router.get('/products/getInfo', product.getInfo);
 // .......................................................
 
 router.post('/price/getAll', price.getAll);
