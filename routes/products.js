@@ -108,7 +108,7 @@ exports.getBy = async (req, res) => {
                 newProduct.licenceStatus = product.licenceStatus ? product.licenceStatus : "";
                 newProduct.createDate = product.createDate ? product.createDate : "";
                 newProduct.expirationDate = product.expirationDate ? product.expirationDate : "";
-                newProduct.cPrice = product.cPrice ? product.cPrice : "";
+                newProduct.cPrice = product.price ? product.price[0].cPrice : "";
                 newProduct.packageCount = product.packageCount ? product.packageCount : "";
                 newProduct.producer = product.producer ? product.producer : "";
                 newProduct.countryProducer = product.countryProducer ? product.countryProducer : "";
@@ -126,6 +126,7 @@ exports.getBy = async (req, res) => {
                 newProduct.enRoute = product.enRoute ? product.enRoute : "";
                 newProduct.faRoute = product.faRoute ? product.faRoute : "";
                 newProduct.ATC = product.atcCode.length > 0 ? product.atcCode[0] : "";
+                newProduct.cPrice = product.price ? product.price[0].cPrice : "";
                 newProduct.productType = category.fullName ? category.fullName : "";
             }
             res.status(200).json(newProduct)
@@ -588,5 +589,28 @@ exports.getInfo = async (req, res) => {
         })
     } catch (err) {
         res.status(500).json(err.message)
+    }
+};
+exports.price = async (req, res) => {
+    try {
+        const params = query.parse(req.url, true).query;
+        const search = {};
+        if (Object.keys(params).includes("IRC")) params.irc = params.IRC; delete params.IRC
+        if (Object.keys(params).includes("irc") || Object.keys(params).includes("eRx")) {
+            search[Object.keys(params)[0]] = {$in: Object.values(params)[0].split(',')};
+        } else return res.status(500).json({massage: "parameter not correct!"});
+        Product.findOne(search).then(async product => {
+            const newProduct = {}
+            newProduct.eRx = product.eRx;
+            newProduct.cPrice = product.price ? product.price[0].cPrice : "";
+            newProduct.packageCount = product.packageCount ? product.packageCount : "";
+            res.status(200).json(newProduct)
+
+        }).catch(err => {
+            res.status(401).json(err.message)
+        })
+    }catch (err) {
+        res.status(500).json(err.message)
+
     }
 };

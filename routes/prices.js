@@ -95,8 +95,8 @@ exports.download = async (req, res) => {
 		const {site} = req.body;
 		if (site === "ttac") {
 			let options = {
-				pythonPath: '/home/ehrs/virtualenv/python/3.7/bin/python3.7',
-				// pythonPath: '/home/mojtaba/PycharmProjects/DrugCenter_0/venv/bin/python',
+				// pythonPath: '/home/ehrs/virtualenv/python/3.7/bin/python3.7',
+				pythonPath: '/media/mojtaba/6FA8893B6D355C17/1400.01.03/Home/PycharmProjects/DrugCenter_0/venv/bin/python3.7',
 				// scriptPath: '/home/mojtaba/WebstormProjects/api/routes/',
 			};
 			let test = new PythonShell('./routes/script.py', options);
@@ -198,6 +198,42 @@ exports.updateFromTTAC = async (req, res) => {
 		// }
 		res.status(200).json({message: 'updated successfully!'})
 	} catch (err) {
+		res.status(500).json(err.message)
+	}
+};
+exports.updateIRC = async (req, res) => {
+	try {
+		req.connection.setTimeout(1000 * 60 * 10);
+		if (req.files) {
+			const wb = excel.read(req.files.update.data, {cellDates: true});
+			const ws = wb.Sheets['Sheet1'];
+			const jsonData = excel.utils.sheet_to_json(ws);
+			// let success = 0;
+			// let repeat = 0;
+			// const successList = [];
+			// const repeatList = [];
+			for (const obj of jsonData) {
+				// console.log(obj)
+				Price.findOne({irc: obj.irc}).then(async price => {
+					const lastPrice = price.price[price.price.length - 1]
+					console.log(lastPrice, obj.eRx)
+					await Product.updateOne({
+						eRx: obj.eRx.slice(3,9),
+						$or: [{"price.sPrice": {$ne: lastPrice.sPrice}}, {"price.cPrice": {$ne: lastPrice.cPrice}}, {"price.dPrice": {$ne: lastPrice.dPrice}}]
+					}, {$addToSet: {price: lastPrice}}).then(()=>{
+						// console.log(obj.eRx)
+					})
+
+				})
+			}
+			// res.status(200).json({success: "success"
+				// success: {0: `${success} item import successfully`, successList},
+				// repeat: {0: `${repeat} item duplicate`, repeatList},
+
+			// })
+		} else res.status(401).json({message: 'File Not Found!'})
+
+	}catch (err) {
 		res.status(500).json(err.message)
 	}
 };
